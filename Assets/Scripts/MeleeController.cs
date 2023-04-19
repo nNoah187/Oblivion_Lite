@@ -24,7 +24,7 @@ public class MeleeController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (playerControllerScript.isAttacking && playerControllerScript.canAttack && other.gameObject.CompareTag("Enemy"))
+        if (playerControllerScript.isAttacking && other.gameObject.CompareTag("Enemy"))
         {
             bearAnimator.SetTrigger("takeDamage");
             gameManagerScript.enemyHealth -= 10;
