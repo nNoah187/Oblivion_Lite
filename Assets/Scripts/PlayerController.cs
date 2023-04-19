@@ -5,29 +5,37 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private Animator playerAnimator;
-    private float swordAttackCooldown = 0.5f;
+    private float swordAttackCooldown = 5;
+    private FirstPersonController firstPersonController;
+    private GameManager gameManagerScript;
 
+    public bool canAttack = true;
     public bool isAttacking;
 
     // Start is called before the first frame update
     void Start()
     {
-        playerAnimator = GetComponent<Animator>();
+        playerAnimator = GameObject.Find("Player").GetComponent<Animator>();
+        firstPersonController = GetComponent<FirstPersonController>();
+        gameManagerScript = GameObject.Find("Game Manager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Forward and horizontal movement
         playerAnimator.SetFloat("forwardSpeed", Input.GetAxis("Vertical"));
         playerAnimator.SetFloat("horizontalSpeed", Input.GetAxis("Horizontal"));
 
-        if (Input.GetMouseButtonDown(0) && !isAttacking)
+        // Swing sword
+        if (Input.GetMouseButtonDown(0) && !isAttacking && canAttack)
         {
             isAttacking = true;
             playerAnimator.SetTrigger("attack");
             StartCoroutine(resetAttack());
         }
 
+        // Sprint
         if (Input.GetKey(KeyCode.LeftShift))
         {
             playerAnimator.SetBool("sprinting", true);
@@ -38,9 +46,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // Cooldown for melee attack
     private IEnumerator resetAttack()
     {
+        canAttack = false;
         yield return new WaitForSeconds(swordAttackCooldown);
         isAttacking = false;
+        canAttack = true;
     }
 }

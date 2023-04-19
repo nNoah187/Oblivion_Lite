@@ -11,7 +11,7 @@ public class MeleeController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerControllerScript = GameObject.Find("Player").GetComponent<PlayerController>();
+        playerControllerScript = GameObject.Find("FirstPersonController").GetComponent<PlayerController>();
         gameManagerScript = GameObject.Find("Game Manager").GetComponent<GameManager>();
         bearAnimator = gameManagerScript.bear.GetComponent<Animator>();
     }
@@ -24,9 +24,12 @@ public class MeleeController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (playerControllerScript.isAttacking && other.gameObject.CompareTag("Enemy"))
+        if (playerControllerScript.isAttacking && playerControllerScript.canAttack && other.gameObject.CompareTag("Enemy"))
         {
             bearAnimator.SetTrigger("takeDamage");
+            gameManagerScript.enemyHealth -= 10;
+            gameManagerScript.enemyHealthText.text = gameManagerScript.enemyHealth.ToString();
+            gameManagerScript.enemyHealthSlider.value = gameManagerScript.enemyHealth;
         }
     }
 }
