@@ -6,14 +6,14 @@ public class MeleeController : MonoBehaviour
 {
     private PlayerController playerControllerScript;
     private GameManager gameManagerScript;
-    private Animator bearAnimator;
+
+    public EnemyController enemyControllerScript;
 
     // Start is called before the first frame update
     void Start()
     {
         playerControllerScript = GameObject.Find("FirstPersonController").GetComponent<PlayerController>();
         gameManagerScript = GameObject.Find("Game Manager").GetComponent<GameManager>();
-        bearAnimator = gameManagerScript.bear.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -26,10 +26,11 @@ public class MeleeController : MonoBehaviour
     {
         if (playerControllerScript.isAttacking && other.gameObject.CompareTag("Enemy"))
         {
-            bearAnimator.SetTrigger("takeDamage");
-            gameManagerScript.enemyHealth -= 10;
-            gameManagerScript.enemyHealthText.text = gameManagerScript.enemyHealth.ToString();
-            gameManagerScript.enemyHealthSlider.value = gameManagerScript.enemyHealth;
+            enemyControllerScript = other.gameObject.GetComponent<EnemyController>();
+
+            enemyControllerScript.enemyAnimator.SetTrigger("takeDamage");
+            enemyControllerScript.health -= 10;
+            enemyControllerScript.healthBar.value = enemyControllerScript.health;
         }
     }
 }

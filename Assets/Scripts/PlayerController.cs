@@ -22,26 +22,29 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Forward and horizontal movement
-        playerAnimator.SetFloat("forwardSpeed", Input.GetAxis("Vertical"));
-        playerAnimator.SetFloat("horizontalSpeed", Input.GetAxis("Horizontal"));
+        if (!gameManagerScript.cursorEnabled)
+        {
+            // Forward and horizontal movement
+            playerAnimator.SetFloat("forwardSpeed", Input.GetAxis("Vertical"));
+            playerAnimator.SetFloat("horizontalSpeed", Input.GetAxis("Horizontal"));
 
-        // Swing sword
-        if (Input.GetMouseButtonDown(0) && !isAttacking)
-        {
-            isAttacking = true;
-            playerAnimator.SetTrigger("attack");
-            StartCoroutine(resetAttack());
-        }
+            // Swing sword
+            if (Input.GetMouseButtonDown(0) && !isAttacking)
+            {
+                isAttacking = true;
+                playerAnimator.SetTrigger("attack");
+                StartCoroutine(resetAttack());
+            }
 
-        // Sprint
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            playerAnimator.SetBool("sprinting", true);
-        }
-        else
-        {
-            playerAnimator.SetBool("sprinting", false);
+            // Sprint
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                playerAnimator.SetBool("sprinting", true);
+            }
+            else
+            {
+                playerAnimator.SetBool("sprinting", false);
+            }
         }
     }
 
