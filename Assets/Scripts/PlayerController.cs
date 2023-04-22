@@ -96,13 +96,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // Blink a bar on the HUD (currently only used for sprint bar)
+    // Change the sprint bar to gray when under cooldown
     public IEnumerator ChangeSprintBarColor(float duration)
     {
         startedBlinkingSprintBar = true;
         float startTime = Time.time;
 
-        // While the specified duration is still going blink the bar on the HUD every 0.5 seconds
+        // While the specified duration is still going make the sprint bar gray
         while (Time.time < startTime + duration)
         {
             gameManagerScript.sprintBarFill.color = Color.gray;

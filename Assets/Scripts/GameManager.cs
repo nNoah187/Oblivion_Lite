@@ -42,8 +42,8 @@ public class GameManager : MonoBehaviour
         sprintBar.maxValue = firstPersonController.sprintDuration;
 
         // Spawn in 2 bears
-        //Instantiate(bearEnemyPrefab, new Vector3(5, 0, 5), Quaternion.identity);
-        //Instantiate(bearEnemyPrefab, new Vector3(-5, 0, -5), Quaternion.identity);
+        Instantiate(bearEnemyPrefab, new Vector3(5, 0, 5), Quaternion.identity);
+        Instantiate(bearEnemyPrefab, new Vector3(-5, 0, -5), Quaternion.identity);
 
         // Show the debug menu
         debugMenu.SetActive(true);
