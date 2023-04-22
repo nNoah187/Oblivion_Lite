@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     public Slider sprintBar;
     public Slider attackCooldownBar;
     public Slider healthbar;
+    public Image sprintBarFill;
+    public Image sprintBarBackground;
 
     private FirstPersonController firstPersonController;
 
@@ -36,18 +38,23 @@ public class GameManager : MonoBehaviour
     {
         firstPersonController = GameObject.Find("FirstPersonController").GetComponent<FirstPersonController>();
 
+        // Set sprint bar max value to the sprint duration from the first person controller
         sprintBar.maxValue = firstPersonController.sprintDuration;
 
-        Instantiate(bearEnemyPrefab, new Vector3(5, 0, 5), Quaternion.identity);
-        Instantiate(bearEnemyPrefab, new Vector3(-5, 0, -5), Quaternion.identity);
+        // Spawn in 2 bears
+        //Instantiate(bearEnemyPrefab, new Vector3(5, 0, 5), Quaternion.identity);
+        //Instantiate(bearEnemyPrefab, new Vector3(-5, 0, -5), Quaternion.identity);
 
+        // Show the debug menu
         debugMenu.SetActive(true);
+        // Set the difficulty to normal
         difficulty = Difficulty.normal;
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Toggle debug menu when T key is pressed
         if (Input.GetKeyDown(KeyCode.T))
         {
             if (debugEnabled)
@@ -62,6 +69,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        // Show cursor and allow cursor movement when left alt is held down
         if (Input.GetKey(KeyCode.LeftAlt))
         {
             cursorEnabled = true;

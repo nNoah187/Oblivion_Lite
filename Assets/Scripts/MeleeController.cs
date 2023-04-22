@@ -32,22 +32,26 @@ public class MeleeController : MonoBehaviour
     {
         yield return new WaitForSeconds(weaponStats.attackCooldown);
         playerControllerScript.isAttacking = false;
+        playerControllerScript.firstPersonController.enableSprint = true;
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        // Call DealDamage method from PlayerStats if the player is attacking and the weapon enters the trigger of an enemy
         if (playerControllerScript.isAttacking && other.gameObject.CompareTag("Enemy"))
         {
             playerStats.DealDamange(other.gameObject);
         }
     }
 
+    // Show the attack cooldown length on the attack cooldown bar on the HUD
     public IEnumerator UpdateAttackCooldownBar()
     {
         startedUpdatingAttackCooldownBar = true;
         float startTime = Time.time;
         float finishTime = startTime + weaponStats.attackCooldown;
 
+        // Continually increase the attack cooldown bar while the attack is still in cooldown
         while (Time.time < finishTime)
         {
             gameManagerScript.attackCooldownBar.value = Time.time - startTime;

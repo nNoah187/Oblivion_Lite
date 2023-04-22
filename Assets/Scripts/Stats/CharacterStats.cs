@@ -5,13 +5,14 @@ using UnityEngine;
 public class CharacterStats : MonoBehaviour
 {
     public int maxHealth = 100;
-    public float currentHealth {  get; private set; }
+    public float currentHealth {  get; private set; }   // Allows other class to access but not change
     public Stat damage;
     //public Stat armor;
 
     private WeaponStats weaponStats;
     private float damageDealt;
-    private GameManager gameManagerScript;
+
+    protected GameManager gameManagerScript;
 
     private void Awake()
     {
@@ -23,52 +24,51 @@ public class CharacterStats : MonoBehaviour
 
     void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.Y))
-        //{
-        //    TakeDamage(10);
-        //}
+        
     }
-
-    //public void TakeDamage()
-    //{
-    //    //damage -= armor.GetValue();
-
-    //    float damage;
-    //    damage = 
-    //    damage = Mathf.Clamp(damage, 0, int.MaxValue);
-
-    //    currentHealth -= damage;
-    //    Debug.Log("take damage");
-    //    if (currentHealth <= 0)
-    //    {
-    //        Debug.Log("bruh 1");
-    //        Die();
-    //    }
-    //}
 
     public void DealDamange(GameObject other)
     {
-        damageDealt = weaponStats.damage.GetValue() * damage.GetValue() * GetDifficultyModifier();
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            // Damage is determined by the stats of the weapon, the character's damage value, and the difficulty
+            damageDealt = weaponStats.damage.GetValue() * damage.GetValue() * GetDifficultyDamageModifier();
+            EnemyController enemyController = other.GetComponent<EnemyController>();
+            // Play take damage animation on the character hit
+            enemyController.enemyAnimator.SetTrigger("takeDamage");
+            // Take damage from hit character's health
+            other.GetComponent<CharacterStats>().currentHealth -= damageDealt;
+            // Update hit character's healthbar
+            enemyController.healthBar.value = other.GetComponent<CharacterStats>().currentHealth;
+        }
+        else if (other.gameObject.CompareTag("Player"))
+        {
+            damageDealt = damage.GetValue();
+            PlayerController playerController = other.GetComponent<PlayerController>();
+            // Play take damage animation on the character hit
+            playerController.playerAnimator.SetTrigger("takeDamage");
+            // Take damage from hit character's health
+            other.GetComponent<CharacterStats>().currentHealth -= damageDealt;
+            // Update hit character's healthbar
+            gameManagerScript.healthbar.value = other.GetComponent<CharacterStats>().currentHealth;
+        }
+        
 
-        EnemyController enemyController = other.GetComponent<EnemyController>();
-
-        enemyController.enemyAnimator.SetTrigger("takeDamage");
-        //enemyControllerScript.health -= damageDealt;
-        other.GetComponent<CharacterStats>().currentHealth -= damageDealt;
-        enemyController.healthBar.value = other.GetComponent<CharacterStats>().currentHealth;
-
+        // Call Die method if hit character's health is 0 or below
         if (other.GetComponent<CharacterStats>().currentHealth <= 0)
         {
             other.GetComponent<CharacterStats>().Die();
         }
     }
 
+    // Can be overwritten in subclasses
     public virtual void Die()
     {
         Debug.Log(transform.name + " died");
     }
 
-    public float GetDifficultyModifier()
+    // Adjusts damage dealt to enemies depending on difficulty
+    public float GetDifficultyDamageModifier()
     {
         if (gameManagerScript.difficulty == GameManager.Difficulty.easy)
         {

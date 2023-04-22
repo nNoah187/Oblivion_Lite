@@ -710,7 +710,7 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   enemyAnimator: {fileID: 0}
   maxWalkSpeed: 3
-  maxDistanceToPlayer: 4
+  minDistanceToPlayer: 3.5
   enemyRotationSpeed: 1.5
 --- !u!114 &7962199819881483723
 MonoBehaviour:
