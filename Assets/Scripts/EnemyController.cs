@@ -7,16 +7,19 @@ using UnityEngine.UI;
 public class EnemyController : MonoBehaviour
 {
     private float combatDistance = 10f;
-    private EnemyCombatState enemyCombatState;
     private GameObject player;
     private Vector3 directionToPlayer;
     private Quaternion enemyRotationToPlayer;
-    private float enemyRotationSpeed = 1f;
     private GameManager gameManagerScript;
+    private EnemyStats enemyStats;
+    private float currentWalkSpeed;
 
+    public EnemyCombatState enemyCombatState;
     public Slider healthBar;
-    public float health = 100;
     public Animator enemyAnimator;
+    public float maxWalkSpeed;
+    public float maxDistanceToPlayer;
+    public float enemyRotationSpeed;
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +28,7 @@ public class EnemyController : MonoBehaviour
         player = GameObject.Find("FirstPersonController");
         enemyAnimator = GetComponent<Animator>();
         gameManagerScript = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        enemyStats = GetComponent<EnemyStats>();
 
         healthBar = Instantiate(gameManagerScript.enemyHealthbarPrefab, new Vector3(transform.position.x, transform.position.y + 2,
             transform.position.z), Quaternion.identity);
@@ -35,21 +39,22 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (health <= 0)
-        {
-            enemyCombatState = EnemyCombatState.DEAD;
-        }
-        else if (Vector3.Distance(gameObject.transform.position, player.transform.position) <= combatDistance)
-        {
-            enemyCombatState = EnemyCombatState.COMBAT;
-        }
-        else
-        {
-            enemyCombatState = EnemyCombatState.PASSIVE;
-        }
-
         if (enemyCombatState == EnemyCombatState.COMBAT)
         {
+            if (currentWalkSpeed < maxWalkSpeed)
+            {
+                currentWalkSpeed += 0.01f;
+            }
+
+            if (Vector3.Distance(gameObject.transform.position, player.transform.position) > maxDistanceToPlayer && gameManagerScript.enemyFollowPlayer)
+            {
+                transform.Translate(Vector3.forward * currentWalkSpeed * Time.deltaTime);
+            }
+            else
+            {
+                currentWalkSpeed = 0;
+            }
+
             healthBar.transform.position = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
             healthBar.gameObject.SetActive(true);
 
@@ -62,6 +67,8 @@ public class EnemyController : MonoBehaviour
         }
         else if (enemyCombatState == EnemyCombatState.PASSIVE)
         {
+            currentWalkSpeed = 0;
+
             healthBar.gameObject.SetActive(false);
 
             enemyAnimator.SetBool("attack", false);
@@ -71,6 +78,21 @@ public class EnemyController : MonoBehaviour
             enemyAnimator.SetTrigger("die");
             healthBar.gameObject.SetActive(false);
         }
+
+        if (enemyStats.currentHealth <= 0)
+        {
+            enemyCombatState = EnemyCombatState.DEAD;
+        }
+        else if (Vector3.Distance(gameObject.transform.position, player.transform.position) <= combatDistance)
+        {
+            enemyCombatState = EnemyCombatState.COMBAT;
+        }
+        else
+        {
+            enemyCombatState = EnemyCombatState.PASSIVE;
+        }
+
+        enemyAnimator.SetFloat("walkSpeed", currentWalkSpeed);
     }
 
     public enum EnemyCombatState

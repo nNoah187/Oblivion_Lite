@@ -5,9 +5,12 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private Animator playerAnimator;
-    private float swordAttackCooldown = 0.75f;
     private FirstPersonController firstPersonController;
     private GameManager gameManagerScript;
+    private MeleeController meleeControllerScript;
+    private bool startedBlinkingSprintBar = false;
+    private PlayerStats playerStats;
+    private WeaponStats weaponStats;
 
     public bool isAttacking;
 
@@ -17,6 +20,14 @@ public class PlayerController : MonoBehaviour
         playerAnimator = GameObject.Find("Player").GetComponent<Animator>();
         firstPersonController = GetComponent<FirstPersonController>();
         gameManagerScript = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        meleeControllerScript = GameObject.Find("Weapon").GetComponentInChildren<MeleeController>();
+        playerStats = GetComponent<PlayerStats>();
+        weaponStats = GetComponentInChildren<WeaponStats>();
+
+        gameManagerScript.healthbar.maxValue = playerStats.maxHealth;
+        gameManagerScript.healthbar.value = playerStats.maxHealth;
+        gameManagerScript.attackCooldownBar.maxValue = weaponStats.attackCooldown;
+        gameManagerScript.attackCooldownBar.value = weaponStats.attackCooldown;
     }
 
     // Update is called once per frame
@@ -33,11 +44,16 @@ public class PlayerController : MonoBehaviour
             {
                 isAttacking = true;
                 playerAnimator.SetTrigger("attack");
-                StartCoroutine(resetAttack());
+                StartCoroutine(meleeControllerScript.resetAttack());
+
+                if (!meleeControllerScript.startedUpdatingAttackCooldownBar)
+                {
+                    StartCoroutine(meleeControllerScript.UpdateAttackCooldownBar());
+                }
             }
 
             // Sprint
-            if (Input.GetKey(KeyCode.LeftShift))
+            if (Input.GetKey(KeyCode.LeftShift) && !firstPersonController.isSprintCooldown)
             {
                 playerAnimator.SetBool("sprinting", true);
             }
@@ -46,12 +62,29 @@ public class PlayerController : MonoBehaviour
                 playerAnimator.SetBool("sprinting", false);
             }
         }
+
+        gameManagerScript.sprintBar.value = firstPersonController.sprintRemaining;
+
+        if (!startedBlinkingSprintBar && firstPersonController.isSprintCooldown)
+        {
+            firstPersonController.sprintRemaining = 0;
+            StartCoroutine(BlinkBar(gameManagerScript.sprintBar.gameObject, firstPersonController.sprintCooldown));
+        }
     }
 
-    // Cooldown for melee attack
-    private IEnumerator resetAttack()
+    public IEnumerator BlinkBar(GameObject obj, float duration)
     {
-        yield return new WaitForSeconds(swordAttackCooldown);
-        isAttacking = false;
+        startedBlinkingSprintBar = true;
+        float startTime = Time.time;
+
+        while (Time.time < startTime + duration)
+        {
+            obj.SetActive(false);
+            yield return new WaitForSeconds(0.5f);
+            obj.SetActive(true);
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        startedBlinkingSprintBar = false;
     }
 }

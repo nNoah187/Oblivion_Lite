@@ -619,6 +619,7 @@ GameObject:
   - component: {fileID: 6861900618242008688}
   - component: {fileID: 6861900618242008689}
   - component: {fileID: 6861900618242008692}
+  - component: {fileID: 7962199819881483723}
   m_Layer: 0
   m_Name: Bear
   m_TagString: Enemy
@@ -633,7 +634,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3550301936613421295}
-  m_LocalRotation: {x: -0, y: -0.97865236, z: -0, w: -0.20552275}
+  m_LocalRotation: {x: -0, y: -0.9786528, z: 0, w: -0.2055208}
   m_LocalPosition: {x: -3.5399756, y: 0, z: 2.2182474}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -705,9 +706,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 714547bb6a8b3fc40a9883342e2b6d3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyCombatState: 0
   healthBar: {fileID: 0}
-  health: 100
   enemyAnimator: {fileID: 0}
+  maxWalkSpeed: 3
+  maxDistanceToPlayer: 4
+  enemyRotationSpeed: 1.5
+--- !u!114 &7962199819881483723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3550301936613421295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a22a5a96234f7b48a43b39a532328fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  damage:
+    baseValue: 1
 --- !u!1 &3688843794599603062
 GameObject:
   m_ObjectHideFlags: 0

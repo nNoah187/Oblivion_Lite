@@ -10,6 +10,9 @@ public class GameManager : MonoBehaviour
     public int enemyHealth = 100;
     public GameObject bearEnemyPrefab;
     public Slider enemyHealthbarPrefab;
+    public Slider sprintBar;
+    public Slider attackCooldownBar;
+    public Slider healthbar;
 
     private FirstPersonController firstPersonController;
 
@@ -19,6 +22,7 @@ public class GameManager : MonoBehaviour
     private bool debugEnabled = true;
     public Difficulty difficulty;
     public bool cursorEnabled = false;
+    public bool enemyFollowPlayer;
 
     public enum Difficulty
     {
@@ -31,6 +35,8 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         firstPersonController = GameObject.Find("FirstPersonController").GetComponent<FirstPersonController>();
+
+        sprintBar.maxValue = firstPersonController.sprintDuration;
 
         Instantiate(bearEnemyPrefab, new Vector3(5, 0, 5), Quaternion.identity);
         Instantiate(bearEnemyPrefab, new Vector3(-5, 0, -5), Quaternion.identity);
