@@ -46,11 +46,13 @@ public class GameManager : MonoBehaviour
         {
             if (debugEnabled)
             {
-                debugMenu.SetActive(true);
+                debugMenu.SetActive(false);
+                debugEnabled = false;
             }
             else
             {
-                debugMenu.SetActive(false);
+                debugMenu.SetActive(true);
+                debugEnabled = true;
             }
         }
 
