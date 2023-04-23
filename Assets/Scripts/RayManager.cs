@@ -27,29 +27,20 @@ public class RayManager : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, maxWeaponPickupDistance))
         {
-            if (hit.collider.gameObject.CompareTag("Weapon") && hit.distance > minWeaponPickupDistance)
+            if (hit.collider.gameObject.CompareTag("Chest"))
             {
-                gameManagerScript.pickupWeaponPrompt.gameObject.SetActive(true);
+                gameManagerScript.openChestPrompt.gameObject.SetActive(true);
 
                 if (Input.GetKeyDown(KeyCode.F))
                 {
-                    playerControllerScript.playerAnimator.SetTrigger("pickup");
-
-                    Vector3 weaponGroundPosition = hit.collider.transform.position;
-                    Quaternion weaponGroundRotation = hit.collider.gameObject.transform.rotation;
-                    GameObject.Find("Weapon").transform.DetachChildren();
-                    gameManagerScript.currentWeapon.transform.position = weaponGroundPosition;
-                    gameManagerScript.transform.rotation = weaponGroundRotation;
-                    gameManagerScript.currentWeapon = hit.collider.gameObject;
-                    gameManagerScript.currentWeapon.transform.parent = GameObject.Find("Weapon").transform;
-                    gameManagerScript.currentWeapon.transform.localPosition = new Vector3(0, -0.403f, -0.552f);
-                    gameManagerScript.currentWeapon.transform.localRotation = Quaternion.Euler(new Vector3(-235.347f, 171.696f, -5.524994f));
+                    //playerControllerScript.playerAnimator.SetTrigger("pickup");
+                    gameManagerScript.chest.GetComponent<Animator>().SetTrigger("open");
                 }
             }
         }
         else
         {
-            gameManagerScript.pickupWeaponPrompt.gameObject.SetActive(false);
+            gameManagerScript.openChestPrompt.gameObject.SetActive(false);
         }
     }
 }

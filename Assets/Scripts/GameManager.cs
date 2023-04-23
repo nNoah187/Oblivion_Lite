@@ -15,12 +15,13 @@ public class GameManager : MonoBehaviour
     public Slider healthbar;
     public Image sprintBarFill;
     public Image sprintBarBackground;
-    public TextMeshProUGUI pickupWeaponPrompt;
+    public TextMeshProUGUI openChestPrompt;
     public GameObject currentWeapon;
     public GameObject cutlassPrefab;
     public GameObject weaponPosition;
     public MeleeController meleeControllerScript;
     public WeaponStats currentWeaponStats;
+    public GameObject chest;
 
     private FirstPersonController firstPersonController;
 
