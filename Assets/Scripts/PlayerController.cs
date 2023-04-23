@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
         {
             // Forward and horizontal movement
             playerAnimator.SetFloat("forwardSpeed", Input.GetAxis("Vertical"));
-            playerAnimator.SetFloat("horizontalSpeed", Input.GetAxis("Horizontal"));
+            playerAnimator.SetFloat("horizontalSpeed", Input.GetAxis("Horizontal") * 0.75f);
 
             // Swing weapon if LMB is clicked and the player is not already attacking
             if (Input.GetMouseButtonDown(0) && !isAttacking)

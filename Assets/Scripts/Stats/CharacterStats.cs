@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 public class CharacterStats : MonoBehaviour
@@ -9,14 +10,12 @@ public class CharacterStats : MonoBehaviour
     public Stat damage;
     //public Stat armor;
 
-    private WeaponStats weaponStats;
     private float damageDealt;
 
     protected GameManager gameManagerScript;
 
     private void Awake()
     {
-        weaponStats = GameObject.Find("Weapon").GetComponentInChildren<WeaponStats>();
         gameManagerScript = GameObject.Find("Game Manager").GetComponent<GameManager>();
 
         currentHealth = maxHealth;
@@ -31,8 +30,9 @@ public class CharacterStats : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
+            gameManagerScript.meleeControllerScript.thisAttackRegistered = true;
             // Damage is determined by the stats of the weapon, the character's damage value, and the difficulty
-            damageDealt = weaponStats.damage.GetValue() * damage.GetValue() * GetDifficultyDamageModifier();
+            damageDealt = gameManagerScript.currentWeaponStats.damage.GetValue() * damage.GetValue() * GetDifficultyDamageModifier();
             EnemyController enemyController = other.GetComponent<EnemyController>();
             // Play take damage animation on the character hit
             enemyController.enemyAnimator.SetTrigger("takeDamage");
@@ -64,7 +64,7 @@ public class CharacterStats : MonoBehaviour
     // Can be overwritten in subclasses
     public virtual void Die()
     {
-        Debug.Log(transform.name + " died");
+        UnityEngine.Debug.Log(transform.name + " died");
     }
 
     // Adjusts damage dealt to enemies depending on difficulty

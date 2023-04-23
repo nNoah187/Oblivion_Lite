@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class EnemyController : MonoBehaviour
 {
-    private float combatDistance = 10f;
     private GameObject player;
     private Vector3 directionToPlayer;
     private Quaternion enemyRotationToPlayer;
@@ -14,6 +13,7 @@ public class EnemyController : MonoBehaviour
     private EnemyStats enemyStats;
     private float currentWalkSpeed;
 
+    public float combatDistance;
     public EnemyCombatState enemyCombatState;
     public Slider healthBar;
     public Animator enemyAnimator;
@@ -47,6 +47,8 @@ public class EnemyController : MonoBehaviour
         // Enemy comabt state
         if (enemyCombatState == EnemyCombatState.COMBAT)
         {
+            enemyAnimator.SetBool("passive", false);
+
             // Gradually increase walk speed while in combat state
             if (currentWalkSpeed < maxWalkSpeed)
             {
@@ -76,6 +78,8 @@ public class EnemyController : MonoBehaviour
         // Enemy passive state
         else if (enemyCombatState == EnemyCombatState.PASSIVE)
         {
+            enemyAnimator.SetBool("passive", true);
+
             // The enemy will not walk if in passive state
             currentWalkSpeed = 0;
 

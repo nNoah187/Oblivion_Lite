@@ -748,11 +748,11 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3550301936613421295}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.1873243, y: 1.491361, z: 2.4900436}
-  m_Center: {x: 0.009139093, y: 0.7277456, z: 0.23527312}
+  m_Size: {x: 2.55961, y: 1.8712747, z: 3.652779}
+  m_Center: {x: -0.007822154, y: 0.91770244, z: 0.29181343}
 --- !u!114 &6861900618242008692
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -765,11 +765,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 714547bb6a8b3fc40a9883342e2b6d3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  combatDistance: 20
   enemyCombatState: 0
   healthBar: {fileID: 0}
   enemyAnimator: {fileID: 0}
   maxWalkSpeed: 3
-  minDistanceToPlayer: 3.5
+  minDistanceToPlayer: 4.5
   enemyRotationSpeed: 1.5
   dealtDamageForThisAttack: 0
 --- !u!114 &7962199819881483723

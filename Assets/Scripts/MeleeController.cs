@@ -10,6 +10,7 @@ public class MeleeController : MonoBehaviour
     private EnemyController enemyControllerScript;
     private PlayerStats playerStats;
 
+    public bool thisAttackRegistered = false;
     public bool startedUpdatingAttackCooldownBar = false;
 
     // Start is called before the first frame update
@@ -33,12 +34,13 @@ public class MeleeController : MonoBehaviour
         yield return new WaitForSeconds(weaponStats.attackCooldown);
         playerControllerScript.isAttacking = false;
         playerControllerScript.firstPersonController.enableSprint = true;
+        thisAttackRegistered = false;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         // Call DealDamage method from PlayerStats if the player is attacking and the weapon enters the trigger of an enemy
-        if (playerControllerScript.isAttacking && other.gameObject.CompareTag("Enemy"))
+        if (playerControllerScript.isAttacking && other.gameObject.CompareTag("Enemy") && !thisAttackRegistered)
         {
             playerStats.DealDamange(other.gameObject);
         }

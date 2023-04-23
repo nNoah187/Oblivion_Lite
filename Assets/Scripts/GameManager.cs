@@ -15,6 +15,12 @@ public class GameManager : MonoBehaviour
     public Slider healthbar;
     public Image sprintBarFill;
     public Image sprintBarBackground;
+    public TextMeshProUGUI pickupWeaponPrompt;
+    public GameObject currentWeapon;
+    public GameObject cutlassPrefab;
+    public GameObject weaponPosition;
+    public MeleeController meleeControllerScript;
+    public WeaponStats currentWeaponStats;
 
     private FirstPersonController firstPersonController;
 
@@ -44,6 +50,14 @@ public class GameManager : MonoBehaviour
         // Spawn in 2 bears
         Instantiate(bearEnemyPrefab, new Vector3(5, 0, 5), Quaternion.identity);
         Instantiate(bearEnemyPrefab, new Vector3(-5, 0, -5), Quaternion.identity);
+
+        currentWeapon = Instantiate(cutlassPrefab);
+        currentWeapon.transform.parent = GameObject.Find("Weapon").transform;
+        currentWeapon.transform.localPosition = Vector3.zero;
+        currentWeapon.transform.localRotation = Quaternion.identity;
+
+        meleeControllerScript = currentWeapon.GetComponent<MeleeController>();
+        currentWeaponStats = currentWeapon.GetComponent<WeaponStats>();
 
         // Show the debug menu
         debugMenu.SetActive(true);
