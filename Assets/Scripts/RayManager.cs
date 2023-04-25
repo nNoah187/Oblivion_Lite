@@ -33,14 +33,22 @@ public class RayManager : MonoBehaviour
 
                 if (Input.GetKeyDown(KeyCode.F))
                 {
-                    //playerControllerScript.playerAnimator.SetTrigger("pickup");
-                    gameManagerScript.chest.GetComponent<Animator>().SetTrigger("open");
+                    if (hit.collider.gameObject.GetComponent<ChestController>().chestState == ChestController.ChestState.UNOPENED)
+                    {
+                        hit.collider.gameObject.GetComponent<ChestController>().chestState = ChestController.ChestState.OPENED;
+                        gameManagerScript.openChestPrompt.gameObject.SetActive(false);
+                        hit.collider.gameObject.GetComponent<Animator>().SetTrigger("open");
+                        StartCoroutine(gameManagerScript.WaitForChestAnimation());
+                    }
+
+                    gameManagerScript.OpenChest(hit.collider.gameObject);
                 }
             }
         }
         else
         {
             gameManagerScript.openChestPrompt.gameObject.SetActive(false);
+            gameManagerScript.gearAcquiredPrompt.SetActive(true);
         }
     }
 }

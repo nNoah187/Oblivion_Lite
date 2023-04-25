@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
     public MeleeController meleeControllerScript;
     public WeaponStats currentWeaponStats;
     public GameObject chest;
+    public GameObject gearAcquiredPrompt;
+    public GameObject chestPrefab;
 
     private FirstPersonController firstPersonController;
 
@@ -52,6 +54,8 @@ public class GameManager : MonoBehaviour
         Instantiate(bearEnemyPrefab, new Vector3(5, 0, 5), Quaternion.identity);
         Instantiate(bearEnemyPrefab, new Vector3(-5, 0, -5), Quaternion.identity);
 
+        Instantiate(chestPrefab, new Vector3(0, 0, 5), chestPrefab.transform.rotation);
+
         currentWeapon = Instantiate(cutlassPrefab);
         currentWeapon.transform.parent = GameObject.Find("Weapon").transform;
         currentWeapon.transform.localPosition = Vector3.zero;
@@ -59,6 +63,8 @@ public class GameManager : MonoBehaviour
 
         meleeControllerScript = currentWeapon.GetComponent<MeleeController>();
         currentWeaponStats = currentWeapon.GetComponent<WeaponStats>();
+
+        gearAcquiredPrompt.SetActive(false);
 
         // Show the debug menu
         debugMenu.SetActive(true);
@@ -99,5 +105,16 @@ public class GameManager : MonoBehaviour
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
         }
+    }
+
+    public void OpenChest(GameObject chest)
+    {
+        
+    }
+
+    public IEnumerator WaitForChestAnimation()
+    {
+        yield return new WaitForSeconds(2.5f);
+        gearAcquiredPrompt.SetActive(true);
     }
 }
