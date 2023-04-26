@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // If the cursor is not enabled (in gameplay)
-        if (!gameManagerScript.cursorEnabled)
+        if (gameManagerScript.gameState == GameManager.GameState.GAMEPLAY && !gameManagerScript.cursorEnabled)
         {
             // Forward and horizontal movement
             playerAnimator.SetFloat("forwardSpeed", Input.GetAxis("Vertical"));
@@ -78,21 +78,21 @@ public class PlayerController : MonoBehaviour
                 playerAnimator.SetBool("sprinting", false);
                 firstPersonController.isSprintCooldown = true;
             }
-        }
 
-        // Continually update the sprint bar on the HUD with the amount of sprint remaining before cooldown
-        gameManagerScript.sprintBar.value = firstPersonController.sprintRemaining;
+            // Continually update the sprint bar on the HUD with the amount of sprint remaining before cooldown
+            gameManagerScript.sprintBar.value = firstPersonController.sprintRemaining;
 
-        // Start blinking the sprint bar on the HUD if it hasn't started already and the player is in a sprint cooldown
-        if (!startedBlinkingSprintBar && firstPersonController.isSprintCooldown)
-        {
-            StartCoroutine(ChangeSprintBarColor(firstPersonController.sprintCooldown));
-        }
+            // Start blinking the sprint bar on the HUD if it hasn't started already and the player is in a sprint cooldown
+            if (!startedBlinkingSprintBar && firstPersonController.isSprintCooldown)
+            {
+                StartCoroutine(ChangeSprintBarColor(firstPersonController.sprintCooldown));
+            }
 
-        // Play player death animation if player health is 0 or below
-        if (playerStats.currentHealth <= 0)
-        {
-            playerAnimator.SetTrigger("die");
+            // Play player death animation if player health is 0 or below
+            if (playerStats.currentHealth <= 0)
+            {
+                playerAnimator.SetTrigger("die");
+            }
         }
     }
 

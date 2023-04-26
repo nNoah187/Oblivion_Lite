@@ -18,6 +18,12 @@ public class ButtonManager : MonoBehaviour
         
     }
 
+    public void ExitMenu(GameObject uiPrompt)
+    {
+        uiPrompt.SetActive(false);
+        gameManagerScript.OnMenuExit();
+    }
+
     public void EnableEasyDifficulty()
     {
         PlayerPrefs.SetInt("difficulty", 0);

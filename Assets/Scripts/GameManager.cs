@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
     public GameObject chest;
     public GameObject gearAcquiredPrompt;
     public GameObject chestPrefab;
+    public GameState gameState;
+    public bool openingChest = false;
 
     private FirstPersonController firstPersonController;
 
@@ -40,6 +42,12 @@ public class GameManager : MonoBehaviour
         easy,
         normal,
         hard
+    }
+
+    public enum GameState
+    {
+        GAMEPLAY,
+        MENU
     }
 
     // Start is called before the first frame update
@@ -65,6 +73,7 @@ public class GameManager : MonoBehaviour
         currentWeaponStats = currentWeapon.GetComponent<WeaponStats>();
 
         gearAcquiredPrompt.SetActive(false);
+        gameState = GameState.GAMEPLAY;
 
         // Show the debug menu
         debugMenu.SetActive(true);
@@ -90,31 +99,58 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        // Show cursor and allow cursor movement when left alt is held down
-        if (Input.GetKey(KeyCode.LeftAlt))
+        // In gameplay
+        if (gameState == GameState.GAMEPLAY)
         {
-            cursorEnabled = true;
-            firstPersonController.enabled = false;
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+            // Show cursor and allow cursor movement when left alt is held down
+            if (Input.GetKey(KeyCode.LeftAlt))
+            {
+                cursorEnabled = true;
+                firstPersonController.enabled = false;
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+            }
+            else
+            {
+                cursorEnabled = false;
+                firstPersonController.enabled = true;
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+            }
         }
-        else
-        {
-            cursorEnabled = false;
-            firstPersonController.enabled = true;
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-        }
+        
+    }
+
+    public void OnMenuOpen()
+    {
+        Time.timeScale = 0;
+        gameState = GameState.MENU;
+        firstPersonController.enabled = false;
+        cursorEnabled = true;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+    }
+
+    public void OnMenuExit()
+    {
+        Time.timeScale = 1;
+        gameState = GameState.GAMEPLAY;
+        firstPersonController.enabled = true;
+        cursorEnabled = false;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void OpenChest(GameObject chest)
     {
-        
+        gearAcquiredPrompt.SetActive(true);
+        OnMenuOpen();
     }
 
     public IEnumerator WaitForChestAnimation()
     {
         yield return new WaitForSeconds(2.5f);
-        gearAcquiredPrompt.SetActive(true);
+        openingChest = false;
+        OpenChest(chest);
     }
 }

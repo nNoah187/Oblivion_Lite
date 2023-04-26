@@ -22,6 +22,13 @@ public class EnemyController : MonoBehaviour
     public float enemyRotationSpeed;
     public bool dealtDamageForThisAttack = false;
 
+    public enum EnemyCombatState
+    {
+        PASSIVE,
+        COMBAT,
+        DEAD
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -131,12 +138,5 @@ public class EnemyController : MonoBehaviour
             }
             yield return null;
         }
-    }
-
-    public enum EnemyCombatState
-    {
-        PASSIVE,
-        COMBAT,
-        DEAD
     }
 }
