@@ -11,9 +11,16 @@ public class Stat
 {
     [SerializeField]
     private float baseValue;
+    [SerializeField]
+    private String name;
 
     public float GetValue()
     {
         return baseValue;
+    }
+
+    public String GetName()
+    {
+        return name;
     }
 }

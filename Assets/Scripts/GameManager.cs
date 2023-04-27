@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -26,6 +26,12 @@ public class GameManager : MonoBehaviour
     public GameObject chestPrefab;
     public GameState gameState;
     public bool openingChest = false;
+    public GameObject knightHelmetPrefab;
+    public Image gearImage;
+    public TextMeshProUGUI gearNameText;
+    public TextMeshProUGUI stat1NewStat;
+    public TextMeshProUGUI stat1OldStat;
+    public bool wearingDefaultArmor = true;
 
     private FirstPersonController firstPersonController;
 
@@ -143,6 +149,10 @@ public class GameManager : MonoBehaviour
 
     public void OpenChest(GameObject chest)
     {
+        gearImage.sprite = knightHelmetPrefab.GetComponent<Image>().sprite;
+        gearNameText.text = knightHelmetPrefab.name;
+        stat1OldStat.text = knightHelmetPrefab.GetComponent<ArmorStats>().protection.GetName() + ": 1→";
+        stat1NewStat.text = knightHelmetPrefab.GetComponent<ArmorStats>().protection.GetValue() + "↑";
         gearAcquiredPrompt.SetActive(true);
         OnMenuOpen();
     }
