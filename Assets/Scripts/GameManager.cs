@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,7 +22,6 @@ public class GameManager : MonoBehaviour
     public GameObject weaponPosition;
     public MeleeController meleeControllerScript;
     public WeaponStats currentWeaponStats;
-    public GameObject chest;
     public GameObject gearAcquiredPrompt;
     public GameObject chestPrefab;
     public GameState gameState;
@@ -29,11 +29,15 @@ public class GameManager : MonoBehaviour
     public GameObject knightHelmetPrefab;
     public Image gearImage;
     public TextMeshProUGUI gearNameText;
-    public TextMeshProUGUI stat1NewStat;
-    public TextMeshProUGUI stat1OldStat;
+    public TextMeshProUGUI valueNewStatText;
+    public TextMeshProUGUI valueOldStatText;
+    public TextMeshProUGUI levelNewStatText;
+    public TextMeshProUGUI levelOldStatText;
     public bool wearingDefaultArmor = true;
+    public GameObject[] gearPrefabArray;
 
     private FirstPersonController firstPersonController;
+    private PlayerStats playerStats;
 
     // Debug components
     public GameObject debugMenu;
@@ -60,6 +64,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         firstPersonController = GameObject.Find("FirstPersonController").GetComponent<FirstPersonController>();
+        playerStats = firstPersonController.GetComponent<PlayerStats>();
 
         // Set sprint bar max value to the sprint duration from the first person controller
         sprintBar.maxValue = firstPersonController.sprintDuration;
@@ -69,6 +74,7 @@ public class GameManager : MonoBehaviour
         Instantiate(bearEnemyPrefab, new Vector3(-5, 0, -5), Quaternion.identity);
 
         Instantiate(chestPrefab, new Vector3(0, 0, 5), chestPrefab.transform.rotation);
+        Instantiate(chestPrefab, new Vector3(-5, 0, 5), chestPrefab.transform.rotation);
 
         currentWeapon = Instantiate(cutlassPrefab);
         currentWeapon.transform.parent = GameObject.Find("Weapon").transform;
@@ -147,19 +153,78 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
+    /*
+     * Bug: chest won't keep stats of weapon when reopening
+     * 
+     */
     public void OpenChest(GameObject chest)
     {
-        gearImage.sprite = knightHelmetPrefab.GetComponent<Image>().sprite;
-        gearNameText.text = knightHelmetPrefab.name;
-        stat1OldStat.text = knightHelmetPrefab.GetComponent<ArmorStats>().protection.GetName() + ": 1→";
-        stat1NewStat.text = knightHelmetPrefab.GetComponent<ArmorStats>().protection.GetValue() + "↑";
+        GameObject gearToDisplay;
+        ChestController chestController = chest.GetComponent<ChestController>();
+        int newGearLevel;
+
+        if (chestController.gearContained == null)
+        {
+            gearToDisplay = gearPrefabArray[GenerateRandomGear()];
+            newGearLevel = (int)(playerStats.level.GetValue() + 1);
+            chestController.gearContained = gearToDisplay;
+            
+        }
+        else
+        {
+            gearToDisplay = chestController.gearContained;
+            newGearLevel = gearToDisplay.GetComponent<ArmorStats>().level;
+        }
+
+        gearImage.sprite = gearToDisplay.GetComponent<Image>().sprite;
+        gearNameText.text = gearToDisplay.name;
+
+        if (gearToDisplay.CompareTag("Weapon"))
+        {
+
+        }
+        else if (gearToDisplay.CompareTag("Helmet") || gearToDisplay.CompareTag("Chest"))
+        {
+            int levelNewStat = newGearLevel;
+            int levelOldStat = playerStats.currentChest.GetComponent<ArmorStats>().level;
+            float valueNewStat = gearToDisplay.GetComponent<ArmorStats>().CalculateTotalGearValue(gearToDisplay.GetComponent<ArmorStats>().protection, levelNewStat);
+            float valueOldStat = playerStats.currentHelmet.GetComponent<ArmorStats>().CalculateTotalGearValue(gearToDisplay.GetComponent<ArmorStats>().protection, levelOldStat);
+
+            if (gearToDisplay.CompareTag("Helmet"))
+            {
+                valueOldStatText.text = playerStats.currentHelmet.GetComponent<ArmorStats>().protection.GetName() + ": " +
+                    valueOldStat +"→";
+                levelOldStatText.text = "Level: " + levelOldStat + "→";
+            }
+            else if (gearToDisplay.CompareTag("Chest"))
+            {
+                valueOldStatText.text = playerStats.currentChest.GetComponent<ArmorStats>().protection.GetName() + ": " +
+                    valueOldStat + "→";
+                levelOldStatText.text = "Level: " + levelOldStat + "→";
+            }
+
+            valueNewStatText.text = valueNewStat + gearToDisplay.GetComponent<GearStats>().GetGearImprovementArrow(valueOldStat, valueNewStat);
+            valueNewStatText.color = gearToDisplay.GetComponent<GearStats>().GetGearImprovementColor((int)valueOldStat, (int)valueNewStat);
+
+            levelNewStatText.text = levelNewStat +
+                gearToDisplay.GetComponent<GearStats>().GetGearImprovementArrow(levelOldStat, levelNewStat);
+            levelNewStatText.color = gearToDisplay.GetComponent<GearStats>().GetGearImprovementColor(levelOldStat, levelNewStat);
+        }
         gearAcquiredPrompt.SetActive(true);
         OnMenuOpen();
     }
 
-    public IEnumerator WaitForChestAnimation()
+    public int GenerateRandomGear()
     {
-        yield return new WaitForSeconds(2.5f);
+        System.Random random = new System.Random();
+        int gearArrayIndex = random.Next(0, gearPrefabArray.Length);
+
+        return gearArrayIndex;
+    }
+
+    public IEnumerator WaitForChestAnimation(GameObject chest)
+    {
+        yield return new WaitForSeconds(1.5f);
         openingChest = false;
         OpenChest(chest);
     }

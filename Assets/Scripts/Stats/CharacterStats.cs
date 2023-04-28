@@ -8,6 +8,7 @@ public class CharacterStats : MonoBehaviour
     public int maxHealth = 100;
     public float currentHealth {  get; private set; }   // Allows other class to access but not change
     public Stat damage;
+    public Stat level;
     //public Stat armor;
 
     private float damageDealt;

@@ -41,7 +41,7 @@ public class RayManager : MonoBehaviour
                             hit.collider.gameObject.GetComponent<ChestController>().chestState = ChestController.ChestState.OPENED;
                             gameManagerScript.openChestPrompt.gameObject.SetActive(false);
                             hit.collider.gameObject.GetComponent<Animator>().SetTrigger("open");
-                            StartCoroutine(gameManagerScript.WaitForChestAnimation());
+                            StartCoroutine(gameManagerScript.WaitForChestAnimation(hit.collider.gameObject));
                         }
                         else if (hit.collider.gameObject.GetComponent<ChestController>().chestState == ChestController.ChestState.OPENED)
                         {
