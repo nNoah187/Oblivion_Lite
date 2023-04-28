@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     public Image sprintBarBackground;
     public TextMeshProUGUI openChestPrompt;
     public GameObject currentWeapon;
-    public GameObject cutlassPrefab;
+    public GameObject weaponSpawnPrefab;
     public GameObject weaponPosition;
     public MeleeController meleeControllerScript;
     public WeaponStats currentWeaponStats;
@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
     public GameObject currentChestBeingOpened;
     public GameObject defaultHelmetPrefab;
     public GameObject defaultChestplatePrefab;
-
+    public int currentGearPrefabArrayIndex = -1;
 
     private FirstPersonController firstPersonController;
     private PlayerStats playerStats;
@@ -96,11 +96,10 @@ public class GameManager : MonoBehaviour
         Instantiate(chestPrefab, new Vector3(0, 0, 5), chestPrefab.transform.rotation);
         Instantiate(chestPrefab, new Vector3(-5, 0, 5), chestPrefab.transform.rotation);
 
-        currentWeapon = Instantiate(cutlassPrefab);
-        //currentWeapon.transform.parent = GameObject.Find("Weapon").transform;
+        currentWeapon = Instantiate(weaponSpawnPrefab);
         currentWeapon.transform.SetParent(GameObject.Find("Weapon").transform);
-        currentWeapon.transform.localPosition = Vector3.zero;
-        currentWeapon.transform.localRotation = Quaternion.identity;
+        currentWeapon.transform.localPosition = weaponSpawnPrefab.transform.position;
+        currentWeapon.transform.localRotation = weaponSpawnPrefab.transform.rotation;
 
         meleeControllerScript = currentWeapon.GetComponent<MeleeController>();
         currentWeaponStats = currentWeapon.GetComponent<WeaponStats>();
@@ -205,7 +204,7 @@ public class GameManager : MonoBehaviour
             // Get random piece of gear from array of prefabs
             gearToDisplay = gearPrefabArray[GenerateRandomGear()];
             // Spawn in the piece of gear
-            gearToDisplay = Instantiate(gearToDisplay, Vector3.zero, Quaternion.identity);
+            gearToDisplay = Instantiate(gearToDisplay, gearToDisplay.transform.position, gearToDisplay.transform.rotation);
             // Make the gear invisible
             gearToDisplay.SetActive(false);
             // Set the parent of the gear to the chest it is contained in
@@ -311,11 +310,16 @@ public class GameManager : MonoBehaviour
             chestController.gearContained = playerToChestGear;
             playerStats.currentChest = chestToPlayerGear;
 
+            playerToChestGear.SetActive(false);
             playerToChestGear.transform.SetParent(currentChestBeingOpened.transform);
             chestToPlayerGear.transform.SetParent(GameObject.Find("Chestplate").gameObject.transform);
 
-            Debug.Log("current chest level: " + playerStats.currentChest.GetComponent<ArmorStats>().level);
-            Debug.Log("current chest prot: " + playerStats.currentChest.GetComponent<ArmorStats>().protection.GetValue());
+            if (currentGearPrefabArrayIndex > -1)
+            {
+                chestToPlayerGear.transform.localPosition = gearPrefabArray[currentGearPrefabArrayIndex].transform.position;
+                chestToPlayerGear.transform.localRotation = gearPrefabArray[currentGearPrefabArrayIndex].transform.rotation;
+                chestToPlayerGear.SetActive(true);
+            }
         }
         else if (chestToPlayerGear.CompareTag("Weapon")) {
 
@@ -329,6 +333,7 @@ public class GameManager : MonoBehaviour
         System.Random random = new System.Random();
         int gearArrayIndex = random.Next(0, gearPrefabArray.Length);
 
+        currentGearPrefabArrayIndex = gearArrayIndex;
         return gearArrayIndex;
     }
 

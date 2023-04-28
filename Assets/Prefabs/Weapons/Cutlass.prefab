@@ -145,4 +145,4 @@ MonoBehaviour:
   attackCooldown: 0.5
   damage:
     baseValue: 10
-    name: 
+    name: Damage
