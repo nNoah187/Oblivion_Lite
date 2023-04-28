@@ -2220,7 +2220,7 @@ GameObject:
   - component: {fileID: 4364774178072547933}
   m_Layer: 0
   m_Name: Knight Chest
-  m_TagString: Chest
+  m_TagString: Chestplate
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2259,7 +2259,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffa6367f83354f546ab50aaa9a227d1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  level: 0
+  level: 1
   protection:
     baseValue: 3
     name: Protection

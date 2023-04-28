@@ -42,7 +42,8 @@ public class EnemyController : MonoBehaviour
         healthBar = Instantiate(gameManagerScript.enemyHealthbarPrefab, new Vector3(transform.position.x, transform.position.y + 2,
             transform.position.z), Quaternion.identity);
         healthBar.gameObject.SetActive(false);
-        healthBar.transform.parent = GameObject.Find("World Canvas").transform;
+        //healthBar.transform.parent = GameObject.Find("World Canvas").transform;
+        healthBar.transform.SetParent(GameObject.Find("World Canvas").transform);
 
         // Start enemy attack coroutine
         StartCoroutine(Attack());

@@ -35,9 +35,12 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI levelOldStatText;
     public bool wearingDefaultArmor = true;
     public GameObject[] gearPrefabArray;
+    public GameObject currentChestBeingOpened;
+
 
     private FirstPersonController firstPersonController;
     private PlayerStats playerStats;
+    private ButtonManager buttonManager;
 
     // Debug components
     public GameObject debugMenu;
@@ -46,6 +49,21 @@ public class GameManager : MonoBehaviour
     public Difficulty difficulty;
     public bool cursorEnabled = false;
     public bool enemyFollowPlayer;
+
+    public TextMeshProUGUI debugPlayerLevelText;
+    public TextMeshProUGUI debugTotalArmorOutputWithCurrentArmorText;
+    public TextMeshProUGUI debubTotalArmorOutputWithDefaultArmorText;
+    public TextMeshProUGUI debugChestplateLevelText;
+    public TextMeshProUGUI debugChestplateProtectionText;
+    public TextMeshProUGUI debugHelmetLevelText;
+    public TextMeshProUGUI debugHelmetProtectionText;
+    public TextMeshProUGUI debugTotalProtectionText;
+    public TextMeshProUGUI debugTotalDamageOutputWithCurrentWeaponText;
+    public TextMeshProUGUI debugTotalDamageOutputWithDefaultWeaponText;
+    public TextMeshProUGUI debugWeaponLevelText;
+    public TextMeshProUGUI debugWeaponDamageText;
+    public TextMeshProUGUI debugWeaponAttackCooldownSecondsText;
+    public TextMeshProUGUI debugDifficultyGearValueMultiplier;
 
     public enum Difficulty
     {
@@ -65,6 +83,7 @@ public class GameManager : MonoBehaviour
     {
         firstPersonController = GameObject.Find("FirstPersonController").GetComponent<FirstPersonController>();
         playerStats = firstPersonController.GetComponent<PlayerStats>();
+        buttonManager = GameObject.Find("Button Manager").GetComponent<ButtonManager>();
 
         // Set sprint bar max value to the sprint duration from the first person controller
         sprintBar.maxValue = firstPersonController.sprintDuration;
@@ -77,7 +96,8 @@ public class GameManager : MonoBehaviour
         Instantiate(chestPrefab, new Vector3(-5, 0, 5), chestPrefab.transform.rotation);
 
         currentWeapon = Instantiate(cutlassPrefab);
-        currentWeapon.transform.parent = GameObject.Find("Weapon").transform;
+        //currentWeapon.transform.parent = GameObject.Find("Weapon").transform;
+        currentWeapon.transform.SetParent(GameObject.Find("Weapon").transform);
         currentWeapon.transform.localPosition = Vector3.zero;
         currentWeapon.transform.localRotation = Quaternion.identity;
 
@@ -133,6 +153,7 @@ public class GameManager : MonoBehaviour
         
     }
 
+    // When opening a menu
     public void OnMenuOpen()
     {
         Time.timeScale = 0;
@@ -143,6 +164,7 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
     }
 
+    // When exiting a menu
     public void OnMenuExit()
     {
         Time.timeScale = 1;
@@ -153,65 +175,137 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    /*
-     * Bug: chest won't keep stats of weapon when reopening
-     * 
-     */
+    // When opening a chest
     public void OpenChest(GameObject chest)
     {
+        currentChestBeingOpened = chest;
         GameObject gearToDisplay;
         ChestController chestController = chest.GetComponent<ChestController>();
         int newGearLevel;
 
+        // If there's no gear already in the chest, generate a new gear item
         if (chestController.gearContained == null)
         {
+            // Get random piece of gear from array of prefabs
             gearToDisplay = gearPrefabArray[GenerateRandomGear()];
+            // Spawn in the piece of gear
+            gearToDisplay = Instantiate(gearToDisplay, Vector3.zero, Quaternion.identity);
+            // Make the gear invisible
+            gearToDisplay.SetActive(false);
+            // Set the parent of the gear to the chest it is contained in
+            //gearToDisplay.transform.parent = chest.transform;
+            gearToDisplay.transform.SetParent(chest.transform);
+
+            // The gear level of the gear is the player's level + 1
             newGearLevel = (int)(playerStats.level.GetValue() + 1);
+            gearToDisplay.GetComponent<ArmorStats>().level = newGearLevel;
+            // Make the chest contain the new gear
             chestController.gearContained = gearToDisplay;
-            
+
+            Debug.Log("level: " + gearToDisplay.GetComponent<ArmorStats>().level);
+            Debug.Log("protection: " + gearToDisplay.GetComponent<ArmorStats>().protection.GetValue());
         }
+        // Otherwise, show the gear that's already in the chest
         else
         {
             gearToDisplay = chestController.gearContained;
             newGearLevel = gearToDisplay.GetComponent<ArmorStats>().level;
+
+            Debug.Log("level: " + gearToDisplay.GetComponent<ArmorStats>().level);
+            Debug.Log("protection: " + gearToDisplay.GetComponent<ArmorStats>().protection.GetValue());
         }
 
+        // Set the UI image and text to the gear's image and name
         gearImage.sprite = gearToDisplay.GetComponent<Image>().sprite;
         gearNameText.text = gearToDisplay.name;
 
+        // Displaying weapon
         if (gearToDisplay.CompareTag("Weapon"))
         {
 
         }
-        else if (gearToDisplay.CompareTag("Helmet") || gearToDisplay.CompareTag("Chest"))
+        // Displaying armor
+        else if (gearToDisplay.CompareTag("Helmet") || gearToDisplay.CompareTag("Chestplate"))
         {
+            // Set levels and values of the new gear and old gear
             int levelNewStat = newGearLevel;
-            int levelOldStat = playerStats.currentChest.GetComponent<ArmorStats>().level;
-            float valueNewStat = gearToDisplay.GetComponent<ArmorStats>().CalculateTotalGearValue(gearToDisplay.GetComponent<ArmorStats>().protection, levelNewStat);
-            float valueOldStat = playerStats.currentHelmet.GetComponent<ArmorStats>().CalculateTotalGearValue(gearToDisplay.GetComponent<ArmorStats>().protection, levelOldStat);
+            int levelOldStat = -1;
+            float valueNewStat = gearToDisplay.GetComponent<ArmorStats>().protection.GetValue();
+            //float valueNewStat = gearToDisplay.GetComponent<ArmorStats>().CalculateTotalGearValue(gearToDisplay.GetComponent<ArmorStats>().protection, levelNewStat);
+            float valueOldStat = -1;
 
+            // If the gear item in the chest is a helmet, get the player's current helmet for comparison
             if (gearToDisplay.CompareTag("Helmet"))
             {
+                levelOldStat = playerStats.currentHelmet.GetComponent<ArmorStats>().level;
+                //valueOldStat = playerStats.currentHelmet.GetComponent<ArmorStats>().CalculateTotalGearValue(gearToDisplay.GetComponent<ArmorStats>().protection, levelOldStat);
+                valueOldStat = playerStats.currentHelmet.GetComponent<ArmorStats>().protection.GetValue();
+
                 valueOldStatText.text = playerStats.currentHelmet.GetComponent<ArmorStats>().protection.GetName() + ": " +
                     valueOldStat +"→";
                 levelOldStatText.text = "Level: " + levelOldStat + "→";
             }
-            else if (gearToDisplay.CompareTag("Chest"))
+            // Or if the gear item in the chest is a chest, get the player's current helmet for comparison
+            else if (gearToDisplay.CompareTag("Chestplate"))
             {
+                levelOldStat = playerStats.currentChest.GetComponent<ArmorStats>().level;
+                //valueOldStat = playerStats.currentChest.GetComponent<ArmorStats>().CalculateTotalGearValue(gearToDisplay.GetComponent<ArmorStats>().protection, levelOldStat);
+                valueOldStat = playerStats.currentChest.GetComponent<ArmorStats>().protection.GetValue();
+
                 valueOldStatText.text = playerStats.currentChest.GetComponent<ArmorStats>().protection.GetName() + ": " +
                     valueOldStat + "→";
                 levelOldStatText.text = "Level: " + levelOldStat + "→";
             }
 
+            // Show the values of the new gear with the corresponding improvement color and up/down arrow for the stats
             valueNewStatText.text = valueNewStat + gearToDisplay.GetComponent<GearStats>().GetGearImprovementArrow(valueOldStat, valueNewStat);
             valueNewStatText.color = gearToDisplay.GetComponent<GearStats>().GetGearImprovementColor((int)valueOldStat, (int)valueNewStat);
-
             levelNewStatText.text = levelNewStat +
                 gearToDisplay.GetComponent<GearStats>().GetGearImprovementArrow(levelOldStat, levelNewStat);
             levelNewStatText.color = gearToDisplay.GetComponent<GearStats>().GetGearImprovementColor(levelOldStat, levelNewStat);
         }
+
+        // Show the gear acquired UI
         gearAcquiredPrompt.SetActive(true);
         OnMenuOpen();
+    }
+
+    public void EquipGearFromChest()
+    {
+        ChestController chestController = currentChestBeingOpened.GetComponent<ChestController>();
+        GameObject playerToChestGear;
+        GameObject chestToPlayerGear = chestController.gearContained;
+        
+
+        if (chestToPlayerGear.CompareTag("Helmet"))
+        {
+            playerToChestGear = playerStats.currentHelmet;
+
+            chestController.gearContained = playerToChestGear;
+            playerStats.currentHelmet = chestToPlayerGear;
+
+            playerToChestGear.transform.SetParent(currentChestBeingOpened.transform);
+            chestToPlayerGear.transform.SetParent(GameObject.Find("Helmet").gameObject.transform);
+
+        }
+        else if (chestToPlayerGear.CompareTag("Chestplate"))
+        {
+            playerToChestGear = playerStats.currentChest;
+
+            chestController.gearContained = playerToChestGear;
+            playerStats.currentChest = chestToPlayerGear;
+
+            playerToChestGear.transform.SetParent(currentChestBeingOpened.transform);
+            chestToPlayerGear.transform.SetParent(GameObject.Find("Chestplate").gameObject.transform);
+
+            Debug.Log("current chest level: " + playerStats.currentChest.GetComponent<ArmorStats>().level);
+            Debug.Log("current chest prot: " + playerStats.currentChest.GetComponent<ArmorStats>().protection.GetValue());
+        }
+        else if (chestToPlayerGear.CompareTag("Weapon")) {
+
+        }
+
+        buttonManager.ExitMenu(gearAcquiredPrompt);
     }
 
     public int GenerateRandomGear()

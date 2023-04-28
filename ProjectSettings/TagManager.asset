@@ -11,6 +11,7 @@ TagManager:
   - Chest
   - Armor
   - Helmet
+  - Chestplate
   layers:
   - Default
   - TransparentFX

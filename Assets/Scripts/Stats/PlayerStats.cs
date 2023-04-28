@@ -12,7 +12,7 @@ public class PlayerStats : CharacterStats
     void Start()
     {
         currentHelmet = GameObject.Find("Helmet").GetComponentInChildren<ArmorStats>().gameObject;
-        currentChest = GameObject.Find("Chest").GetComponentInChildren<ArmorStats>().gameObject;
+        currentChest = GameObject.Find("Chestplate").GetComponentInChildren<ArmorStats>().gameObject;
     }
 
     // Update is called once per frame
