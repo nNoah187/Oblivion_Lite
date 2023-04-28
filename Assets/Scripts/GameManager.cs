@@ -26,7 +26,6 @@ public class GameManager : MonoBehaviour
     public GameObject chestPrefab;
     public GameState gameState;
     public bool openingChest = false;
-    public GameObject knightHelmetPrefab;
     public Image gearImage;
     public TextMeshProUGUI gearNameText;
     public TextMeshProUGUI valueNewStatText;
@@ -36,6 +35,8 @@ public class GameManager : MonoBehaviour
     public bool wearingDefaultArmor = true;
     public GameObject[] gearPrefabArray;
     public GameObject currentChestBeingOpened;
+    public GameObject defaultHelmetPrefab;
+    public GameObject defaultChestplatePrefab;
 
 
     private FirstPersonController firstPersonController;
@@ -150,7 +151,22 @@ public class GameManager : MonoBehaviour
                 Cursor.lockState = CursorLockMode.Locked;
             }
         }
-        
+
+        // Debug stats
+        debugPlayerLevelText.text = "Player level: " + playerStats.level.GetValue();
+        debugTotalArmorOutputWithCurrentArmorText.text = "Total armor output with current armor: " + GetTotalArmorOutput();
+        debubTotalArmorOutputWithDefaultArmorText.text = "Total armor output with default armor: " + GetTotalDefaultArmorOutput();
+        debugChestplateLevelText.text = "Chestplate level: " + playerStats.currentChest.GetComponent<ArmorStats>().level;
+        debugChestplateProtectionText.text = "Chestplate protection: " + playerStats.currentChest.GetComponent<ArmorStats>().protection.GetValue();
+        debugHelmetLevelText.text = "Helmet level: " + playerStats.currentHelmet.GetComponent<ArmorStats>().level;
+        debugHelmetProtectionText.text = "Helmet protection: " + playerStats.currentHelmet.GetComponent<ArmorStats>().protection.GetValue();
+        debugTotalProtectionText.text = "Total protection: " + GetTotalArmorProtection(playerStats.currentHelmet, playerStats.currentChest);
+        //debugTotalDamageOutputWithCurrentWeaponText;
+        //debugTotalDamageOutputWithDefaultWeaponText;
+        //debugWeaponLevelText.text = "Weapon level: " + playerStats.currentWeapon.GetComponent<WeaponStats>().level;
+        //debugWeaponDamageText;
+        //debugWeaponAttackCooldownSecondsText;
+        debugDifficultyGearValueMultiplier.text = "Difficulty gear value multiplier: " + GetDifficultyValueMultiplier() + "x";
     }
 
     // When opening a menu
@@ -321,5 +337,44 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         openingChest = false;
         OpenChest(chest);
+    }
+
+    public int GetTotalArmorProtection(GameObject helmet, GameObject chestplate)
+    {
+        return (int)(helmet.GetComponent<ArmorStats>().protection.GetValue() + chestplate.GetComponent<ArmorStats>().protection.GetValue());
+    }
+
+    public float GetDifficultyValueMultiplier()
+    {
+        if (difficulty == Difficulty.easy)
+        {
+            return 1.75f;
+        }
+        else if (difficulty == Difficulty.normal)
+        {
+            return 1;
+        }
+        else if (difficulty == Difficulty.hard)
+        {
+            return 0.75f;
+        }
+
+        return -1;
+    }
+
+    public float GetTotalArmorOutput()
+    {
+        return playerStats.currentHelmet.GetComponent<ArmorStats>().protection.GetValue()
+            * playerStats.currentChest.GetComponent<ArmorStats>().protection.GetValue()
+            * GetDifficultyValueMultiplier()
+            * playerStats.level.GetValue();
+    }
+
+    public float GetTotalDefaultArmorOutput()
+    {
+        return defaultHelmetPrefab.GetComponent<ArmorStats>().protection.GetValue()
+            * defaultChestplatePrefab.GetComponent<ArmorStats>().protection.GetValue()
+            * GetDifficultyValueMultiplier()
+            * playerStats.level.GetValue();
     }
 }
