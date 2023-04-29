@@ -20,13 +20,13 @@ public class GearStats : MonoBehaviour
         
     }
 
-    public float CalculateTotalGearValue(Stat gearValue, int gearLevel)
-    {
-        totalGearValue = gearValue.GetValue() * gearLevel;
-        return totalGearValue;
-    }
+    //public float CalculateTotalGearValue(Stat gearValue, int gearLevel)
+    //{
+    //    totalGearValue = gearValue.GetValue() * gearLevel;
+    //    return totalGearValue;
+    //}
 
-    public Color GetGearImprovementColor(int oldGearInt, int newGearInt)
+    public Color GetGearImprovementColor(float oldGearInt, float newGearInt)
     {
         if (newGearInt < oldGearInt)
         {

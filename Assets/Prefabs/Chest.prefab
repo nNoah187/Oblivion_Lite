@@ -200,6 +200,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chestState: 0
+  gearContained: {fileID: 0}
 --- !u!1001 &6200008485556580981
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -33,7 +33,8 @@ public class CharacterStats : MonoBehaviour
         {
             gameManagerScript.meleeControllerScript.thisAttackRegistered = true;
             // Damage is determined by the stats of the weapon, the character's damage value, and the difficulty
-            damageDealt = gameManagerScript.currentWeaponStats.damage.GetValue() * damage.GetValue() * gameManagerScript.GetDifficultyValueMultiplier();
+            damageDealt = gameManagerScript.GetTotalDamageOutput();
+            UnityEngine.Debug.Log("you dealt: " + damageDealt);
             EnemyController enemyController = other.GetComponent<EnemyController>();
             // Play take damage animation on the character hit
             enemyController.enemyAnimator.SetTrigger("takeDamage");
