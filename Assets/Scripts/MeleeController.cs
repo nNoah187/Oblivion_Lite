@@ -51,7 +51,7 @@ public class MeleeController : MonoBehaviour
     {
         startedUpdatingAttackCooldownBar = true;
         float startTime = Time.time;
-        float finishTime = startTime + weaponStats.attackCooldown;
+        float finishTime = startTime + playerStats.currentWeapon.GetComponent<WeaponStats>().attackCooldown;
 
         // Continually increase the attack cooldown bar while the attack is still in cooldown
         while (Time.time < finishTime)

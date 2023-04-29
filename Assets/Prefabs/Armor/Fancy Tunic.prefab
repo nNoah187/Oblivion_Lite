@@ -2198,7 +2198,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &191980055257267646
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2234,6 +2234,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   level: 1
+  localRot: {x: 0, y: 0, z: 0}
+  localPos: {x: 0.016, y: 0, z: 0.134}
   protection:
     baseValue: 3
     name: Protection

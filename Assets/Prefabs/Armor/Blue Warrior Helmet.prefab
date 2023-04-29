@@ -118,6 +118,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   level: 1
+  prefabTransform: {fileID: 1695024138118690210}
   protection:
     baseValue: 3
     name: Protection

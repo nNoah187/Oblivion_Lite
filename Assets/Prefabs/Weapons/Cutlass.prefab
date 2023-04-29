@@ -149,6 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   level: 5
+  prefabTransform: {fileID: 6978704116104820192}
   attackCooldown: 1
   damage:
     baseValue: 10

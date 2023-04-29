@@ -2445,7 +2445,7 @@ GameObject:
   - component: {fileID: 1414295267189267490}
   - component: {fileID: 1249791830568039755}
   m_Layer: 0
-  m_Name: Assassin Chest
+  m_Name: Assassin Robe
   m_TagString: Chestplate
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2486,6 +2486,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   level: 1
+  localRot: {x: 0, y: 0, z: 0}
+  localPos: {x: -0.015, y: -0.005, z: 0.087}
   protection:
     baseValue: 3
     name: Protection

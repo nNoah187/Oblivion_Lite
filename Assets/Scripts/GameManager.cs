@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI attackCooldownOldStatText;
     public TextMeshProUGUI attackCooldownNewStatText;
     public bool wearingDefaultArmor = true;
+    public GameObject[] testingGearPrefabArray;
     public GameObject[] gearPrefabArray;
     public GameObject currentChestBeingOpened;
     public GameObject defaultHelmetPrefab;
@@ -43,10 +44,12 @@ public class GameManager : MonoBehaviour
     public float[] weaponTypeDamageMultiplierArray;
     public float[] weaponAttackCooldownArray;
     public GameObject defaultWeaponPrefab;
+    public Transform chestplateTransform;
 
     private FirstPersonController firstPersonController;
     private PlayerStats playerStats;
     private ButtonManager buttonManager;
+    private GameObject player;
 
     // Debug components
     public GameObject debugMenu;
@@ -90,6 +93,7 @@ public class GameManager : MonoBehaviour
         firstPersonController = GameObject.Find("FirstPersonController").GetComponent<FirstPersonController>();
         playerStats = firstPersonController.GetComponent<PlayerStats>();
         buttonManager = GameObject.Find("Button Manager").GetComponent<ButtonManager>();
+        player = playerStats.gameObject;
 
         // Set sprint bar max value to the sprint duration from the first person controller
         sprintBar.maxValue = firstPersonController.sprintDuration;
@@ -106,6 +110,8 @@ public class GameManager : MonoBehaviour
         Instantiate(chestPrefab, new Vector3(-12.5f, 0, 5), chestPrefab.transform.rotation);
         Instantiate(chestPrefab, new Vector3(-15, 0, 5), chestPrefab.transform.rotation);
         Instantiate(chestPrefab, new Vector3(-17.5f, 0, 5), chestPrefab.transform.rotation);
+
+        gearPrefabArray = testingGearPrefabArray;
 
         //currentWeapon = Instantiate(defaultWeaponPrefab);
         //currentWeapon.transform.SetParent(GameObject.Find("Weapon").transform);
@@ -319,8 +325,9 @@ public class GameManager : MonoBehaviour
     public void EquipGearFromChest()
     {
         ChestController chestController = currentChestBeingOpened.GetComponent<ChestController>();
-        GameObject playerToChestGear;
+        GameObject playerToChestGear = null;
         GameObject chestToPlayerGear = chestController.gearContained;
+        Transform spawnObjTransform = null;
         
 
         if (chestToPlayerGear.CompareTag("Helmet"))
@@ -330,8 +337,7 @@ public class GameManager : MonoBehaviour
             chestController.gearContained = playerToChestGear;
             playerStats.currentHelmet = chestToPlayerGear;
 
-            playerToChestGear.transform.SetParent(currentChestBeingOpened.transform);
-            chestToPlayerGear.transform.SetParent(GameObject.Find("Helmet").gameObject.transform);
+            spawnObjTransform = GameObject.Find("Helmet").transform;
 
         }
         else if (chestToPlayerGear.CompareTag("Chestplate"))
@@ -341,16 +347,7 @@ public class GameManager : MonoBehaviour
             chestController.gearContained = playerToChestGear;
             playerStats.currentChest = chestToPlayerGear;
 
-            playerToChestGear.SetActive(false);
-            playerToChestGear.transform.SetParent(currentChestBeingOpened.transform);
-            chestToPlayerGear.transform.SetParent(GameObject.Find("Chestplate").gameObject.transform);
-
-            if (currentGearPrefabArrayIndex > -1)
-            {
-                chestToPlayerGear.transform.localPosition = gearPrefabArray[currentGearPrefabArrayIndex].transform.position;
-                chestToPlayerGear.transform.localRotation = gearPrefabArray[currentGearPrefabArrayIndex].transform.rotation;
-                chestToPlayerGear.SetActive(true);
-            }
+            spawnObjTransform = GameObject.Find("Chestplate").transform;
         }
         else if (chestToPlayerGear.CompareTag("Weapon"))
         {
@@ -359,15 +356,21 @@ public class GameManager : MonoBehaviour
             chestController.gearContained = playerToChestGear;
             playerStats.currentWeapon = chestToPlayerGear;
 
-            playerToChestGear.SetActive(false);
-            playerToChestGear.transform.SetParent(currentChestBeingOpened.transform);
-            chestToPlayerGear.transform.SetParent(GameObject.Find("Weapon").gameObject.transform);
+            spawnObjTransform = GameObject.Find("Weapon").transform;
+        }
 
-            chestToPlayerGear.transform.localPosition = gearPrefabArray[currentGearPrefabArrayIndex].transform.localPosition;
-            chestToPlayerGear.transform.localRotation = gearPrefabArray[currentGearPrefabArrayIndex].transform.rotation;
+        playerToChestGear.SetActive(false);
+        playerToChestGear.transform.SetParent(currentChestBeingOpened.transform);
+
+        chestToPlayerGear.transform.position = chestplateTransform.position;
+        chestToPlayerGear.transform.rotation = chestplateTransform.rotation;
+        chestToPlayerGear.transform.SetParent(spawnObjTransform);
+        chestToPlayerGear.transform.localPosition = chestToPlayerGear.GetComponent<GearStats>().localPos;
+        chestToPlayerGear.transform.localRotation = Quaternion.Euler(chestToPlayerGear.GetComponent<GearStats>().localRot);
+
+        if (chestToPlayerGear.CompareTag("Weapon") || chestToPlayerGear.CompareTag("Chestplate"))
+        {
             chestToPlayerGear.SetActive(true);
-
-            attackCooldownBar.maxValue = chestToPlayerGear.GetComponent<WeaponStats>().attackCooldown;
         }
 
         buttonManager.ExitMenu(gearAcquiredPrompt);

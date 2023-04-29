@@ -133,6 +133,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   level: 5
+  localPos: {x: 0.216, y: -0.381, z: -0.363}
+  localRot: {x: -233.326, y: 148.256, z: -5.490997}
   attackCooldown: 1.5
   damage:
     baseValue: 10

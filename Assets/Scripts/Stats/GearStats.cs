@@ -5,6 +5,8 @@ using UnityEngine;
 public class GearStats : MonoBehaviour
 {
     public int level;
+    public Vector3 localPos;
+    public Vector3 localRot;
 
     private float totalGearValue;
 
