@@ -27,8 +27,8 @@ public class PlayerController : MonoBehaviour
 
         gameManagerScript.healthbar.maxValue = playerStats.maxHealth;
         gameManagerScript.healthbar.value = playerStats.maxHealth;
-        gameManagerScript.attackCooldownBar.maxValue = weaponStats.attackCooldown;
-        gameManagerScript.attackCooldownBar.value = weaponStats.attackCooldown;
+        gameManagerScript.attackCooldownBar.maxValue = playerStats.currentWeapon.GetComponent<WeaponStats>().attackCooldown;
+        gameManagerScript.attackCooldownBar.value = gameManagerScript.attackCooldownBar.maxValue;
     }
 
     // Update is called once per frame

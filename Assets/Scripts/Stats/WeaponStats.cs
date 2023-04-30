@@ -16,6 +16,24 @@ public class WeaponStats : GearStats
     {
         gameManagerScript = GameObject.Find("Game Manager").GetComponent<GameManager>();
 
+        SetWeaponAttackCooldown();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+    public enum WeaponType
+    {
+        SWORD,
+        AXE,
+        BLUNT
+    }
+
+    public void SetWeaponAttackCooldown()
+    {
         if (weaponType == WeaponType.SWORD)
         {
             weaponTypeDamageMultiplier = gameManagerScript.weaponTypeDamageMultiplierArray[0];
@@ -31,18 +49,5 @@ public class WeaponStats : GearStats
             weaponTypeDamageMultiplier = gameManagerScript.weaponTypeDamageMultiplierArray[2];
             attackCooldown = gameManagerScript.weaponAttackCooldownArray[2];
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public enum WeaponType
-    {
-        SWORD,
-        AXE,
-        BLUNT
     }
 }

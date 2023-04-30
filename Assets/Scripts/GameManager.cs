@@ -357,6 +357,11 @@ public class GameManager : MonoBehaviour
             playerStats.currentWeapon = chestToPlayerGear;
 
             spawnObjTransform = GameObject.Find("Weapon").transform;
+
+            Debug.Log(playerStats.currentWeapon.GetComponent<WeaponStats>().attackCooldown);
+            playerStats.currentWeapon.GetComponent<WeaponStats>().SetWeaponAttackCooldown();
+            attackCooldownBar.maxValue = playerStats.currentWeapon.GetComponent<WeaponStats>().attackCooldown;
+            attackCooldownBar.value = attackCooldownBar.maxValue;
         }
 
         playerToChestGear.SetActive(false);
