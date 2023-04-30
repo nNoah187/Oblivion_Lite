@@ -36,18 +36,18 @@ public class WeaponStats : GearStats
     {
         if (weaponType == WeaponType.SWORD)
         {
-            weaponTypeDamageMultiplier = gameManagerScript.weaponTypeDamageMultiplierArray[0];
-            attackCooldown = gameManagerScript.weaponAttackCooldownArray[0];
+            weaponTypeDamageMultiplier = 0.5f;
+            attackCooldown = 0.75f;
         }
         else if (weaponType == WeaponType.AXE)
         {
-            weaponTypeDamageMultiplier = gameManagerScript.weaponTypeDamageMultiplierArray[1];
-            attackCooldown = gameManagerScript.weaponAttackCooldownArray[1];
+            weaponTypeDamageMultiplier = 1;
+            attackCooldown = 1.5f;
         }
         else if (weaponType == WeaponType.BLUNT)
         {
-            weaponTypeDamageMultiplier = gameManagerScript.weaponTypeDamageMultiplierArray[2];
-            attackCooldown = gameManagerScript.weaponAttackCooldownArray[2];
+            weaponTypeDamageMultiplier = 2;
+            attackCooldown = 3;
         }
     }
 }

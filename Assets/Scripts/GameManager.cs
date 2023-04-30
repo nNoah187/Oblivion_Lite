@@ -41,8 +41,6 @@ public class GameManager : MonoBehaviour
     public GameObject defaultHelmetPrefab;
     public GameObject defaultChestplatePrefab;
     public int currentGearPrefabArrayIndex = -1;
-    public float[] weaponTypeDamageMultiplierArray;
-    public float[] weaponAttackCooldownArray;
     public GameObject defaultWeaponPrefab;
     public Transform chestplateTransform;
 
@@ -358,7 +356,6 @@ public class GameManager : MonoBehaviour
 
             spawnObjTransform = GameObject.Find("Weapon").transform;
 
-            Debug.Log(playerStats.currentWeapon.GetComponent<WeaponStats>().attackCooldown);
             playerStats.currentWeapon.GetComponent<WeaponStats>().SetWeaponAttackCooldown();
             attackCooldownBar.maxValue = playerStats.currentWeapon.GetComponent<WeaponStats>().attackCooldown;
             attackCooldownBar.value = attackCooldownBar.maxValue;
