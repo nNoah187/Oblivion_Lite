@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /*
- * This class is from youtube.com/Brackeys
+ * This class is from youtube.com/@Brackeys
  */
 [System.Serializable]
 public class Stat

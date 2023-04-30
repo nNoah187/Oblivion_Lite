@@ -12,10 +12,12 @@ public class CharacterStats : MonoBehaviour
     private float damageDealt;
 
     protected GameManager gameManagerScript;
+    private PlayerStats playerStats;
 
     private void Awake()
     {
         gameManagerScript = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        playerStats = GameObject.Find("FirstPersonController").GetComponent<PlayerStats>();
 
         currentHealth = maxHealth;
     }
@@ -29,7 +31,7 @@ public class CharacterStats : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            gameManagerScript.meleeControllerScript.thisAttackRegistered = true;
+            //playerStats.currentWeapon.GetComponent<MeleeController>().thisAttackRegistered = false;
             // Damage is determined by the stats of the weapon, the character's damage value, and the difficulty
             damageDealt = gameManagerScript.GetTotalDamageOutput(gameObject.GetComponent<PlayerStats>().currentWeapon);
             UnityEngine.Debug.Log("you dealt: " + damageDealt);

@@ -830,7 +830,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   level: 1
-  prefabTransform: {fileID: 906165255561935457}
+  localPos: {x: 0, y: 0, z: 0}
+  localRot: {x: 0, y: 0, z: 0}
+  name: Knight Helmet
   protection:
     baseValue: 3
     name: Protection

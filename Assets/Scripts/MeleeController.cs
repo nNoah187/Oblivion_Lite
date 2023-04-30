@@ -22,7 +22,10 @@ public class MeleeController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (gameManagerScript.attackCooldownBar.maxValue - gameManagerScript.attackCooldownBar.value <= 0.1)
+        {
+            thisAttackRegistered = false;
+        }
     }
 
     // Cooldown for melee attack
@@ -31,7 +34,6 @@ public class MeleeController : MonoBehaviour
         yield return new WaitForSeconds(gameManagerScript.GetWeaponAttackCooldown(playerStats.currentWeapon));
         playerControllerScript.isAttacking = false;
         playerControllerScript.firstPersonController.enableSprint = true;
-        thisAttackRegistered = false;
     }
 
     private void OnTriggerEnter(Collider other)

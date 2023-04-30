@@ -52,7 +52,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   level: 1
-  prefabTransform: {fileID: 6652311168325487927}
+  localPos: {x: 0, y: 0, z: 0}
+  localRot: {x: 0, y: 0, z: 0}
+  name: Default Helmet
   protection:
     baseValue: 1
     name: Protection

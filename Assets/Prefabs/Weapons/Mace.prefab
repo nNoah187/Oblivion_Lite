@@ -108,6 +108,7 @@ MonoBehaviour:
   level: 1
   localPos: {x: 0.006, y: -0.012, z: 0.089}
   localRot: {x: -233.326, y: 148.256, z: -5.490997}
+  name: Spiky Mace (Blunt Weapon)
   damage:
     baseValue: 10
     name: Damage
@@ -137,8 +138,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.37297952, y: 0.81296504, z: 0.35625196}
-  m_Center: {x: -0.000334238, y: 0.26504195, z: -0.00000088667156}
+  m_Size: {x: 0.37297952, y: 0.6799137, z: 0.35625196}
+  m_Center: {x: -0.00033346604, y: 0.1985158, z: -0.000000859664}
 --- !u!222 &3339422373685717860
 CanvasRenderer:
   m_ObjectHideFlags: 0

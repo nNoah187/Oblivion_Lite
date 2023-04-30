@@ -120,8 +120,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.17681196, y: 0.15068068, z: 0.89084363}
-  m_Center: {x: 0.042065375, y: -0.022614554, z: -0.23925318}
+  m_Size: {x: 0.24264976, y: 0.17453781, z: 0.83591896}
+  m_Center: {x: 0.009147434, y: -0.034545764, z: -0.2117996}
 --- !u!114 &4770934834918414673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,6 +151,7 @@ MonoBehaviour:
   level: 1
   localPos: {x: 0, y: 0, z: 0}
   localRot: {x: 0, y: 0, z: 0}
+  name: Cutlass (Sword)
   damage:
     baseValue: 10
     name: Damage

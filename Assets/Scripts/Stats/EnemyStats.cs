@@ -23,17 +23,24 @@ public class EnemyStats : CharacterStats
     {
         if (base.gameManagerScript.difficulty == GameManager.Difficulty.easy)
         {
-            return baseAttackCooldown * 2.5f;
+            return baseAttackCooldown * RandomizeCooldownTime(2, 3);
         }
         else if (base.gameManagerScript.difficulty == GameManager.Difficulty.normal)
         {
-            return baseAttackCooldown * 1;
+            return baseAttackCooldown * RandomizeCooldownTime(0.5f, 1.5f);
         }
         else if (base.gameManagerScript.difficulty == GameManager.Difficulty.hard)
         {
-            return baseAttackCooldown * 0.5f;
+            return baseAttackCooldown * RandomizeCooldownTime(0, 1);
         }
 
         return 0;
+    }
+
+    private float RandomizeCooldownTime(float minWindow, float maxWindow)
+    {
+        System.Random random = new System.Random();
+
+        return (float)(random.NextDouble() * (maxWindow - minWindow) + minWindow);
     }
 }

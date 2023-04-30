@@ -121,6 +121,8 @@ public class GameManager : MonoBehaviour
         playerStats.currentWeapon = currentWeapon;
         currentWeapon = defaultWeapon;
 
+        OverrideWeaponAnimation(playerStats.currentWeapon);
+
         meleeControllerScript = currentWeapon.GetComponent<MeleeController>();
         currentWeaponStats = currentWeapon.GetComponent<WeaponStats>();
 
@@ -258,7 +260,7 @@ public class GameManager : MonoBehaviour
 
         // Set the UI image and text to the gear's image and name
         gearImage.sprite = gearToDisplay.GetComponent<Image>().sprite;
-        gearNameText.text = gearToDisplay.name;
+        gearNameText.text = gearToDisplay.GetComponent<GearStats>().name;
 
         // Declare stats to show in the UI
         int levelNewStat = -1;
@@ -272,6 +274,11 @@ public class GameManager : MonoBehaviour
             // Show attack cooldown since we're showing a weapon
             attackCooldownOldStatText.gameObject.SetActive(true);
             attackCooldownNewStatText.gameObject.SetActive(true);
+            //Adjust the alightnment of the other stat text to make room for the attack weapon cooldown text
+            levelNewStatText.verticalAlignment = VerticalAlignmentOptions.Middle;
+            levelOldStatText.verticalAlignment = VerticalAlignmentOptions.Middle;
+            valueNewStatText.verticalAlignment = VerticalAlignmentOptions.Middle;
+            valueOldStatText.verticalAlignment = VerticalAlignmentOptions.Middle;
             // The UI will display the weapon in the chest's level
             levelNewStat = newGearLevel;
             // The UI will display the weapon in the chest's total damage
@@ -303,6 +310,11 @@ public class GameManager : MonoBehaviour
             // Don't attack cooldown since we're not showing a weapon
             attackCooldownOldStatText.gameObject.SetActive(false);
             attackCooldownNewStatText.gameObject.SetActive(false);
+            //Adjust the alightnment of the other stat text to take more space since there's no attack cooldown
+            levelNewStatText.verticalAlignment = VerticalAlignmentOptions.Bottom;
+            levelOldStatText.verticalAlignment = VerticalAlignmentOptions.Bottom;
+            valueNewStatText.verticalAlignment = VerticalAlignmentOptions.Top;
+            valueOldStatText.verticalAlignment = VerticalAlignmentOptions.Top;
             // The UI will display the armor in the chest's level
             levelNewStat = newGearLevel;
             // The UI will display the armor in the chest's protection
@@ -389,6 +401,9 @@ public class GameManager : MonoBehaviour
             // Update the attack cooldown bar UI since the new weapon could be a different weapon type
             attackCooldownBar.maxValue = GetWeaponAttackCooldown(playerStats.currentWeapon);
             attackCooldownBar.value = attackCooldownBar.maxValue;
+
+            // Override the attack animation for the weapon type
+            OverrideWeaponAnimation(playerStats.currentWeapon);
         }
 
         // Make the new gear in the chest disappear
@@ -514,7 +529,7 @@ public class GameManager : MonoBehaviour
         }
         else if (weaponStats.weaponType == WeaponType.BLUNT)
         {
-            return 3;
+            return 2.25f;
         }
 
         return -1;
@@ -539,5 +554,28 @@ public class GameManager : MonoBehaviour
         }
 
         return -1;
+    }
+
+    public void OverrideWeaponAnimation(GameObject weapon)
+    {
+        WeaponStats weaponStats = weapon.GetComponent<WeaponStats>();
+        SetAttackType setAttackTypeScript = GetComponent<SetAttackType>();
+        Animator playerAnimator = firstPersonController.gameObject.GetComponentInChildren<Animator>();
+
+        if (weaponStats.weaponType == WeaponType.SWORD)
+        {
+            setAttackTypeScript.Set(0);
+            playerAnimator.SetFloat("attackSpeed", 1.25f);
+        }
+        else if (weaponStats.weaponType == WeaponType.AXE)
+        {
+            setAttackTypeScript.Set(1);
+            playerAnimator.SetFloat("attackSpeed", 1);
+        }
+        else if (weaponStats.weaponType == WeaponType.BLUNT)
+        {
+            setAttackTypeScript.Set(2);
+            playerAnimator.SetFloat("attackSpeed", 1);
+        }
     }
 }

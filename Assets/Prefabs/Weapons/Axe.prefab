@@ -104,8 +104,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.23281406, y: 2.2263603, z: 0.5701986}
-  m_Center: {x: 0, y: -0.8637791, z: -0.13460475}
+  m_Size: {x: 0.23281406, y: 2.1387494, z: 0.5701986}
+  m_Center: {x: 0.000000014788235, y: -0.90758425, z: -0.13460498}
 --- !u!114 &-77429350694096457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,9 +132,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f329be8a26ef4740b7a9532bf308b8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  level: 1
+  level: 2
   localPos: {x: 0.216, y: -0.381, z: -0.363}
   localRot: {x: -233.326, y: 148.256, z: -5.490997}
+  name: Midgard Axe (Axe)
   damage:
     baseValue: 10
     name: Damage

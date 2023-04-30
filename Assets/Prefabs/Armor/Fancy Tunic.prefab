@@ -2234,8 +2234,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   level: 1
-  localRot: {x: 0, y: 0, z: 0}
   localPos: {x: 0.016, y: 0, z: 0.134}
+  localRot: {x: 0, y: 0, z: 0}
+  name: Fancy Tunic
   protection:
     baseValue: 3
     name: Protection

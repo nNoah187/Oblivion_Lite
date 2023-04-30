@@ -118,7 +118,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   level: 1
-  prefabTransform: {fileID: 1695024138118690210}
+  localPos: {x: 0, y: 0, z: 0}
+  localRot: {x: 0, y: 0, z: 0}
+  name: Blue Warrior Helmet
   protection:
     baseValue: 3
     name: Protection
