@@ -8,8 +8,6 @@ public class GearStats : MonoBehaviour
     public Vector3 localPos;
     public Vector3 localRot;
 
-    private float totalGearValue;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -22,19 +20,13 @@ public class GearStats : MonoBehaviour
         
     }
 
-    //public float CalculateTotalGearValue(Stat gearValue, int gearLevel)
-    //{
-    //    totalGearValue = gearValue.GetValue() * gearLevel;
-    //    return totalGearValue;
-    //}
-
-    public Color GetGearImprovementColor(float oldGearInt, float newGearInt)
+    public Color GetGearImprovementColor(float baseValue, float comparisonValue)
     {
-        if (newGearInt < oldGearInt)
+        if (comparisonValue < baseValue)
         {
             return Color.red;
         }
-        else if (newGearInt > oldGearInt)
+        else if (comparisonValue > baseValue)
         {
             return Color.green;
         }

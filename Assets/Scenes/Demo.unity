@@ -15514,13 +15514,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2114701357}
     m_Modifications:
+    - target: {fileID: -4620296031290995646, guid: 893cf52c2f9c0f344a399cd02660d552, type: 3}
+      propertyPath: level
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7840039069314339091, guid: 893cf52c2f9c0f344a399cd02660d552, type: 3}
       propertyPath: m_Name
       value: Axe
       objectReference: {fileID: 0}
     - target: {fileID: 7840039069314339091, guid: 893cf52c2f9c0f344a399cd02660d552, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7917049049619721556, guid: 893cf52c2f9c0f344a399cd02660d552, type: 3}
       propertyPath: m_Pivot.x
@@ -18125,17 +18129,9 @@ MonoBehaviour:
   currentChestBeingOpened: {fileID: 0}
   defaultHelmetPrefab: {fileID: 6652311168325487924, guid: 81f30dccd6197db4487c5dd5bf1389c0, type: 3}
   defaultChestplatePrefab: {fileID: 6136385934172219137, guid: 16f7c27b5e8ba34428bd891b94e75c50, type: 3}
-  currentGearPrefabArrayIndex: -1
-  weaponTypeDamageMultiplierArray:
-  - 0.5
-  - 1
-  - 2
-  weaponAttackCooldownArray:
-  - 0.75
-  - 1.5
-  - 3
   defaultWeaponPrefab: {fileID: 7840039069314339091, guid: 893cf52c2f9c0f344a399cd02660d552, type: 3}
   chestplateTransform: {fileID: 1729739552}
+  reticle: {fileID: 4459864850197445926}
   debugMenu: {fileID: 790485519}
   difficultyText: {fileID: 408343812}
   difficulty: 0
@@ -23490,9 +23486,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  damage:
-    baseValue: 1
-    name: Damage
   level:
     baseValue: 1
     name: Level

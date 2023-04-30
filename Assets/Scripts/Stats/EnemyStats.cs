@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class EnemyStats : CharacterStats
 {
-    private EnemyController enemyControllerScript;
-
+    public Stat damage;
     public float baseAttackCooldown;
 
     // Start is called before the first frame update
     void Start()
     {
-        enemyControllerScript = GetComponent<EnemyController>();
+        
     }
 
     // Update is called once per frame

@@ -6,8 +6,6 @@ public class MeleeController : MonoBehaviour
 {
     private PlayerController playerControllerScript;
     private GameManager gameManagerScript;
-    private WeaponStats weaponStats;
-    private EnemyController enemyControllerScript;
     private PlayerStats playerStats;
 
     public bool thisAttackRegistered = false;
@@ -18,7 +16,6 @@ public class MeleeController : MonoBehaviour
     {
         playerControllerScript = GameObject.Find("FirstPersonController").GetComponent<PlayerController>();
         gameManagerScript = GameObject.Find("Game Manager").GetComponent<GameManager>();
-        weaponStats = GetComponent<WeaponStats>();
         playerStats = GameObject.Find("FirstPersonController").GetComponent <PlayerStats>();
     }
 
@@ -31,7 +28,7 @@ public class MeleeController : MonoBehaviour
     // Cooldown for melee attack
     public IEnumerator resetAttack()
     {
-        yield return new WaitForSeconds(playerStats.currentWeapon.GetComponent<WeaponStats>().attackCooldown);
+        yield return new WaitForSeconds(gameManagerScript.GetWeaponAttackCooldown(playerStats.currentWeapon));
         playerControllerScript.isAttacking = false;
         playerControllerScript.firstPersonController.enableSprint = true;
         thisAttackRegistered = false;
@@ -43,6 +40,7 @@ public class MeleeController : MonoBehaviour
         if (playerControllerScript.isAttacking && other.gameObject.CompareTag("Enemy") && !thisAttackRegistered)
         {
             playerStats.DealDamange(other.gameObject);
+            thisAttackRegistered = true;
         }
     }
 
@@ -51,7 +49,7 @@ public class MeleeController : MonoBehaviour
     {
         startedUpdatingAttackCooldownBar = true;
         float startTime = Time.time;
-        float finishTime = startTime + playerStats.currentWeapon.GetComponent<WeaponStats>().attackCooldown;
+        float finishTime = startTime + gameManagerScript.GetWeaponAttackCooldown(playerStats.currentWeapon);
 
         // Continually increase the attack cooldown bar while the attack is still in cooldown
         while (Time.time < finishTime)

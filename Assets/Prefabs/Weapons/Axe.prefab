@@ -132,15 +132,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f329be8a26ef4740b7a9532bf308b8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  level: 5
+  level: 1
   localPos: {x: 0.216, y: -0.381, z: -0.363}
   localRot: {x: -233.326, y: 148.256, z: -5.490997}
-  attackCooldown: 1.5
   damage:
     baseValue: 10
     name: Damage
   weaponType: 1
-  weaponTypeDamageMultiplier: 1
 --- !u!222 &7209353153402437400
 CanvasRenderer:
   m_ObjectHideFlags: 0

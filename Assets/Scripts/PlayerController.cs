@@ -6,9 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     private GameManager gameManagerScript;
     private MeleeController meleeControllerScript;
-    private bool startedBlinkingSprintBar = false;
     private PlayerStats playerStats;
-    private WeaponStats weaponStats;
     private float maxSprintCooldown = 5f;
 
     public FirstPersonController firstPersonController;
@@ -23,11 +21,10 @@ public class PlayerController : MonoBehaviour
         gameManagerScript = GameObject.Find("Game Manager").GetComponent<GameManager>();
         meleeControllerScript = GameObject.Find("Weapon").GetComponentInChildren<MeleeController>();
         playerStats = GetComponent<PlayerStats>();
-        weaponStats = GetComponentInChildren<WeaponStats>();
 
         gameManagerScript.healthbar.maxValue = playerStats.maxHealth;
         gameManagerScript.healthbar.value = playerStats.maxHealth;
-        gameManagerScript.attackCooldownBar.maxValue = playerStats.currentWeapon.GetComponent<WeaponStats>().attackCooldown;
+        gameManagerScript.attackCooldownBar.maxValue = gameManagerScript.GetWeaponAttackCooldown(playerStats.currentWeapon);
         gameManagerScript.attackCooldownBar.value = gameManagerScript.attackCooldownBar.maxValue;
     }
 
@@ -44,13 +41,13 @@ public class PlayerController : MonoBehaviour
             // Swing weapon if LMB is clicked and the player is not already attacking
             if (Input.GetMouseButtonDown(0) && !isAttacking)
             {
+                isAttacking = true;
                 firstPersonController.enableSprint = false;
                 // The sprint cooldown should last for however much sprint was used to be recharged
                 firstPersonController.sprintCooldown = maxSprintCooldown - firstPersonController.sprintRemaining;
                 // Stop playing player sprint animation
                 playerAnimator.SetBool("sprinting", false);
                 firstPersonController.isSprintCooldown = true;
-                isAttacking = true;
                 // Play player attack animation
                 playerAnimator.SetTrigger("attack");
                 // Start the weapon attack cooldown
@@ -68,7 +65,6 @@ public class PlayerController : MonoBehaviour
             {
                 // Play player sprinting animation
                 playerAnimator.SetBool("sprinting", true);
-                startedBlinkingSprintBar = false;
             }
             else
             {
@@ -76,17 +72,18 @@ public class PlayerController : MonoBehaviour
                 firstPersonController.sprintCooldown = maxSprintCooldown - firstPersonController.sprintRemaining;
                 // Stop playing player sprint animation
                 playerAnimator.SetBool("sprinting", false);
-                firstPersonController.isSprintCooldown = true;
+                if (firstPersonController.sprintCooldown == 0)
+                {
+                    firstPersonController.isSprintCooldown = false;
+                }
+                else
+                {
+                    firstPersonController.isSprintCooldown = true;
+                }
             }
 
             // Continually update the sprint bar on the HUD with the amount of sprint remaining before cooldown
             gameManagerScript.sprintBar.value = firstPersonController.sprintRemaining;
-
-            // Start blinking the sprint bar on the HUD if it hasn't started already and the player is in a sprint cooldown
-            if (!startedBlinkingSprintBar && firstPersonController.isSprintCooldown)
-            {
-                StartCoroutine(ChangeSprintBarColor(firstPersonController.sprintCooldown));
-            }
 
             // Play player death animation if player health is 0 or below
             if (playerStats.currentHealth <= 0)
@@ -94,25 +91,5 @@ public class PlayerController : MonoBehaviour
                 playerAnimator.SetTrigger("die");
             }
         }
-    }
-
-    // Change the sprint bar to gray when under cooldown
-    public IEnumerator ChangeSprintBarColor(float duration)
-    {
-        startedBlinkingSprintBar = true;
-        float startTime = Time.time;
-
-        // While the specified duration is still going make the sprint bar gray
-        while (Time.time < startTime + duration)
-        {
-            gameManagerScript.sprintBarFill.color = Color.gray;
-            gameManagerScript.sprintBarBackground.color = Color.gray;
-
-            yield return null;
-        }
-
-        startedBlinkingSprintBar = false;
-        gameManagerScript.sprintBarFill.color = Color.white;
-        gameManagerScript.sprintBarBackground.color = Color.white;
     }
 }

@@ -7,9 +7,7 @@ public class CharacterStats : MonoBehaviour
 {
     public int maxHealth = 100;
     public float currentHealth {  get; private set; }   // Allows other class to access but not change
-    public Stat damage;
     public Stat level;
-    //public Stat armor;
 
     private float damageDealt;
 
@@ -33,7 +31,7 @@ public class CharacterStats : MonoBehaviour
         {
             gameManagerScript.meleeControllerScript.thisAttackRegistered = true;
             // Damage is determined by the stats of the weapon, the character's damage value, and the difficulty
-            damageDealt = gameManagerScript.GetTotalDamageOutput();
+            damageDealt = gameManagerScript.GetTotalDamageOutput(gameObject.GetComponent<PlayerStats>().currentWeapon);
             UnityEngine.Debug.Log("you dealt: " + damageDealt);
             EnemyController enemyController = other.GetComponent<EnemyController>();
             // Play take damage animation on the character hit
@@ -45,7 +43,7 @@ public class CharacterStats : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("Player"))
         {
-            damageDealt = damage.GetValue() / gameManagerScript.GetTotalArmorOutput();
+            damageDealt = GetComponent<EnemyStats>().damage.GetValue() / gameManagerScript.GetTotalArmorOutput();
             UnityEngine.Debug.Log("Damage dealt: " +  damageDealt);
             PlayerController playerController = other.GetComponent<PlayerController>();
             // Play take damage animation on the character hit
@@ -69,23 +67,4 @@ public class CharacterStats : MonoBehaviour
     {
         UnityEngine.Debug.Log(transform.name + " died");
     }
-
-    // Adjusts damage dealt to enemies depending on difficulty
-    //public float GetDifficultyDamageModifier()
-    //{
-    //    if (gameManagerScript.difficulty == GameManager.Difficulty.easy)
-    //    {
-    //        return 1.5f;
-    //    }
-    //    else if (gameManagerScript.difficulty == GameManager.Difficulty.normal)
-    //    {
-    //        return 1;
-    //    }
-    //    else if (gameManagerScript.difficulty == GameManager.Difficulty.hard)
-    //    {
-    //        return 0.75f;
-    //    }
-
-    //    return 0;
-    //}
 }

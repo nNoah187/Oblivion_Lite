@@ -771,7 +771,7 @@ MonoBehaviour:
   enemyAnimator: {fileID: 0}
   maxWalkSpeed: 3
   minDistanceToPlayer: 4.5
-  enemyRotationSpeed: 1.5
+  enemyRotationSpeed: 2.5
   dealtDamageForThisAttack: 0
 --- !u!114 &7962199819881483723
 MonoBehaviour:
@@ -786,8 +786,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  level:
+    baseValue: 0
+    name: 
   damage:
     baseValue: 10
+    name: 
   baseAttackCooldown: 1
 --- !u!1 &3688843794599603062
 GameObject:
