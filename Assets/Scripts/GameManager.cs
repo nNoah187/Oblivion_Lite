@@ -111,13 +111,15 @@ public class GameManager : MonoBehaviour
         Instantiate(chestPrefab, new Vector3(-15, 0, 5), chestPrefab.transform.rotation);
         Instantiate(chestPrefab, new Vector3(-17.5f, 0, 5), chestPrefab.transform.rotation);
 
-        //gearPrefabArray = testingGearPrefabArray;
+        gearPrefabArray = testingGearPrefabArray;
 
         // Spawn in default weapon prefab (axe)
         currentWeapon = Instantiate(defaultWeaponPrefab);
+        currentWeapon.transform.position = weaponPosition.transform.position;
+        currentWeapon.transform.rotation = weaponPosition.transform.rotation;
         currentWeapon.transform.SetParent(GameObject.Find("Weapon").transform);
-        currentWeapon.transform.localPosition = defaultWeaponPrefab.transform.position;
-        currentWeapon.transform.localRotation = defaultWeaponPrefab.transform.rotation;
+        currentWeapon.transform.localPosition = currentWeapon.GetComponent<GearStats>().localPos;
+        currentWeapon.transform.localRotation = Quaternion.Euler(currentWeapon.GetComponent<GearStats>().localRot);
         playerStats.currentWeapon = currentWeapon;
         currentWeapon = defaultWeapon;
 
