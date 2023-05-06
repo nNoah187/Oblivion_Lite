@@ -11,7 +11,14 @@ public class AnimationOverrider : MonoBehaviour
 
     private void Awake()
     {
-        animator = GetComponentInChildren<Animator>();
+        if (gameObject.CompareTag("Player"))
+        {
+            animator = GetComponentInChildren<Animator>();
+        }
+        else if (gameObject.CompareTag("Enemy"))
+        {
+            animator = GetComponent<Animator>();
+        }
     }
 
     public void SetAnimations(AnimatorOverrideController overrideController)
