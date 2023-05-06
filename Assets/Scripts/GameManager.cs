@@ -580,4 +580,22 @@ public class GameManager : MonoBehaviour
             playerAnimator.SetFloat("attackSpeed", 1);
         }
     }
+
+    public void OverrideEnemyAnimation(GameObject enemy)
+    {
+        SetEnemyAnimations setEnemyAnimationsScript = GetComponent<SetEnemyAnimations>();
+
+        if (weaponStats.weaponType == WeaponType.SWORD)
+        {
+            setAttackTypeScript.Set(0);
+        }
+        else if (weaponStats.weaponType == WeaponType.AXE)
+        {
+            setAttackTypeScript.Set(1);
+        }
+        else if (weaponStats.weaponType == WeaponType.BLUNT)
+        {
+            setAttackTypeScript.Set(2);
+        }
+    }
 }
