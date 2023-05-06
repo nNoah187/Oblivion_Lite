@@ -791,7 +791,7 @@ MonoBehaviour:
     name: 
   damage:
     baseValue: 10
-    name: 
+    name: Damage
   baseAttackCooldown: 1
 --- !u!1 &3688843794599603062
 GameObject:
@@ -1235,8 +1235,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.9100876, y: 1.8960952, z: 3.9855385}
-  m_Center: {x: 0.048478838, y: 0.92554337, z: 0.24466777}
+  m_Size: {x: 3.1004477, y: 2.020126, z: 4.246248}
+  m_Center: {x: 0.04847884, y: 0.9255434, z: 0.37502307}
 --- !u!1 &4943944575545386786
 GameObject:
   m_ObjectHideFlags: 0
