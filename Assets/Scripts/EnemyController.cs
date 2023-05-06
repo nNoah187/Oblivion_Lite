@@ -21,6 +21,7 @@ public class EnemyController : MonoBehaviour
     public float minDistanceToPlayer;
     public float enemyRotationSpeed;
     public bool dealtDamageForThisAttack = false;
+    public float healthbarYPos;
 
     public enum EnemyCombatState
     {
@@ -39,10 +40,11 @@ public class EnemyController : MonoBehaviour
         enemyStats = GetComponent<EnemyStats>();
 
         // Spawn in a healthbar for each enemy that is spawned in
-        healthBar = Instantiate(gameManagerScript.enemyHealthbarPrefab, new Vector3(transform.position.x, transform.position.y + 2,
-            transform.position.z), Quaternion.identity);
+        healthBar = Instantiate(gameManagerScript.enemyHealthbarPrefab, Vector3.zero, Quaternion.identity);
         healthBar.gameObject.SetActive(false);
         healthBar.transform.SetParent(GameObject.Find("World Canvas").transform);
+        healthBar.maxValue = enemyStats.maxHealth;
+        healthBar.value = healthBar.maxValue;
 
         // Start enemy attack coroutine
         StartCoroutine(Attack());
@@ -73,7 +75,7 @@ public class EnemyController : MonoBehaviour
             }
 
             // Show the enemy healthbar if in combat state and continually ensure the healthbar is above the enemy
-            healthBar.transform.position = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
+            healthBar.transform.position = new Vector3(transform.position.x, transform.position.y + healthbarYPos, transform.position.z);
             healthBar.gameObject.SetActive(true);
 
             // The enemy gradually turns toward the player if in combat state

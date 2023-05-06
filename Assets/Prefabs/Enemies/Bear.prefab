@@ -773,6 +773,7 @@ MonoBehaviour:
   minDistanceToPlayer: 3.5
   enemyRotationSpeed: 2.5
   dealtDamageForThisAttack: 0
+  healthbarYPos: 2
 --- !u!114 &7962199819881483723
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -787,8 +788,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   level:
-    baseValue: 0
-    name: 
+    baseValue: 1
+    name: Level
   damage:
     baseValue: 10
     name: Damage

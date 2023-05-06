@@ -38,6 +38,8 @@ public class GameManager : MonoBehaviour
     public bool wearingDefaultArmor = true;
     public GameObject[] testingGearPrefabArray;
     public GameObject[] gearPrefabArray;
+    public GameObject[] testingEnemyPrefabArray;
+    public GameObject[] enemyPrefabArray;
     public GameObject currentChestBeingOpened;
     public GameObject defaultHelmetPrefab;
     public GameObject defaultChestplatePrefab;
@@ -97,9 +99,12 @@ public class GameManager : MonoBehaviour
         // Set sprint bar max value to the sprint duration from the first person controller
         sprintBar.maxValue = firstPersonController.sprintDuration;
 
-        // Spawn in 2 bears
-        Instantiate(bearEnemyPrefab, new Vector3(5, 0, 5), Quaternion.identity);
-        Instantiate(bearEnemyPrefab, new Vector3(-5, 0, -5), Quaternion.identity);
+        // Spawn in enemies
+        enemyPrefabArray = testingEnemyPrefabArray;
+        for (int i = 0; i < enemyPrefabArray.Length; i++)
+        {
+            Instantiate(enemyPrefabArray[i], new Vector3(4, 0, i * -4), Quaternion.identity);
+        }
 
         // Spawn in chests
         Instantiate(chestPrefab, new Vector3(0, 0, 5), chestPrefab.transform.rotation);
@@ -473,16 +478,16 @@ public class GameManager : MonoBehaviour
 
     public float GetTotalArmorOutput()
     {
-        return playerStats.currentHelmet.GetComponent<ArmorStats>().protection.GetValue()
-            * playerStats.currentChest.GetComponent<ArmorStats>().protection.GetValue()
+        return (playerStats.currentHelmet.GetComponent<ArmorStats>().protection.GetValue()
+            + playerStats.currentChest.GetComponent<ArmorStats>().protection.GetValue())
             * GetDifficultyValueMultiplier()
             * GetHighestArmorLevel();
     }
 
     public float GetTotalDefaultArmorOutput()
     {
-        return defaultHelmetPrefab.GetComponent<ArmorStats>().protection.GetValue()
-            * defaultChestplatePrefab.GetComponent<ArmorStats>().protection.GetValue()
+        return (defaultHelmetPrefab.GetComponent<ArmorStats>().protection.GetValue()
+            + defaultChestplatePrefab.GetComponent<ArmorStats>().protection.GetValue())
             * GetDifficultyValueMultiplier()
             * defaultHelmetPrefab.GetComponent<ArmorStats>().level;
     }
@@ -578,24 +583,6 @@ public class GameManager : MonoBehaviour
         {
             setAttackTypeScript.Set(2);
             playerAnimator.SetFloat("attackSpeed", 1);
-        }
-    }
-
-    public void OverrideEnemyAnimation(GameObject enemy)
-    {
-        SetEnemyAnimations setEnemyAnimationsScript = GetComponent<SetEnemyAnimations>();
-
-        if (weaponStats.weaponType == WeaponType.SWORD)
-        {
-            setAttackTypeScript.Set(0);
-        }
-        else if (weaponStats.weaponType == WeaponType.AXE)
-        {
-            setAttackTypeScript.Set(1);
-        }
-        else if (weaponStats.weaponType == WeaponType.BLUNT)
-        {
-            setAttackTypeScript.Set(2);
         }
     }
 }
