@@ -19,6 +19,11 @@ public class Stat
         return baseValue;
     }
 
+    public void SetValue(float newValue)
+    {
+        baseValue = newValue;
+    }
+
     public String GetName()
     {
         return name;

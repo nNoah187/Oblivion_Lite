@@ -1,3 +1,4 @@
+using NHance.Assets.Scripts.Enums;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,16 +8,18 @@ public class EnemyStats : CharacterStats
     public Stat damage;
     public float baseAttackCooldown;
 
+    private GameObject player;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        player = GameObject.Find("FirstPersonController");
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        level = player.GetComponent<PlayerStats>().level;
     }
 
     public float GetAttackCooldown()

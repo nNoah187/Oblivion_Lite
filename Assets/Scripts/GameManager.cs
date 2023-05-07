@@ -103,7 +103,8 @@ public class GameManager : MonoBehaviour
         enemyPrefabArray = testingEnemyPrefabArray;
         for (int i = 0; i < enemyPrefabArray.Length; i++)
         {
-            Instantiate(enemyPrefabArray[i], new Vector3(4, 0, i * -4), Quaternion.identity);
+            GameObject enemy = Instantiate(enemyPrefabArray[i], new Vector3(4, 0, i * -4), Quaternion.identity);
+            enemy.GetComponent<EnemyStats>().level = playerStats.level;
         }
 
         // Spawn in chests

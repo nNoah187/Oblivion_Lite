@@ -384,7 +384,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 50
   level:
-    baseValue: 1
+    baseValue: 2
     name: Level
   damage:
     baseValue: 5

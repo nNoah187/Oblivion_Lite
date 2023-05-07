@@ -5,11 +5,13 @@ using UnityEngine;
 public class ButtonManager : MonoBehaviour
 {
     private GameManager gameManagerScript;
+    private PlayerStats playerStats;
 
     // Start is called before the first frame update
     void Start()
     {
         gameManagerScript = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        playerStats = GameObject.Find("FirstPersonController").GetComponent<PlayerStats>();
     }
 
     // Update is called once per frame
@@ -43,5 +45,15 @@ public class ButtonManager : MonoBehaviour
         PlayerPrefs.SetInt("difficulty", 2);
         gameManagerScript.difficulty = GameManager.Difficulty.hard;
         gameManagerScript.difficultyText.text = "Difficulty: hard";
+    }
+
+    public void IncreasePlayerLevel()
+    {
+        playerStats.level.SetValue(playerStats.level.GetValue() + 1);
+    }
+
+    public void DecreasePlayerLevel()
+    {
+        playerStats.level.SetValue(playerStats.level.GetValue() - 1);
     }
 }
