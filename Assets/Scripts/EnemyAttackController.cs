@@ -24,12 +24,13 @@ public class EnemyAttackController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!enemyController.dealtDamageForThisAttack && other.gameObject.CompareTag("Player") && enemyController.enemyCombatState == EnemyController.EnemyCombatState.COMBAT)
+        if (other.gameObject.CompareTag("Player") && !enemyController.dealtDamageForThisAttack && enemyController.enemyCombatState == EnemyController.EnemyCombatState.COMBAT)
         {
             enemyController.dealtDamageForThisAttack = true;
             StartCoroutine(resetAttack());
             enemyStats.DealDamange(other.gameObject);
         }
+        
     }
 
     // Cooldown for enemy attack

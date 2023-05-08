@@ -774,6 +774,7 @@ MonoBehaviour:
   enemyRotationSpeed: 2.5
   dealtDamageForThisAttack: 0
   healthbarYPos: 2
+  rotationPlusOrMinus: 1
 --- !u!114 &7962199819881483723
 MonoBehaviour:
   m_ObjectHideFlags: 0

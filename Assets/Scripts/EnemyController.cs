@@ -22,6 +22,7 @@ public class EnemyController : MonoBehaviour
     public float enemyRotationSpeed;
     public bool dealtDamageForThisAttack = false;
     public float healthbarYPos;
+    public int rotationPlusOrMinus;
 
     public enum EnemyCombatState
     {
@@ -67,7 +68,7 @@ public class EnemyController : MonoBehaviour
             // Move the enemy forward if it is not too close to the player
             if (Vector3.Distance(gameObject.transform.position, player.transform.position) > minDistanceToPlayer && gameManagerScript.enemyFollowPlayer)
             {
-                transform.Translate(Vector3.forward * currentWalkSpeed * Time.deltaTime);
+                transform.Translate(Vector3.forward * currentWalkSpeed * Time.deltaTime * rotationPlusOrMinus);
             }
             else
             {
@@ -79,9 +80,9 @@ public class EnemyController : MonoBehaviour
             healthBar.gameObject.SetActive(true);
 
             // The enemy gradually turns toward the player if in combat state
-            directionToPlayer = player.transform.position - transform.position;
+            directionToPlayer = player.transform.position - (transform.position /** rotationPlusOrMinus*/);
             directionToPlayer.y = 0;
-            enemyRotationToPlayer = Quaternion.LookRotation(directionToPlayer);
+            enemyRotationToPlayer = Quaternion.LookRotation(rotationPlusOrMinus * directionToPlayer);
             transform.rotation = Quaternion.Slerp(transform.rotation, enemyRotationToPlayer, enemyRotationSpeed * Time.deltaTime);
         }
         // Enemy passive state
