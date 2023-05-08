@@ -46,4 +46,13 @@ public class EnemyStats : CharacterStats
 
         return (float)(random.NextDouble() * (maxWindow - minWindow) + minWindow);
     }
+
+    
+    public float GetTotalDamageOutput()
+    {
+        // Increase this value to punish the player more for wearing under-leveled armor
+        float lowerArmorLevelPunishmentMultiplier = 50;
+        return damage.GetValue() * level.GetValue() * Mathf.Pow(gameManagerScript.GetArmorToPlayerLevelMultiplier(), lowerArmorLevelPunishmentMultiplier)
+            / gameManagerScript.GetTotalArmorOutput() * 10;
+    }
 }

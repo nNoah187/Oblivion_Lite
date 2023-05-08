@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviour
         Instantiate(chestPrefab, new Vector3(-15, 0, 5), chestPrefab.transform.rotation);
         Instantiate(chestPrefab, new Vector3(-17.5f, 0, 5), chestPrefab.transform.rotation);
 
-        gearPrefabArray = testingGearPrefabArray;
+        //gearPrefabArray = testingGearPrefabArray;
 
         // Spawn in default weapon prefab (axe)
         currentWeapon = Instantiate(defaultWeaponPrefab);
@@ -128,6 +128,7 @@ public class GameManager : MonoBehaviour
         currentWeapon.transform.localRotation = Quaternion.Euler(currentWeapon.GetComponent<GearStats>().localRot);
         playerStats.currentWeapon = currentWeapon;
         currentWeapon = defaultWeapon;
+        playerStats.currentWeapon.GetComponent<WeaponStats>().level = 1;
 
         OverrideWeaponAnimation(playerStats.currentWeapon);
 
@@ -206,7 +207,7 @@ public class GameManager : MonoBehaviour
         debugWeaponLevelText.text = "Weapon level: " + playerStats.currentWeapon.GetComponent<WeaponStats>().level;
         debugWeaponDamageText.text = "Weapon damage: " + playerStats.currentWeapon.GetComponent<WeaponStats>().damage.GetValue();
         debugWeaponAttackCooldownSecondsText.text = "Weapon attack cooldown: " + GetWeaponAttackCooldown(playerStats.currentWeapon) + "s";
-        debugDifficultyGearValueMultiplier.text = "Difficulty gear value multiplier: " + GetDifficultyValueMultiplier() + "x";
+        debugDifficultyGearValueMultiplier.text = "Difficulty gear value multiplier: " + GetDifficultyPlayerValueMultiplier() + "x";
     }
 
     // When opening a menu
@@ -253,8 +254,8 @@ public class GameManager : MonoBehaviour
             gearToDisplay.SetActive(false);
             // Set the parent of the gear to the chest it is contained in
             gearToDisplay.transform.SetParent(chest.transform);
-            // The gear level of the gear is the player's level + 1
-            newGearLevel = (int)(playerStats.level.GetValue() + 1);
+            // The gear level of the gear is the player's level
+            newGearLevel = (int)playerStats.level.GetValue();
             gearToDisplay.GetComponent<GearStats>().level = newGearLevel;
             // Make the chest contain the new gear
             chestController.gearContained = gearToDisplay;
@@ -326,7 +327,7 @@ public class GameManager : MonoBehaviour
             // The UI will display the armor in the chest's level
             levelNewStat = newGearLevel;
             // The UI will display the armor in the chest's protection
-            valueNewStat = gearToDisplay.GetComponent<ArmorStats>().protection.GetValue();
+            valueNewStat = GetSingularArmorOutput(gearToDisplay);
 
             // If the gear item in the chest is a helmet, get the player's current helmet for comparison
             if (gearToDisplay.CompareTag("Helmet"))
@@ -334,7 +335,7 @@ public class GameManager : MonoBehaviour
                 // The UI will display the player's helmet level
                 levelOldStat = playerStats.currentHelmet.GetComponent<ArmorStats>().level;
                 // The UI will display the player's helmet protection
-                valueOldStat = playerStats.currentHelmet.GetComponent<ArmorStats>().protection.GetValue();
+                valueOldStat = GetSingularArmorOutput(playerStats.currentHelmet);
 
                 // Display player's current helmet protection
                 valueOldStatText.text = playerStats.currentHelmet.GetComponent<ArmorStats>().protection.GetName() + ": " +
@@ -348,7 +349,7 @@ public class GameManager : MonoBehaviour
                 // The UI will display the player's chestplate level
                 levelOldStat = playerStats.currentChest.GetComponent<ArmorStats>().level;
                 // The UI will display the player's chestplate protection
-                valueOldStat = playerStats.currentChest.GetComponent<ArmorStats>().protection.GetValue();
+                valueOldStat = GetSingularArmorOutput(playerStats.currentChest);
 
                 // Display player's current chestplate protection
                 valueOldStatText.text = playerStats.currentChest.GetComponent<ArmorStats>().protection.GetName() + ": " +
@@ -459,11 +460,11 @@ public class GameManager : MonoBehaviour
         return (int)(helmet.GetComponent<ArmorStats>().protection.GetValue() + chestplate.GetComponent<ArmorStats>().protection.GetValue());
     }
 
-    public float GetDifficultyValueMultiplier()
+    public float GetDifficultyPlayerValueMultiplier()
     {
         if (difficulty == Difficulty.easy)
         {
-            return 1.75f;
+            return 2f;
         }
         else if (difficulty == Difficulty.normal)
         {
@@ -481,15 +482,20 @@ public class GameManager : MonoBehaviour
     {
         return (playerStats.currentHelmet.GetComponent<ArmorStats>().protection.GetValue()
             + playerStats.currentChest.GetComponent<ArmorStats>().protection.GetValue())
-            * GetDifficultyValueMultiplier()
+            * GetDifficultyPlayerValueMultiplier()
             * GetHighestArmorLevel();
+    }
+
+    public float GetSingularArmorOutput(GameObject armor)
+    {
+        return armor.GetComponent<ArmorStats>().protection.GetValue() * armor.GetComponent<ArmorStats>().level;
     }
 
     public float GetTotalDefaultArmorOutput()
     {
         return (defaultHelmetPrefab.GetComponent<ArmorStats>().protection.GetValue()
             + defaultChestplatePrefab.GetComponent<ArmorStats>().protection.GetValue())
-            * GetDifficultyValueMultiplier()
+            * GetDifficultyPlayerValueMultiplier()
             * defaultHelmetPrefab.GetComponent<ArmorStats>().level;
     }
 
@@ -497,7 +503,7 @@ public class GameManager : MonoBehaviour
     {
         return weapon.GetComponent<WeaponStats>().damage.GetValue()
             * GetWeaponTypeDamageMultiplier(weapon)
-            * GetDifficultyValueMultiplier()
+            * GetDifficultyPlayerValueMultiplier()
             * weapon.GetComponent<WeaponStats>().level;
     }
 
@@ -505,7 +511,7 @@ public class GameManager : MonoBehaviour
     {
         return defaultWeaponPrefab.GetComponent<WeaponStats>().damage.GetValue()
             * GetWeaponTypeDamageMultiplier(defaultWeaponPrefab)
-            * GetDifficultyValueMultiplier()
+            * GetDifficultyPlayerValueMultiplier()
             * playerStats.level.GetValue();
     }
 
@@ -585,5 +591,13 @@ public class GameManager : MonoBehaviour
             setAttackTypeScript.Set(2);
             playerAnimator.SetFloat("attackSpeed", 1);
         }
+    }
+
+    public float GetArmorToPlayerLevelMultiplier()
+    {
+        float averageArmorLevel = (playerStats.currentHelmet.GetComponent<ArmorStats>().level +
+            playerStats.currentChest.GetComponent<ArmorStats>().level) / 2;
+
+        return playerStats.level.GetValue() / averageArmorLevel;
     }
 }

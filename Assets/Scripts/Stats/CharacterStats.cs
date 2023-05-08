@@ -45,7 +45,7 @@ public class CharacterStats : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("Player"))
         {
-            damageDealt = ((GetComponent<EnemyStats>().damage.GetValue() / gameManagerScript.GetTotalArmorOutput()) * GetComponent<EnemyStats>().level.GetValue()) * 2;
+            damageDealt = GetComponent<EnemyStats>().GetTotalDamageOutput();
             UnityEngine.Debug.Log("Damage dealt: " +  damageDealt);
             PlayerController playerController = other.GetComponent<PlayerController>();
             // Play take damage animation on the character hit
