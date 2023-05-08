@@ -31,9 +31,9 @@ public class CharacterStats : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            //playerStats.currentWeapon.GetComponent<MeleeController>().thisAttackRegistered = false;
             // Damage is determined by the stats of the weapon, the character's damage value, and the difficulty
-            damageDealt = gameManagerScript.GetTotalDamageOutput(gameObject.GetComponent<PlayerStats>().currentWeapon);
+            damageDealt = gameManagerScript.GetTotalDamageOutput(gameObject.GetComponent<PlayerStats>().currentWeapon)
+                / other.GetComponent<EnemyStats>().GetTotalArmorOutput();
             UnityEngine.Debug.Log("you dealt: " + damageDealt);
             EnemyController enemyController = other.GetComponent<EnemyController>();
             // Play take damage animation on the character hit

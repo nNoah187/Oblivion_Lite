@@ -304,7 +304,7 @@ GameObject:
   - component: {fileID: 3396173624199440737}
   - component: {fileID: 3396173624199440738}
   m_Layer: 0
-  m_Name: LowPolySkeleton
+  m_Name: Skeleton
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

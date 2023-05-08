@@ -55,4 +55,9 @@ public class EnemyStats : CharacterStats
         return damage.GetValue() * level.GetValue() * Mathf.Pow(gameManagerScript.GetArmorToPlayerLevelMultiplier(), lowerArmorLevelPunishmentMultiplier)
             / gameManagerScript.GetTotalArmorOutput() * 10;
     }
+
+    public float GetTotalArmorOutput()
+    {
+        return level.GetValue();
+    }
 }
