@@ -451,6 +451,7 @@ MonoBehaviour:
     baseValue: 10
     name: Damage
   baseAttackCooldown: 1
+  baseXPValue: 2.5
 --- !u!65 &2589114931597041359
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -462,8 +463,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1.2720416, z: 0.5633127}
-  m_Center: {x: 0, y: 0.68888634, z: 0.0029976368}
+  m_Size: {x: 1.3224611, y: 1.2720416, z: 0.9510855}
+  m_Center: {x: 0.0030514717, y: 0.68888634, z: 0.019177437}
 --- !u!54 &2589114931597041353
 Rigidbody:
   m_ObjectHideFlags: 0

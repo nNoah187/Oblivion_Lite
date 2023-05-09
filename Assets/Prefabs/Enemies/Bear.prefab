@@ -795,6 +795,7 @@ MonoBehaviour:
     baseValue: 10
     name: Damage
   baseAttackCooldown: 1
+  baseXPValue: 15
 --- !u!1 &3688843794599603062
 GameObject:
   m_ObjectHideFlags: 0

@@ -46,6 +46,10 @@ public class GameManager : MonoBehaviour
     public GameObject defaultWeaponPrefab;
     public Transform chestplateTransform;
     public GameObject reticle;
+    public TextMeshProUGUI levelText;
+    public Slider xpBar;
+    public TextMeshProUGUI xpNotification;
+    public bool showPreviousXPNotification;
 
     private FirstPersonController firstPersonController;
     private PlayerStats playerStats;
@@ -74,6 +78,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI debugWeaponDamageText;
     public TextMeshProUGUI debugWeaponAttackCooldownSecondsText;
     public TextMeshProUGUI debugDifficultyGearValueMultiplier;
+    public TextMeshProUGUI debugXPStatText;
 
     public enum Difficulty
     {
@@ -117,7 +122,7 @@ public class GameManager : MonoBehaviour
         Instantiate(chestPrefab, new Vector3(-15, 0, 5), chestPrefab.transform.rotation);
         Instantiate(chestPrefab, new Vector3(-17.5f, 0, 5), chestPrefab.transform.rotation);
 
-        //gearPrefabArray = testingGearPrefabArray;
+        gearPrefabArray = testingGearPrefabArray;
 
         // Spawn in default weapon prefab (axe)
         currentWeapon = Instantiate(defaultWeaponPrefab);
@@ -142,6 +147,11 @@ public class GameManager : MonoBehaviour
         debugMenu.SetActive(true);
         // Set the difficulty to normal
         difficulty = Difficulty.normal;
+
+        xpBar.maxValue = playerStats.GetFullXPToNextLevel();
+        xpBar.value = playerStats.currentXP;
+        levelText.text = "Lvl " + playerStats.level.GetValue();
+        xpNotification.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -208,6 +218,7 @@ public class GameManager : MonoBehaviour
         debugWeaponDamageText.text = "Weapon damage: " + playerStats.currentWeapon.GetComponent<WeaponStats>().damage.GetValue();
         debugWeaponAttackCooldownSecondsText.text = "Weapon attack cooldown: " + GetWeaponAttackCooldown(playerStats.currentWeapon) + "s";
         debugDifficultyGearValueMultiplier.text = "Difficulty gear value multiplier: " + GetDifficultyPlayerValueMultiplier() + "x";
+        debugXPStatText.text = "XP: " + playerStats.currentXP + "/" + playerStats.GetFullXPToNextLevel();
     }
 
     // When opening a menu
@@ -599,5 +610,13 @@ public class GameManager : MonoBehaviour
             playerStats.currentChest.GetComponent<ArmorStats>().level) / 2;
 
         return playerStats.level.GetValue() / averageArmorLevel;
+    }
+
+    public IEnumerator ShowXPNotification()
+    {
+        xpNotification.gameObject.SetActive(true);
+        yield return new WaitForSeconds(2);
+
+        xpNotification.gameObject.SetActive(false);
     }
 }

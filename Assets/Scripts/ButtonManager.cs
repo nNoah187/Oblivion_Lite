@@ -57,6 +57,11 @@ public class ButtonManager : MonoBehaviour
         playerStats.level.SetValue(playerStats.level.GetValue() - 1);
     }
 
+    public void AddXP(float amount)
+    {
+        playerStats.AddXP(amount);
+    }
+
     public void SetPlayerLevel(int level)
     {
         playerStats.level.SetValue(level);

@@ -7,6 +7,7 @@ public class EnemyStats : CharacterStats
 {
     public Stat damage;
     public float baseAttackCooldown;
+    public float baseXPValue;
 
     private GameObject player;
 
@@ -47,7 +48,11 @@ public class EnemyStats : CharacterStats
         return (float)(random.NextDouble() * (maxWindow - minWindow) + minWindow);
     }
 
-    
+    public override void Die()
+    {
+        player.GetComponent<PlayerStats>().AddXP(GetXPAmount());
+    }
+
     public float GetTotalDamageOutput()
     {
         // Increase this value to punish the player more for wearing under-leveled armor
@@ -59,5 +64,10 @@ public class EnemyStats : CharacterStats
     public float GetTotalArmorOutput()
     {
         return level.GetValue();
+    }
+
+    public float GetXPAmount()
+    {
+        return baseXPValue * level.GetValue() * 10;
     }
 }

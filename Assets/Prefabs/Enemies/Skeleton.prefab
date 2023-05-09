@@ -391,6 +391,7 @@ MonoBehaviour:
     baseValue: 5
     name: Damage
   baseAttackCooldown: 1
+  baseXPValue: 5
 --- !u!54 &3396173624199440737
 Rigidbody:
   m_ObjectHideFlags: 0
