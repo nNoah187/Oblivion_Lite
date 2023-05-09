@@ -100,7 +100,7 @@ public class GameManager : MonoBehaviour
         sprintBar.maxValue = firstPersonController.sprintDuration;
 
         // Spawn in enemies
-        enemyPrefabArray = testingEnemyPrefabArray;
+        //enemyPrefabArray = testingEnemyPrefabArray;
         for (int i = 0; i < enemyPrefabArray.Length; i++)
         {
             GameObject enemy = Instantiate(enemyPrefabArray[i], new Vector3(4, 0, i * -4), Quaternion.identity);
