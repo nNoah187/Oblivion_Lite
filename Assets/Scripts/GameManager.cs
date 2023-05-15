@@ -50,6 +50,8 @@ public class GameManager : MonoBehaviour
     public Slider xpBar;
     public TextMeshProUGUI xpNotification;
     public bool showPreviousXPNotification;
+    public List<GameObject> notificationTextList;
+    public GameObject notificationTextPrefab;
 
     private FirstPersonController firstPersonController;
     private PlayerStats playerStats;
@@ -152,6 +154,7 @@ public class GameManager : MonoBehaviour
         xpBar.value = playerStats.currentXP;
         levelText.text = "Lvl " + playerStats.level.GetValue();
         xpNotification.gameObject.SetActive(false);
+        notificationTextList = new List<GameObject>();
     }
 
     // Update is called once per frame
@@ -612,11 +615,46 @@ public class GameManager : MonoBehaviour
         return playerStats.level.GetValue() / averageArmorLevel;
     }
 
-    public IEnumerator ShowXPNotification()
+    public void UpdateNotificationUI()
     {
-        xpNotification.gameObject.SetActive(true);
-        yield return new WaitForSeconds(2);
+        int maxAmount;
+        float yPos = 200;
 
-        xpNotification.gameObject.SetActive(false);
+        if (notificationTextList.Count > 3)
+        {
+            maxAmount = 3;
+        }
+        else
+        {
+            maxAmount = notificationTextList.Count;
+        }
+
+        for (int i = 0; i < maxAmount; i++)
+        {
+            yPos -= 30;
+            notificationTextList[i].transform.localPosition = new Vector3(notificationTextList[i].transform.localPosition.x, yPos, notificationTextList[i].transform.localPosition.z);
+            notificationTextList[i].gameObject.SetActive(true);
+            StartCoroutine(RemoveNotification(notificationTextList[i]));
+        }
+    }
+
+    public void SpawnNotificationText(string text)
+    {
+        GameObject notification = Instantiate(notificationTextPrefab);
+        notification.GetComponent<TextMeshProUGUI>().text = text;
+        notification.gameObject.SetActive(false);
+        notification.transform.SetParent(GameObject.Find("Canvas").transform);
+        notification.transform.localPosition = notificationTextPrefab.transform.localPosition;
+        notificationTextList.Add(notification);
+
+        UpdateNotificationUI();
+    }
+
+    public IEnumerator RemoveNotification(GameObject notification)
+    {
+        yield return new WaitForSeconds(2);
+        notificationTextList.Remove(notification);
+        Destroy(notification);
+        UpdateNotificationUI();
     }
 }
