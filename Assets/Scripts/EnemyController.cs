@@ -80,7 +80,7 @@ public class EnemyController : MonoBehaviour
             healthBar.gameObject.SetActive(true);
 
             // The enemy gradually turns toward the player if in combat state
-            directionToPlayer = player.transform.position - (transform.position /** rotationPlusOrMinus*/);
+            directionToPlayer = player.transform.position - (transform.position);
             directionToPlayer.y = 0;
             enemyRotationToPlayer = Quaternion.LookRotation(rotationPlusOrMinus * directionToPlayer);
             transform.rotation = Quaternion.Slerp(transform.rotation, enemyRotationToPlayer, enemyRotationSpeed * Time.deltaTime);

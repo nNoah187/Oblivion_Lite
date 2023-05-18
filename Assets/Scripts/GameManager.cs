@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     public Slider healthbar;
     public Image sprintBarFill;
     public Image sprintBarBackground;
-    public TextMeshProUGUI openChestPrompt;
+    public TextMeshProUGUI interactPrompt;
     public GameObject currentWeapon;
     public GameObject defaultWeapon;
     public GameObject weaponPosition;

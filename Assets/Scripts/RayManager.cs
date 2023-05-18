@@ -34,7 +34,8 @@ public class RayManager : MonoBehaviour
                 if (!gameManagerScript.openingChest && hit.collider.gameObject.CompareTag("Chest"))
                 {
                     // Display the prompt to open the chest
-                    gameManagerScript.openChestPrompt.gameObject.SetActive(true);
+                    gameManagerScript.interactPrompt.gameObject.SetActive(true);
+                    gameManagerScript.interactPrompt.text = "Press F to open chest";
 
                     // If the player presses F
                     if (Input.GetKeyDown(KeyCode.F))
@@ -45,7 +46,7 @@ public class RayManager : MonoBehaviour
                             gameManagerScript.openingChest = true;
                             // Set the chest to opened state
                             hit.collider.gameObject.GetComponent<ChestController>().chestState = ChestController.ChestState.OPENED;
-                            gameManagerScript.openChestPrompt.gameObject.SetActive(false);
+                            gameManagerScript.interactPrompt.gameObject.SetActive(false);
                             // Play the chest opening animation
                             hit.collider.gameObject.GetComponent<Animator>().SetTrigger("open");
                             StartCoroutine(gameManagerScript.WaitForChestAnimation(hit.collider.gameObject));
@@ -57,19 +58,31 @@ public class RayManager : MonoBehaviour
                         }
                     }
                 }
+                else if (hit.collider.gameObject.CompareTag("NPC") && hit.collider.gameObject.GetComponent<NPCController>().npcState == NPCController.NPCState.WORKING)
+                {
+                    gameManagerScript.interactPrompt.text = "Press F to speak";
+                    gameManagerScript.interactPrompt.gameObject.SetActive(true);
+
+                    if (Input.GetKeyDown(KeyCode.F))
+                    {
+                        gameManagerScript.interactPrompt.gameObject.SetActive(false);
+                        hit.collider.gameObject.GetComponent<Animator>().SetBool("speaking", true);
+                        hit.collider.gameObject.GetComponent<NPCController>().npcState = NPCController.NPCState.SPEAKING;
+                    }
+                }
                 else
                 {
-                    gameManagerScript.openChestPrompt.gameObject.SetActive(false);
+                    gameManagerScript.interactPrompt.gameObject.SetActive(false);
                 }
             }
             else
             {
-                gameManagerScript.openChestPrompt.gameObject.SetActive(false);
+                gameManagerScript.interactPrompt.gameObject.SetActive(false);
             }
         }
         else
         {
-            gameManagerScript.openChestPrompt.gameObject.SetActive(false);
+            gameManagerScript.interactPrompt.gameObject.SetActive(false);
         }
     }
 }
