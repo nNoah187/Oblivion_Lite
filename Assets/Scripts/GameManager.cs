@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
     public bool showPreviousXPNotification;
     public List<GameObject> notificationTextList;
     public GameObject notificationTextPrefab;
+    public GameObject dialogeChoiceButtonPrefab;
 
     private FirstPersonController firstPersonController;
     private PlayerStats playerStats;
