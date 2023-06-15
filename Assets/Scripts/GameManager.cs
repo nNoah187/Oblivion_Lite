@@ -53,11 +53,14 @@ public class GameManager : MonoBehaviour
     public List<GameObject> notificationTextList;
     public GameObject notificationTextPrefab;
     public GameObject dialogeChoiceButtonPrefab;
+    public GameObject dialogueParent;
+    [HideInInspector] public GameObject currentInteractedNPC;
 
     private FirstPersonController firstPersonController;
     private PlayerStats playerStats;
     private ButtonManager buttonManager;
     private PlayerController playerControllerScript;
+    private Animator playerAnimator;
 
     // Debug components
     public GameObject debugMenu;
@@ -103,6 +106,7 @@ public class GameManager : MonoBehaviour
         playerStats = firstPersonController.GetComponent<PlayerStats>();
         buttonManager = GameObject.Find("Button Manager").GetComponent<ButtonManager>();
         playerControllerScript = firstPersonController.gameObject.GetComponent<PlayerController>();
+        playerAnimator = GameObject.Find("Player").GetComponent<Animator>();
 
         // Set sprint bar max value to the sprint duration from the first person controller
         sprintBar.maxValue = firstPersonController.sprintDuration;
@@ -145,6 +149,8 @@ public class GameManager : MonoBehaviour
 
         gearAcquiredPrompt.SetActive(false);
         gameState = GameState.GAMEPLAY;
+
+        dialogueParent.SetActive(false);
 
         // Show the debug menu
         debugMenu.SetActive(true);
@@ -248,6 +254,20 @@ public class GameManager : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         reticle.SetActive(true);
+    }
+
+    public void OnDialogueOpen()
+    {
+        gameState = GameState.MENU;
+        firstPersonController.enabled = false;
+        cursorEnabled = true;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        firstPersonController.crosshair = false;
+        reticle.SetActive(false);
+
+        playerAnimator.SetFloat("forwardSpeed", 0);
+        playerAnimator.SetFloat("horizontalSpeed", 0);
     }
 
     // When opening a chest
@@ -657,5 +677,11 @@ public class GameManager : MonoBehaviour
         notificationTextList.Remove(notification);
         Destroy(notification);
         UpdateNotificationUI();
+    }
+
+    public void OnNPCInteractExit()
+    {
+        currentInteractedNPC.GetComponent<NPCController>().npcState = NPCController.NPCState.WORKING;
+        currentInteractedNPC = null;
     }
 }
