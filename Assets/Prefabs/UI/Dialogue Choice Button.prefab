@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7782241099491831012}
   - component: {fileID: 7782241099491831013}
   - component: {fileID: 7782241099491831014}
+  - component: {fileID: -624097230872379329}
   m_Layer: 5
   m_Name: Dialogue Choice Button
   m_TagString: Untagged
@@ -121,7 +122,32 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7782241099491831013}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: -624097230872379329}
+        m_TargetAssemblyTypeName: DialogueButtonController, Assembly-CSharp
+        m_MethodName: OnDialogueOptionSelection
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &-624097230872379329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7782241099491831016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50a793b11a469184ca52f48d710fddf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  branchNum: 0
 --- !u!1 &7782241099641122662
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,7 +4,6 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using static WeaponStats;
-using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
@@ -55,6 +54,7 @@ public class GameManager : MonoBehaviour
     public GameObject dialogeChoiceButtonPrefab;
     public GameObject dialogueParent;
     [HideInInspector] public GameObject currentInteractedNPC;
+    public GameObject nextDialogueFragmentButton;
 
     private FirstPersonController firstPersonController;
     private PlayerStats playerStats;
@@ -112,13 +112,11 @@ public class GameManager : MonoBehaviour
         sprintBar.maxValue = firstPersonController.sprintDuration;
 
         // Spawn in enemies
-        //enemyPrefabArray = testingEnemyPrefabArray;
         for (int i = 0; i < enemyPrefabArray.Length; i++)
         {
             GameObject enemy = Instantiate(enemyPrefabArray[i], new Vector3(4, 0, i * -4), Quaternion.identity);
             enemy.GetComponent<EnemyStats>().level = playerStats.level;
         }
-
         // Spawn in chests
         Instantiate(chestPrefab, new Vector3(0, 0, 5), chestPrefab.transform.rotation);
         Instantiate(chestPrefab, new Vector3(-2.5f, 0, 5), chestPrefab.transform.rotation);
@@ -129,6 +127,8 @@ public class GameManager : MonoBehaviour
         Instantiate(chestPrefab, new Vector3(-15, 0, 5), chestPrefab.transform.rotation);
         Instantiate(chestPrefab, new Vector3(-17.5f, 0, 5), chestPrefab.transform.rotation);
 
+        // Testing
+        //enemyPrefabArray = testingEnemyPrefabArray;
         gearPrefabArray = testingGearPrefabArray;
 
         // Spawn in default weapon prefab (axe)
@@ -147,16 +147,14 @@ public class GameManager : MonoBehaviour
         meleeControllerScript = currentWeapon.GetComponent<MeleeController>();
         currentWeaponStats = currentWeapon.GetComponent<WeaponStats>();
 
+        // Setup game elements
         gearAcquiredPrompt.SetActive(false);
         gameState = GameState.GAMEPLAY;
-
         dialogueParent.SetActive(false);
-
         // Show the debug menu
         debugMenu.SetActive(true);
         // Set the difficulty to normal
         difficulty = Difficulty.normal;
-
         xpBar.maxValue = playerStats.GetFullXPToNextLevel();
         xpBar.value = playerStats.currentXP;
         levelText.text = "Lvl " + playerStats.level.GetValue();
@@ -682,6 +680,7 @@ public class GameManager : MonoBehaviour
     public void OnNPCInteractExit()
     {
         currentInteractedNPC.GetComponent<NPCController>().npcState = NPCController.NPCState.WORKING;
+        currentInteractedNPC.GetComponent<Animator>().SetBool("speaking", false);
         currentInteractedNPC = null;
     }
 }
