@@ -24,7 +24,8 @@ public class EnemyAttackController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player") && !enemyController.dealtDamageForThisAttack && enemyController.enemyCombatState == EnemyController.EnemyCombatState.COMBAT)
+        if (other.gameObject.CompareTag("Player") && !enemyController.dealtDamageForThisAttack && enemyController.enemyCombatState == EnemyController.EnemyCombatState.COMBAT
+            && GetComponentInParent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Attack"))
         {
             enemyController.dealtDamageForThisAttack = true;
             StartCoroutine(resetAttack());
