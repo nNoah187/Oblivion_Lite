@@ -23,6 +23,7 @@ public class EnemyController : MonoBehaviour
     public bool dealtDamageForThisAttack = false;
     public float healthbarYPos;
     public int rotationPlusOrMinus;
+    public BoxCollider physicalCollider;
 
     public enum EnemyCombatState
     {

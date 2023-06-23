@@ -431,6 +431,7 @@ MonoBehaviour:
   dealtDamageForThisAttack: 0
   healthbarYPos: 1.75
   rotationPlusOrMinus: 1
+  physicalCollider: {fileID: 2589114931597041333}
 --- !u!114 &2589114931597041357
 MonoBehaviour:
   m_ObjectHideFlags: 0
