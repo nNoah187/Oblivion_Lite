@@ -5609,6 +5609,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2589114931597041333, guid: a6c30d409c40b7443a7fa99943b15350, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2589114931597041333, guid: a6c30d409c40b7443a7fa99943b15350, type: 3}
       propertyPath: m_IsTrigger
       value: 0
       objectReference: {fileID: 0}
@@ -15315,7 +15319,7 @@ MonoBehaviour:
   difficultyText: {fileID: 408343812}
   difficulty: 0
   cursorEnabled: 0
-  enemyFollowPlayer: 0
+  enemyFollowPlayer: 1
   debugPlayerLevelText: {fileID: 1620032300}
   debugTotalArmorOutputWithCurrentArmorText: {fileID: 1576806152}
   debubTotalArmorOutputWithDefaultArmorText: {fileID: 1077383546}
@@ -16237,6 +16241,25 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: bdcf5125bbf135b439738182749e5022, type: 3}
+--- !u!1 &1780415780 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2589114931597525652, guid: a6c30d409c40b7443a7fa99943b15350, type: 3}
+  m_PrefabInstance: {fileID: 619812828}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &1780415782
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1780415780}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 3911880492725376059, guid: f6660c88e946e3f4a9301950fc6587e0, type: 3}
 --- !u!64 &1790871953
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -32137,7 +32160,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4459864849961964313}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -336.8, y: 0.8, z: 53.2}
+  m_LocalPosition: {x: -343.1, y: -0.5, z: 74.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

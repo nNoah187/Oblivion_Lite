@@ -24,6 +24,7 @@ public class EnemyController : MonoBehaviour
     public float healthbarYPos;
     public int rotationPlusOrMinus;
     public BoxCollider physicalCollider;
+    public BoxCollider deathCollider;
 
     public enum EnemyCombatState
     {

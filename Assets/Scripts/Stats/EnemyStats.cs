@@ -51,6 +51,8 @@ public class EnemyStats : CharacterStats
     public override void Die()
     {
         player.GetComponent<PlayerStats>().AddXP(GetXPAmount());
+        GetComponent<EnemyController>().physicalCollider.enabled = false;
+        GetComponent<EnemyController>().deathCollider.enabled = true;
     }
 
     public float GetTotalDamageOutput()
