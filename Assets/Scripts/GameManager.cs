@@ -7,54 +7,54 @@ using static WeaponStats;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject bear;
-    public int enemyHealth = 100;
-    public GameObject bearEnemyPrefab;
-    public Slider enemyHealthbarPrefab;
-    public Slider sprintBar;
-    public Slider attackCooldownBar;
-    public Slider healthbar;
-    public Image sprintBarFill;
-    public Image sprintBarBackground;
-    public TextMeshProUGUI interactPrompt;
+    //public GameObject bear;
+    //public int enemyHealth = 100;
+    [HideInInspector] public GameObject bearEnemyPrefab;
+    [HideInInspector] public Slider enemyHealthbarPrefab;
+    [HideInInspector] public Slider sprintBar;
+    [HideInInspector] public Slider attackCooldownBar;
+    [HideInInspector] public Slider healthbar;
+    [HideInInspector] public Image sprintBarFill;
+    [HideInInspector] public Image sprintBarBackground;
+    [HideInInspector] public TextMeshProUGUI interactPrompt;
     public GameObject currentWeapon;
-    public GameObject defaultWeapon;
-    public GameObject weaponPosition;
-    public MeleeController meleeControllerScript;
-    public WeaponStats currentWeaponStats;
-    public GameObject gearAcquiredPrompt;
-    public GameObject chestPrefab;
+    [HideInInspector] public GameObject defaultWeapon;
+    [HideInInspector] public GameObject weaponPosition;
+    [HideInInspector] public MeleeController meleeControllerScript;
+    [HideInInspector] public WeaponStats currentWeaponStats;
+    [HideInInspector] public GameObject gearAcquiredPrompt;
+    [HideInInspector] public GameObject chestPrefab;
     public GameState gameState;
-    public bool openingChest = false;
-    public Image gearImage;
-    public TextMeshProUGUI gearNameText;
-    public TextMeshProUGUI valueNewStatText;
-    public TextMeshProUGUI valueOldStatText;
-    public TextMeshProUGUI levelNewStatText;
-    public TextMeshProUGUI levelOldStatText;
-    public TextMeshProUGUI attackCooldownOldStatText;
-    public TextMeshProUGUI attackCooldownNewStatText;
+    [HideInInspector] public bool openingChest = false;
+    [HideInInspector] public Image gearImage;
+    [HideInInspector] public TextMeshProUGUI gearNameText;
+    [HideInInspector] public TextMeshProUGUI valueNewStatText;
+    [HideInInspector] public TextMeshProUGUI valueOldStatText;
+    [HideInInspector] public TextMeshProUGUI levelNewStatText;
+    [HideInInspector] public TextMeshProUGUI levelOldStatText;
+    [HideInInspector] public TextMeshProUGUI attackCooldownOldStatText;
+    [HideInInspector] public TextMeshProUGUI attackCooldownNewStatText;
     public bool wearingDefaultArmor = true;
     public GameObject[] testingGearPrefabArray;
     public GameObject[] gearPrefabArray;
     public GameObject[] testingEnemyPrefabArray;
     public GameObject[] enemyPrefabArray;
     public GameObject currentChestBeingOpened;
-    public GameObject defaultHelmetPrefab;
-    public GameObject defaultChestplatePrefab;
-    public GameObject defaultWeaponPrefab;
-    public Transform chestplateTransform;
-    public GameObject reticle;
-    public TextMeshProUGUI levelText;
-    public Slider xpBar;
-    public TextMeshProUGUI xpNotification;
-    public bool showPreviousXPNotification;
+    [HideInInspector] public GameObject defaultHelmetPrefab;
+    [HideInInspector] public GameObject defaultChestplatePrefab;
+    [HideInInspector] public GameObject defaultWeaponPrefab;
+    [HideInInspector] public Transform chestplateTransform;
+    [HideInInspector] public GameObject reticle;
+    [HideInInspector] public TextMeshProUGUI levelText;
+    [HideInInspector] public Slider xpBar;
+    [HideInInspector] public TextMeshProUGUI xpNotification;
+    [HideInInspector] public bool showPreviousXPNotification;
     public List<GameObject> notificationTextList;
-    public GameObject notificationTextPrefab;
-    public GameObject dialogeChoiceButtonPrefab;
-    public GameObject dialogueParent;
+    [HideInInspector] public GameObject notificationTextPrefab;
+    [HideInInspector] public GameObject dialogeChoiceButtonPrefab;
+    [HideInInspector] public GameObject dialogueParent;
     [HideInInspector] public GameObject currentInteractedNPC;
-    public GameObject nextDialogueFragmentButton;
+    [HideInInspector] public GameObject nextDialogueFragmentButton;
 
     private FirstPersonController firstPersonController;
     private PlayerStats playerStats;
@@ -63,28 +63,28 @@ public class GameManager : MonoBehaviour
     private Animator playerAnimator;
 
     // Debug components
-    public GameObject debugMenu;
-    public TextMeshProUGUI difficultyText;
+    [HideInInspector] public GameObject debugMenu;
+    [HideInInspector] public TextMeshProUGUI difficultyText;
     private bool debugEnabled = true;
-    public Difficulty difficulty;
-    public bool cursorEnabled = false;
-    public bool enemyFollowPlayer;
+    [HideInInspector] public Difficulty difficulty;
+    [HideInInspector] public bool cursorEnabled = false;
+    [HideInInspector] public bool enemyFollowPlayer;
 
-    public TextMeshProUGUI debugPlayerLevelText;
-    public TextMeshProUGUI debugTotalArmorOutputWithCurrentArmorText;
-    public TextMeshProUGUI debubTotalArmorOutputWithDefaultArmorText;
-    public TextMeshProUGUI debugChestplateLevelText;
-    public TextMeshProUGUI debugChestplateProtectionText;
-    public TextMeshProUGUI debugHelmetLevelText;
-    public TextMeshProUGUI debugHelmetProtectionText;
-    public TextMeshProUGUI debugTotalProtectionText;
-    public TextMeshProUGUI debugTotalDamageOutputWithCurrentWeaponText;
-    public TextMeshProUGUI debugTotalDamageOutputWithDefaultWeaponText;
-    public TextMeshProUGUI debugWeaponLevelText;
-    public TextMeshProUGUI debugWeaponDamageText;
-    public TextMeshProUGUI debugWeaponAttackCooldownSecondsText;
-    public TextMeshProUGUI debugDifficultyGearValueMultiplier;
-    public TextMeshProUGUI debugXPStatText;
+    [HideInInspector] public TextMeshProUGUI debugPlayerLevelText;
+    [HideInInspector] public TextMeshProUGUI debugTotalArmorOutputWithCurrentArmorText;
+    [HideInInspector] public TextMeshProUGUI debubTotalArmorOutputWithDefaultArmorText;
+    [HideInInspector] public TextMeshProUGUI debugChestplateLevelText;
+    [HideInInspector] public TextMeshProUGUI debugChestplateProtectionText;
+    [HideInInspector] public TextMeshProUGUI debugHelmetLevelText;
+    [HideInInspector] public TextMeshProUGUI debugHelmetProtectionText;
+    [HideInInspector] public TextMeshProUGUI debugTotalProtectionText;
+    [HideInInspector] public TextMeshProUGUI debugTotalDamageOutputWithCurrentWeaponText;
+    [HideInInspector] public TextMeshProUGUI debugTotalDamageOutputWithDefaultWeaponText;
+    [HideInInspector] public TextMeshProUGUI debugWeaponLevelText;
+    [HideInInspector] public TextMeshProUGUI debugWeaponDamageText;
+    [HideInInspector] public TextMeshProUGUI debugWeaponAttackCooldownSecondsText;
+    [HideInInspector] public TextMeshProUGUI debugDifficultyGearValueMultiplier;
+    [HideInInspector] public TextMeshProUGUI debugXPStatText;
 
     public enum Difficulty
     {
@@ -129,7 +129,7 @@ public class GameManager : MonoBehaviour
 
         // Testing
         //enemyPrefabArray = testingEnemyPrefabArray;
-        gearPrefabArray = testingGearPrefabArray;
+        //gearPrefabArray = testingGearPrefabArray;
 
         // Spawn in default weapon prefab (axe)
         currentWeapon = Instantiate(defaultWeaponPrefab);
