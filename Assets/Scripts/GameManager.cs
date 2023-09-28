@@ -54,7 +54,6 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public GameObject dialogeChoiceButtonPrefab;
     [HideInInspector] public GameObject dialogueParent;
     [HideInInspector] public GameObject currentInteractedNPC;
-    [HideInInspector] public GameObject nextDialogueFragmentButton;
 
     private FirstPersonController firstPersonController;
     private PlayerStats playerStats;

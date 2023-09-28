@@ -14,11 +14,6 @@ public class NPCController : MonoBehaviour
     private GameObject player;
     private Quaternion npcRotationToPlayer;
     private GameManager gameManagerScript;
-    private TreeList<string> dialogeBranches = new TreeList<string>();
-    [SerializeField] private string[] dialogueBranchOptions;
-    [SerializeField] public string[] branch0DialogueFragments;
-    [SerializeField] private string[] branch1DialogueFragments;
-    [SerializeField] private string[] branch2DialogueFragments;
     private Quaternion defaultRotation;
 
     public enum NPCState
@@ -35,12 +30,6 @@ public class NPCController : MonoBehaviour
 
         npcState = NPCState.WORKING;
         defaultRotation = transform.rotation;
-
-        for (int i = 0; i < branch0DialogueFragments.Length; i++)
-        {
-            dialogeBranches[0].Values.Add(branch0DialogueFragments[i]);
-            Debug.Log("fragment " + i + ": " + branch0DialogueFragments[i]);
-        }
     }
 
     // Update is called once per frame
@@ -85,27 +74,5 @@ public class NPCController : MonoBehaviour
     public void OnNPCInteractEnter()
     {
         gameManagerScript.currentInteractedNPC = gameObject;
-
-        for (int i = 0; i < dialogueBranchOptions.Length; i++)
-        {
-            dialogeBranches.Add(new TreeList<string>());
-
-            GameObject dialogueOption = Instantiate(gameManagerScript.dialogeChoiceButtonPrefab, GameObject.Find("Dialogue Choices").transform);
-            dialogueOption.transform.localPosition = new Vector3(0, -135 - (i * 30), 0);
-            dialogueOption.GetComponentInChildren<TextMeshProUGUI>().text = dialogueBranchOptions[i];
-            dialogueOption.GetComponent<DialogueButtonController>().branchNum = i;
-
-            for (int j = 0; j < 3; j++)
-            {
-                dialogeBranches[i].Values.Add("fragment " + j);
-            }
-
-        }
-
-        //What's at branch 0's values?
-        foreach (string value in dialogeBranches[0].Values)
-        {
-            Debug.Log(value);
-        }
     }
 }
