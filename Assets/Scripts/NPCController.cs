@@ -9,6 +9,9 @@ public class NPCController : MonoBehaviour
     public float npcRotationSpeed;
     public bool startedNPCInteraction = false;
     public bool stoppedNPCInteraction = false;
+    public string[] npcText;
+    public string[] playerResponseText;
+    public int npcDialogueIndex = 0;
 
     private Vector3 directionToPlayer;
     private GameObject player;
@@ -74,5 +77,7 @@ public class NPCController : MonoBehaviour
     public void OnNPCInteractEnter()
     {
         gameManagerScript.currentInteractedNPC = gameObject;
+        gameManagerScript.npcDialogueText.text = npcText[npcDialogueIndex];
+        gameManagerScript.playerResponseButtonText.text = playerResponseText[npcDialogueIndex];
     }
 }

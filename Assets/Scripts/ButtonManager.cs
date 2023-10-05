@@ -20,6 +20,14 @@ public class ButtonManager : MonoBehaviour
         
     }
 
+    public void OnPlayerResponseDialogue()
+    {
+        NPCController npcController = gameManagerScript.currentInteractedNPC.GetComponent<NPCController>();
+        npcController.npcDialogueIndex++;
+        gameManagerScript.npcDialogueText.text = npcController.npcText[npcController.npcDialogueIndex];
+        gameManagerScript.playerResponseButtonText.text = npcController.playerResponseText[npcController.npcDialogueIndex];
+    }
+
     public void ExitMenu(GameObject uiPrompt)
     {
         uiPrompt.SetActive(false);

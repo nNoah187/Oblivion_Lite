@@ -39,21 +39,35 @@ public class GameManager : MonoBehaviour
     public GameObject[] gearPrefabArray;
     public GameObject[] testingEnemyPrefabArray;
     public GameObject[] enemyPrefabArray;
+
+    // Loot chests
     public GameObject currentChestBeingOpened;
+
+    // Weapons and armor
     [HideInInspector] public GameObject defaultHelmetPrefab;
     [HideInInspector] public GameObject defaultChestplatePrefab;
     [HideInInspector] public GameObject defaultWeaponPrefab;
     [HideInInspector] public Transform chestplateTransform;
+
+    // General UI
     [HideInInspector] public GameObject reticle;
+
+    // XP UI
     [HideInInspector] public TextMeshProUGUI levelText;
     [HideInInspector] public Slider xpBar;
+
+    // Notification UI
     [HideInInspector] public TextMeshProUGUI xpNotification;
     [HideInInspector] public bool showPreviousXPNotification;
     public List<GameObject> notificationTextList;
     [HideInInspector] public GameObject notificationTextPrefab;
+
+    // NPCs and Dialogue
     [HideInInspector] public GameObject dialogeChoiceButtonPrefab;
     [HideInInspector] public GameObject dialogueParent;
-    [HideInInspector] public GameObject currentInteractedNPC;
+    [HideInInspector] public TextMeshProUGUI npcDialogueText;
+    [HideInInspector] public TextMeshProUGUI playerResponseButtonText;
+    public GameObject currentInteractedNPC;
 
     private FirstPersonController firstPersonController;
     private PlayerStats playerStats;
