@@ -692,6 +692,9 @@ public class GameManager : MonoBehaviour
 
     public void OnNPCInteractExit()
     {
+        dialogueParent.SetActive(false);
+        OnMenuExit();
+        currentInteractedNPC.GetComponent<NPCController>().playerDiscoveredIfNpcCanSpeak = false;
         currentInteractedNPC.GetComponent<NPCController>().npcState = NPCController.NPCState.WORKING;
         currentInteractedNPC.GetComponent<Animator>().SetBool("speaking", false);
         currentInteractedNPC = null;

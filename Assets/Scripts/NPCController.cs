@@ -9,9 +9,13 @@ public class NPCController : MonoBehaviour
     public float npcRotationSpeed;
     public bool startedNPCInteraction = false;
     public bool stoppedNPCInteraction = false;
+
+    // Reset when NPC gets new dialogue
     public string[] npcText;
     public string[] playerResponseText;
     public int npcDialogueIndex = 0;
+    public bool canSpeak = false;
+    public bool playerDiscoveredIfNpcCanSpeak = false;
 
     private Vector3 directionToPlayer;
     private GameObject player;
@@ -31,6 +35,11 @@ public class NPCController : MonoBehaviour
         player = GameObject.Find("FirstPersonController");
         gameManagerScript = GameObject.Find("Game Manager").GetComponent<GameManager>();
 
+        if (npcDialogueIndex == 0)
+        {
+            canSpeak = true;
+        }
+
         npcState = NPCState.WORKING;
         defaultRotation = transform.rotation;
     }
@@ -38,7 +47,9 @@ public class NPCController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (npcState == NPCState.SPEAKING)
+        Debug.Log(canSpeak);
+
+        if (npcState == NPCState.SPEAKING && canSpeak)
         {
             directionToPlayer = player.transform.position - (transform.position);
             directionToPlayer.y = 0;

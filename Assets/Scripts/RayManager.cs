@@ -60,14 +60,28 @@ public class RayManager : MonoBehaviour
                 }
                 else if (hit.collider.gameObject.CompareTag("NPC") && hit.collider.gameObject.GetComponent<NPCController>().npcState == NPCController.NPCState.WORKING)
                 {
-                    gameManagerScript.interactPrompt.text = "Press F to speak";
+                    NPCController npcController = hit.collider.GetComponent<NPCController>();
                     gameManagerScript.interactPrompt.gameObject.SetActive(true);
 
+                    if (!npcController.playerDiscoveredIfNpcCanSpeak || npcController.canSpeak)
+                    {
+                        gameManagerScript.interactPrompt.text = "Press F to speak";
+                    }
+                    else
+                    {
+                        gameManagerScript.interactPrompt.text = npcController.name + " doesn't want to speak right now.";
+                    }
+                    
                     if (Input.GetKeyDown(KeyCode.F))
                     {
-                        gameManagerScript.interactPrompt.gameObject.SetActive(false);
-                        hit.collider.gameObject.GetComponent<Animator>().SetBool("speaking", true);
-                        hit.collider.gameObject.GetComponent<NPCController>().npcState = NPCController.NPCState.SPEAKING;
+                        npcController.playerDiscoveredIfNpcCanSpeak = true;
+
+                        if (npcController.canSpeak)
+                        {
+                            gameManagerScript.interactPrompt.gameObject.SetActive(false);
+                            hit.collider.gameObject.GetComponent<Animator>().SetBool("speaking", true);
+                            hit.collider.gameObject.GetComponent<NPCController>().npcState = NPCController.NPCState.SPEAKING;
+                        }
                     }
                 }
                 else
