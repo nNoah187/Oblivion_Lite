@@ -5,13 +5,15 @@ using UnityEngine;
 public class ButtonManager : MonoBehaviour
 {
     private GameManager gameManagerScript;
+    private GameObject player;
     private PlayerStats playerStats;
 
     // Start is called before the first frame update
     void Start()
     {
         gameManagerScript = GameObject.Find("Game Manager").GetComponent<GameManager>();
-        playerStats = GameObject.Find("FirstPersonController").GetComponent<PlayerStats>();
+        player = GameObject.Find("FirstPersonController");
+        playerStats = player.GetComponent<PlayerStats>();
     }
 
     // Update is called once per frame
@@ -46,6 +48,22 @@ public class ButtonManager : MonoBehaviour
     {
         uiPrompt.SetActive(false);
         gameManagerScript.OnMenuExit();
+    }
+
+    /*
+     * Debug methods
+     */
+    public void TeleportPlayer(int location)
+    {
+        switch(location)
+        {
+            case 0:
+                player.transform.position = new Vector3(-441.44f, 1.66f, 169.4f);
+                break;
+            case 1:
+                player.transform.position = new Vector3(0, 0, 0);
+                break;
+        }
     }
 
     public void EnableEasyDifficulty()
