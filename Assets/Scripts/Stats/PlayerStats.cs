@@ -43,8 +43,7 @@ public class PlayerStats : CharacterStats
 
     public void AddXP(float xpToAdd)
     {
-        //gameManagerScript.xpNotification.text = "+" + xpToAdd + " XP";
-        gameManagerScript.SpawnNotificationText("+" + xpToAdd + " XP");
+        gameManagerScript.ShowXPNotification(xpToAdd);
 
         if (xpToAdd + currentXP < GetFullXPToNextLevel())
         {

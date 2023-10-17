@@ -47,8 +47,6 @@ public class NPCController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(canSpeak);
-
         if (npcState == NPCState.SPEAKING && canSpeak)
         {
             directionToPlayer = player.transform.position - (transform.position);
