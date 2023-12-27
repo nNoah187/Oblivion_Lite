@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public TextMeshProUGUI xpNotification;
     [HideInInspector] public bool showPreviousXPNotification;
     public GameObject notificationText;
-    private Coroutine xpNotificationCoroutine;
+    private Coroutine notificationCoroutine;
 
     // NPCs and Dialogue
     [HideInInspector] public GameObject dialogeChoiceButtonPrefab;
@@ -76,7 +76,13 @@ public class GameManager : MonoBehaviour
     private PlayerController playerControllerScript;
     private Animator playerAnimator;
 
+    // Quest UI
+    public TextMeshProUGUI questTitle;
+    public TextMeshProUGUI questInfo;
+
     // Quests
+    public int questIndex = 0;
+    public int questObjectiveIndex = 0;
 
     // Debug components
     [HideInInspector] public GameObject debugMenu;
@@ -177,6 +183,11 @@ public class GameManager : MonoBehaviour
         xpNotification.gameObject.SetActive(false);
         //notificationTextList = new List<GameObject>();
         notificationText.SetActive(false);
+        // Quest info
+        questTitle.text = "";
+        questInfo.text = "";
+        questIndex = 0;
+        questObjectiveIndex = 0;
     }
 
     // Update is called once per frame
@@ -653,20 +664,33 @@ public class GameManager : MonoBehaviour
 
     public void ShowXPNotification(float xpToAdd)
     {
-        if (xpNotificationCoroutine != null)
+        if (notificationCoroutine != null)
         {
-            StopCoroutine(xpNotificationCoroutine);
+            StopCoroutine(notificationCoroutine);
         }
 
         TextMeshProUGUI notification = notificationText.GetComponent<TextMeshProUGUI>();
         notification.GetComponent<TextMeshProUGUI>().text = "+" + xpToAdd + " XP";
         notification.gameObject.SetActive(true);
-        Debug.Log("starting coroutine");
         float endTime = Time.time + 3;
-        xpNotificationCoroutine = StartCoroutine(XPNotificationTimer(endTime));
+        notificationCoroutine = StartCoroutine(NotificationTimer(endTime));
     }
 
-    public IEnumerator XPNotificationTimer(float endTime)
+    public void ShowNotification(string notificationString)
+    {
+        if (notificationCoroutine != null)
+        {
+            StopCoroutine(notificationCoroutine);
+        }
+
+        TextMeshProUGUI notification = notificationText.GetComponent<TextMeshProUGUI>();
+        notification.GetComponent<TextMeshProUGUI>().text = notificationString;
+        notification.gameObject.SetActive(true);
+        float endTime = Time.time + 3;
+        notificationCoroutine = StartCoroutine(NotificationTimer(endTime));
+    }
+
+    public IEnumerator NotificationTimer(float endTime)
     {
         while (endTime > Time.time)
         {
@@ -683,5 +707,40 @@ public class GameManager : MonoBehaviour
         currentInteractedNPC.GetComponent<NPCController>().npcState = NPCController.NPCState.WORKING;
         currentInteractedNPC.GetComponent<Animator>().SetBool("speaking", false);
         currentInteractedNPC = null;
+    }
+
+    public IEnumerator QuestCoroutine()
+    {
+        switch (questIndex)
+        {
+            case 0:
+                questTitle.text = "Out of the Frying Pan";
+                switch (questObjectiveIndex)
+                {
+                    case 0:
+                        questInfo.text = "Steal Grognak's key";
+                        break;
+                }
+                yield return null;
+                break;
+        }
+
+        yield return null;
+
+
+        //bool stolenKey = false;
+        //while (true)
+        //{
+        //    if (stolenKey)
+        //    {
+        //        Debug.Log("stolen key");
+        //        break;
+        //    }
+        //    yield return null;
+        //}
+
+        //yield return new WaitForSeconds(0.5f);
+
+        //Debug.Log("next objective");
     }
 }

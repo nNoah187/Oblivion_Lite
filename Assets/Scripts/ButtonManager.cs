@@ -53,15 +53,21 @@ public class ButtonManager : MonoBehaviour
     /*
      * Debug methods
      */
-    public void TeleportPlayer(int location)
+    public void TeleportPlayer(int locationIndex)
     {
-        switch(location)
+        switch(locationIndex)
         {
+            // Starting spawn
             case 0:
-                player.transform.position = new Vector3(-441.44f, 1.66f, 169.4f);
+                player.transform.position = new Vector3(-303.1f, 0.2f, 319.11f);
                 break;
+            // Demo area
             case 1:
                 player.transform.position = new Vector3(0, 0, 0);
+                break;
+            // Starting village
+            case 2:
+                player.transform.position = new Vector3(-441.44f, 1.66f, 169.4f);
                 break;
         }
     }
