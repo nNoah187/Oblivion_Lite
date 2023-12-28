@@ -63,6 +63,10 @@ public class GameManager : MonoBehaviour
     public GameObject notificationText;
     private Coroutine notificationCoroutine;
 
+    // Tutorial UI
+    public GameObject tutorialParent;
+    public TextMeshProUGUI tutorialDescriptionText;
+
     // NPCs and Dialogue
     [HideInInspector] public GameObject dialogeChoiceButtonPrefab;
     [HideInInspector] public GameObject dialogueParent;
@@ -187,10 +191,19 @@ public class GameManager : MonoBehaviour
         //notificationTextList = new List<GameObject>();
         notificationText.SetActive(false);
         // Quest info
-        questTitle.gameObject.SetActive(false);
-        questInfo.gameObject.SetActive(false);
+        questTitle.gameObject.SetActive(true);
+        questInfo.gameObject.SetActive(true);
         questIndex = -1;
         questObjectiveIndex = -1;
+
+        if (questIndex == -1 && questObjectiveIndex == -1)
+        {
+            OnQuestCompletion("Out of the Frying Pan", "Speak to the prisoner");
+        }
+
+        tutorialParent.SetActive(false);
+
+        ShowTutorial("Use WASD to move and your mouse to look around");
     }
 
     // Update is called once per frame
@@ -718,24 +731,29 @@ public class GameManager : MonoBehaviour
         currentInteractedNPC.GetComponent<Animator>().SetBool("speaking", false);
         currentInteractedNPC = null;
 
-        if (questIndex == -1)
+        if (questIndex == 0)
         {
             questTitle.gameObject.SetActive(true);
             questInfo.gameObject.SetActive(true);
 
-            OnQuestCompletion("Out of the Frying Pan", "Steal Grognak's key");
+            OnQuestObjectiveCompletion("Steal Grognak's key");
         }
     }
 
     public void OnQuestCompletion(string newQuestTitle, string newQuestInfo)
     {
+        if (questIndex > -1)
+        {
+            ShowNotification(questTitle.text + " completed!");
+        }
+
         questTitle.text = newQuestTitle;
         questInfo.text = newQuestInfo;
 
         questIndex++;
         questObjectiveIndex = 0;
 
-        ShowNotification("New quest accepted");
+        ShowNotificationAfterTime(3, "New quest accepted");
     }
 
     public void OnQuestObjectiveCompletion(string newQuestInfo)
@@ -745,6 +763,13 @@ public class GameManager : MonoBehaviour
         questObjectiveIndex++;
 
         ShowNotification("Quest objective updated");
+    }
+
+    public void ShowTutorial(string tutorialDescription)
+    {
+        OnMenuOpen();
+        tutorialParent.SetActive(true);
+        tutorialDescriptionText.text = tutorialDescription;
     }
 
     //public IEnumerator QuestCoroutine()

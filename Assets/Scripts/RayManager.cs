@@ -84,10 +84,10 @@ public class RayManager : MonoBehaviour
                         }
                     }
                 }
-                else if (hit.collider.gameObject.CompareTag("Key") && gameManagerScript.questIndex == 0 && gameManagerScript.questObjectiveIndex == 0)
+                else if (hit.collider.gameObject.CompareTag("Key") && gameManagerScript.questIndex == 0 && gameManagerScript.questObjectiveIndex == 1)
                 {
                     gameManagerScript.interactPrompt.gameObject.SetActive(true);
-                    gameManagerScript.interactPrompt.text = "F to steal key";
+                    gameManagerScript.interactPrompt.text = "Press F to steal key";
 
                     if (Input.GetKeyDown(KeyCode.F))
                     {
