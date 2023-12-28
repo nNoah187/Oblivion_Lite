@@ -84,6 +84,19 @@ public class RayManager : MonoBehaviour
                         }
                     }
                 }
+                else if (hit.collider.gameObject.CompareTag("Key") && gameManagerScript.questIndex == 0 && gameManagerScript.questObjectiveIndex == 0)
+                {
+                    gameManagerScript.interactPrompt.gameObject.SetActive(true);
+                    gameManagerScript.interactPrompt.text = "F to steal key";
+
+                    if (Input.GetKeyDown(KeyCode.F))
+                    {
+                        gameManagerScript.OnQuestObjectiveCompletion("Wait for Grognak to leave");
+                        Destroy(hit.collider.gameObject);
+                        Destroy(gameManagerScript.tutorialKey);
+                        StartCoroutine(gameManagerScript.ShowNotificationAfterTime(3, "Grognak's key added"));
+                    }
+                }
                 else
                 {
                     gameManagerScript.interactPrompt.gameObject.SetActive(false);

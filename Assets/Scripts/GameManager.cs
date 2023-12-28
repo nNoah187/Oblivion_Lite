@@ -67,6 +67,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public GameObject dialogeChoiceButtonPrefab;
     [HideInInspector] public GameObject dialogueParent;
     [HideInInspector] public TextMeshProUGUI npcDialogueText;
+    public TextMeshProUGUI npcDialogNameText;
     [HideInInspector] public TextMeshProUGUI playerResponseButtonText;
     public GameObject currentInteractedNPC;
 
@@ -81,8 +82,10 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI questInfo;
 
     // Quests
-    public int questIndex = 0;
-    public int questObjectiveIndex = 0;
+    public int questIndex;
+    public int questObjectiveIndex;
+
+    public GameObject tutorialKey;
 
     // Debug components
     [HideInInspector] public GameObject debugMenu;
@@ -184,10 +187,10 @@ public class GameManager : MonoBehaviour
         //notificationTextList = new List<GameObject>();
         notificationText.SetActive(false);
         // Quest info
-        questTitle.text = "";
-        questInfo.text = "";
-        questIndex = 0;
-        questObjectiveIndex = 0;
+        questTitle.gameObject.SetActive(false);
+        questInfo.gameObject.SetActive(false);
+        questIndex = -1;
+        questObjectiveIndex = -1;
     }
 
     // Update is called once per frame
@@ -699,6 +702,13 @@ public class GameManager : MonoBehaviour
         notificationText.SetActive(false);
     }
 
+    public IEnumerator ShowNotificationAfterTime(int seconds, string notificationString)
+    {
+        yield return new WaitForSeconds(seconds);
+
+        ShowNotification(notificationString);
+    }
+
     public void OnNPCInteractExit()
     {
         dialogueParent.SetActive(false);
@@ -707,40 +717,68 @@ public class GameManager : MonoBehaviour
         currentInteractedNPC.GetComponent<NPCController>().npcState = NPCController.NPCState.WORKING;
         currentInteractedNPC.GetComponent<Animator>().SetBool("speaking", false);
         currentInteractedNPC = null;
-    }
 
-    public IEnumerator QuestCoroutine()
-    {
-        switch (questIndex)
+        if (questIndex == -1)
         {
-            case 0:
-                questTitle.text = "Out of the Frying Pan";
-                switch (questObjectiveIndex)
-                {
-                    case 0:
-                        questInfo.text = "Steal Grognak's key";
-                        break;
-                }
-                yield return null;
-                break;
+            questTitle.gameObject.SetActive(true);
+            questInfo.gameObject.SetActive(true);
+
+            OnQuestCompletion("Out of the Frying Pan", "Steal Grognak's key");
         }
-
-        yield return null;
-
-
-        //bool stolenKey = false;
-        //while (true)
-        //{
-        //    if (stolenKey)
-        //    {
-        //        Debug.Log("stolen key");
-        //        break;
-        //    }
-        //    yield return null;
-        //}
-
-        //yield return new WaitForSeconds(0.5f);
-
-        //Debug.Log("next objective");
     }
+
+    public void OnQuestCompletion(string newQuestTitle, string newQuestInfo)
+    {
+        questTitle.text = newQuestTitle;
+        questInfo.text = newQuestInfo;
+
+        questIndex++;
+        questObjectiveIndex = 0;
+
+        ShowNotification("New quest accepted");
+    }
+
+    public void OnQuestObjectiveCompletion(string newQuestInfo)
+    {
+        questInfo.text = newQuestInfo;
+
+        questObjectiveIndex++;
+
+        ShowNotification("Quest objective updated");
+    }
+
+    //public IEnumerator QuestCoroutine()
+    //{
+    //    switch (questIndex)
+    //    {
+    //        case 0:
+    //            questTitle.text = "Out of the Frying Pan";
+    //            switch (questObjectiveIndex)
+    //            {
+    //                case 0:
+    //                    questInfo.text = "Steal Grognak's key";
+    //                    break;
+    //            }
+    //            yield return null;
+    //            break;
+    //    }
+
+    //    yield return null;
+
+
+    //    //bool stolenKey = false;
+    //    //while (true)
+    //    //{
+    //    //    if (stolenKey)
+    //    //    {
+    //    //        Debug.Log("stolen key");
+    //    //        break;
+    //    //    }
+    //    //    yield return null;
+    //    //}
+
+    //    //yield return new WaitForSeconds(0.5f);
+
+    //    //Debug.Log("next objective");
+    //}
 }

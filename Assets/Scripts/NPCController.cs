@@ -88,5 +88,6 @@ public class NPCController : MonoBehaviour
         gameManagerScript.currentInteractedNPC = gameObject;
         gameManagerScript.npcDialogueText.text = npcText[npcDialogueIndex];
         gameManagerScript.playerResponseButtonText.text = playerResponseText[npcDialogueIndex];
+        gameManagerScript.npcDialogNameText.text = gameObject.name;
     }
 }
