@@ -26,9 +26,10 @@ public class ButtonManager : MonoBehaviour
     {
         NPCController npcController = gameManagerScript.currentInteractedNPC.GetComponent<NPCController>();
         npcController.npcDialogueIndex++;
+        npcController.npcDialogueIndexForThisSequence++;
 
         // NPC is out of dialogue
-        if (!npcController.canSpeak)
+        if (!npcController.canSpeak || npcController.npcDialogeSequenceLineAmountsArray[npcController.npcDialogueSequece] <= npcController.npcDialogueIndexForThisSequence)
         {
             gameManagerScript.OnNPCInteractExit();
         }

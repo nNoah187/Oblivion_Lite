@@ -203,7 +203,8 @@ public class GameManager : MonoBehaviour
 
         tutorialParent.SetActive(false);
 
-        ShowTutorial("Use WASD to move and your mouse to look around");
+
+        StartCoroutine(ShowTutorialAfterSeconds(1, "Use WASD to move and your mouse to look around"));
     }
 
     // Update is called once per frame
@@ -729,15 +730,21 @@ public class GameManager : MonoBehaviour
         currentInteractedNPC.GetComponent<NPCController>().playerDiscoveredIfNpcCanSpeak = false;
         currentInteractedNPC.GetComponent<NPCController>().npcState = NPCController.NPCState.WORKING;
         currentInteractedNPC.GetComponent<Animator>().SetBool("speaking", false);
-        currentInteractedNPC = null;
+        currentInteractedNPC.GetComponent<NPCController>().npcDialogueSequece++;
+        currentInteractedNPC.GetComponent<NPCController>().npcDialogueIndexForThisSequence = 0;
 
-        if (questIndex == 0)
+        currentInteractedNPC.GetComponent<NPCController>().canSpeak = false;
+
+        if (questIndex == 0 && questObjectiveIndex == 0)
         {
-            questTitle.gameObject.SetActive(true);
-            questInfo.gameObject.SetActive(true);
-
             OnQuestObjectiveCompletion("Steal Grognak's key");
         }
+        else if (questIndex == 0 && questObjectiveIndex == 4)
+        {
+            OnQuestObjectiveCompletion("Find a weapon");
+        }
+
+        currentInteractedNPC = null;
     }
 
     public void OnQuestCompletion(string newQuestTitle, string newQuestInfo)
@@ -770,6 +777,23 @@ public class GameManager : MonoBehaviour
         OnMenuOpen();
         tutorialParent.SetActive(true);
         tutorialDescriptionText.text = tutorialDescription;
+    }
+
+    public IEnumerator ShowTutorialAfterSeconds(int seconds, string tutorialDescription)
+    {
+        yield return new WaitForSeconds(seconds);
+
+        ShowTutorial(tutorialDescription);
+    }
+
+    public IEnumerator GrognakWalkAfterTime(int seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+
+        FollowPath grognakFollowPath = GameObject.Find("Grognak").GetComponent<FollowPath>();
+
+        grognakFollowPath.gameObject.GetComponent<Animator>().SetBool("walking", true);
+        grognakFollowPath.follow = StartCoroutine(grognakFollowPath.Follow());
     }
 
     //public IEnumerator QuestCoroutine()

@@ -11,6 +11,7 @@ public class RayManager : MonoBehaviour
     public Camera firstPersonCamera;
     public float maxInteractDistance;
     public float minInteractDistance;
+    public GameObject otherCellDoor;
 
     // Start is called before the first frame update
     void Start()
@@ -95,6 +96,28 @@ public class RayManager : MonoBehaviour
                         Destroy(hit.collider.gameObject);
                         Destroy(gameManagerScript.tutorialKey);
                         StartCoroutine(gameManagerScript.ShowNotificationAfterTime(3, "Grognak's key added"));
+                        StartCoroutine(gameManagerScript.GrognakWalkAfterTime(3));
+                    }
+                }
+                else if (hit.collider.gameObject.CompareTag("Cell Door") && gameManagerScript.questIndex == 0 && gameManagerScript.questObjectiveIndex == 3)
+                {
+                    gameManagerScript.interactPrompt.gameObject.SetActive(true);
+                    gameManagerScript.interactPrompt.text = "Press F to unlock door";
+
+                    if (Input.GetKeyDown(KeyCode.F))
+                    {
+                        if (hit.collider.gameObject.name != "Correct Prison Door")
+                        {
+                            gameManagerScript.ShowNotification("This key doesn't fit this door");
+                        }
+                        else
+                        {
+                            Destroy(hit.collider.gameObject);
+                            otherCellDoor.gameObject.SetActive(true);
+                            gameManagerScript.OnQuestObjectiveCompletion("Speak to the prisoner");
+                            //GameObject.Find("Ravi").GetComponent<NPCController>().playerDiscoveredIfNpcCanSpeak = false;
+                            GameObject.Find("Ravi").GetComponent<NPCController>().canSpeak = true;
+                        }
                     }
                 }
                 else

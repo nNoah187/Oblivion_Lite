@@ -9,11 +9,14 @@ public class NPCController : MonoBehaviour
     public float npcRotationSpeed;
     public bool startedNPCInteraction = false;
     public bool stoppedNPCInteraction = false;
+    public int npcDialogueSequece = 0;
+    public int[] npcDialogeSequenceLineAmountsArray;
 
     // Reset when NPC gets new dialogue
     public string[] npcText;
     public string[] playerResponseText;
     public int npcDialogueIndex = 0;
+    public int npcDialogueIndexForThisSequence = 0;
     public bool canSpeak = false;
     public bool playerDiscoveredIfNpcCanSpeak = false;
 
