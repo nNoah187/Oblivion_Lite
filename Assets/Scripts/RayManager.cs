@@ -57,6 +57,12 @@ public class RayManager : MonoBehaviour
                         {
                             gameManagerScript.OpenChest(hit.collider.gameObject);
                         }
+
+                        if (gameManagerScript.questIndex == 0 && gameManagerScript.questObjectiveIndex == 5)
+                        {
+                            gameManagerScript.OnQuestObjectiveCompletion("Fight your way out of the prison");
+                            gameManagerScript.ShowTutorial("-Chests give you random loot scaled for your level\n-Each weapon type has different attack speeds and damage");
+                        }
                     }
                 }
                 else if (hit.collider.gameObject.CompareTag("NPC") && hit.collider.gameObject.GetComponent<NPCController>().npcState == NPCController.NPCState.WORKING)

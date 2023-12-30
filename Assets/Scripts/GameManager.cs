@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public Image sprintBarBackground;
     [HideInInspector] public TextMeshProUGUI interactPrompt;
     public GameObject currentWeapon;
-    [HideInInspector] public GameObject defaultWeapon;
+    public GameObject defaultWeapon;
     [HideInInspector] public GameObject weaponPosition;
     [HideInInspector] public MeleeController meleeControllerScript;
     [HideInInspector] public WeaponStats currentWeaponStats;
@@ -168,7 +168,11 @@ public class GameManager : MonoBehaviour
         currentWeapon.transform.localPosition = currentWeapon.GetComponent<GearStats>().localPos;
         currentWeapon.transform.localRotation = Quaternion.Euler(currentWeapon.GetComponent<GearStats>().localRot);
         playerStats.currentWeapon = currentWeapon;
+
+        currentWeapon.gameObject.SetActive(false);
+
         currentWeapon = defaultWeapon;
+
         playerStats.currentWeapon.GetComponent<WeaponStats>().level = 1;
 
         OverrideWeaponAnimation(playerStats.currentWeapon);
@@ -204,7 +208,7 @@ public class GameManager : MonoBehaviour
         tutorialParent.SetActive(false);
 
 
-        StartCoroutine(ShowTutorialAfterSeconds(1, "Use WASD to move and your mouse to look around"));
+        StartCoroutine(ShowTutorialAfterSeconds(1, "-Press WASD keys to move\n-Use your mouse to look around"));
     }
 
     // Update is called once per frame
@@ -316,7 +320,13 @@ public class GameManager : MonoBehaviour
     // When opening a chest
     public void OpenChest(GameObject chest)
     {
-        currentChestBeingOpened = chest;
+        if (questIndex != 0 && questObjectiveIndex != 5)
+        {
+            currentWeapon.SetActive(true);
+            return;
+        }
+
+            currentChestBeingOpened = chest;
         GameObject gearToDisplay;
         ChestController chestController = chest.GetComponent<ChestController>();
         int newGearLevel;
@@ -325,7 +335,15 @@ public class GameManager : MonoBehaviour
         if (chestController.gearContained == null)
         {
             // Get random piece of gear from array of prefabs
-            gearToDisplay = gearPrefabArray[GenerateRandomGear()];
+            if (questIndex == 0 && questIndex == 6)
+            {
+                gearToDisplay = gearPrefabArray[0];
+            }
+            else
+            {
+                gearToDisplay = gearPrefabArray[GenerateRandomGear()];
+            }
+            
             // Spawn in the piece of gear
             gearToDisplay = Instantiate(gearToDisplay, gearToDisplay.transform.position, gearToDisplay.transform.rotation);
             // Make the gear invisible

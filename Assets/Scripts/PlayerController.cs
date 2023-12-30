@@ -39,7 +39,8 @@ public class PlayerController : MonoBehaviour
             playerAnimator.SetFloat("horizontalSpeed", Input.GetAxis("Horizontal") * 0.75f);
 
             // Swing weapon if LMB is clicked and the player is not already attacking
-            if (Input.GetMouseButtonDown(0) && !isAttacking)
+            if (Input.GetMouseButtonDown(0) && !isAttacking && ((gameManagerScript.questIndex == 0 && gameManagerScript.questObjectiveIndex >= 6) ||
+                gameManagerScript.questIndex > 0))
             {
                 isAttacking = true;
                 firstPersonController.enableSprint = false;
