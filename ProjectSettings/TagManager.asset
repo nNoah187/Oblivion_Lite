@@ -15,6 +15,7 @@ TagManager:
   - NPC
   - Key
   - Cell Door
+  - Exit Door
   layers:
   - Default
   - TransparentFX

@@ -70,6 +70,10 @@ public class ButtonManager : MonoBehaviour
             case 2:
                 player.transform.position = new Vector3(-441.44f, 1.66f, 169.4f);
                 break;
+            // Tutorial chest
+            case 3:
+                player.transform.position = new Vector3(-312.2909851074219f, 18.707569122314454f, 296.776123046875f);
+                break;
         }
     }
 

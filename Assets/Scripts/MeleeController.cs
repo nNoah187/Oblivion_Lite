@@ -31,6 +31,7 @@ public class MeleeController : MonoBehaviour
     // Cooldown for melee attack
     public IEnumerator resetAttack()
     {
+        Debug.Log("player stats' current weapon when attempting to reset cooldown: " + playerStats.currentWeapon);
         yield return new WaitForSeconds(gameManagerScript.GetWeaponAttackCooldown(playerStats.currentWeapon));
         playerControllerScript.isAttacking = false;
         playerControllerScript.firstPersonController.enableSprint = true;

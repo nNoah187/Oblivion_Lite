@@ -12,6 +12,7 @@ public class RayManager : MonoBehaviour
     public float maxInteractDistance;
     public float minInteractDistance;
     public GameObject otherCellDoor;
+    public GameObject otherPrisonExitDoor;
 
     // Start is called before the first frame update
     void Start()
@@ -55,13 +56,20 @@ public class RayManager : MonoBehaviour
                         // Or if the chest being opened has been opened before
                         else if (hit.collider.gameObject.GetComponent<ChestController>().chestState == ChestController.ChestState.OPENED)
                         {
-                            gameManagerScript.OpenChest(hit.collider.gameObject);
+                            if (gameManagerScript.questIndex == 0 && gameManagerScript.questObjectiveIndex >= 7)
+                            {
+                                gameManagerScript.ShowNotification("This chest is empty");
+                            }
+                            else
+                            {
+                                gameManagerScript.OpenChest(hit.collider.gameObject);
+                            }
                         }
 
                         if (gameManagerScript.questIndex == 0 && gameManagerScript.questObjectiveIndex == 5)
                         {
-                            gameManagerScript.OnQuestObjectiveCompletion("Fight your way out of the prison");
-                            gameManagerScript.ShowTutorial("-Chests give you random loot scaled for your level\n-Each weapon type has different attack speeds and damage");
+                            gameManagerScript.OnQuestObjectiveCompletion("Equip the axe in the chest");
+                            gameManagerScript.ShowTutorial("-Chests give you random loot scaled for your level\n-Finding and equipping better loot will make combat easier");
                         }
                     }
                 }
@@ -124,6 +132,18 @@ public class RayManager : MonoBehaviour
                             //GameObject.Find("Ravi").GetComponent<NPCController>().playerDiscoveredIfNpcCanSpeak = false;
                             GameObject.Find("Ravi").GetComponent<NPCController>().canSpeak = true;
                         }
+                    }
+                }
+                else if (hit.collider.gameObject.CompareTag("Exit Door") && gameManagerScript.questIndex == 0 && gameManagerScript.questObjectiveIndex == 7)
+                {
+                    gameManagerScript.interactPrompt.gameObject.SetActive(true);
+                    gameManagerScript.interactPrompt.text = "Press F to open door";
+
+                    if (Input.GetKeyDown(KeyCode.F))
+                    {
+                        Destroy(hit.collider.gameObject);
+                        otherPrisonExitDoor.gameObject.SetActive(true);
+                        gameManagerScript.OnQuestObjectiveCompletion("Wait for Ravi to meet you outside the prison");
                     }
                 }
                 else

@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private GameManager gameManagerScript;
-    private MeleeController meleeControllerScript;
+    public MeleeController meleeControllerScript;
     private PlayerStats playerStats;
     private float maxSprintCooldown = 5f;
 
@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
         playerAnimator = GameObject.Find("Player").GetComponent<Animator>();
         firstPersonController = GetComponent<FirstPersonController>();
         gameManagerScript = GameObject.Find("Game Manager").GetComponent<GameManager>();
-        meleeControllerScript = GameObject.Find("Weapon").GetComponentInChildren<MeleeController>();
+        //meleeControllerScript = GameObject.Find("Weapon").GetComponentInChildren<MeleeController>();
         playerStats = GetComponent<PlayerStats>();
 
         gameManagerScript.healthbar.maxValue = playerStats.maxHealth;
@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
             playerAnimator.SetFloat("horizontalSpeed", Input.GetAxis("Horizontal") * 0.75f);
 
             // Swing weapon if LMB is clicked and the player is not already attacking
-            if (Input.GetMouseButtonDown(0) && !isAttacking && ((gameManagerScript.questIndex == 0 && gameManagerScript.questObjectiveIndex >= 6) ||
+            if (Input.GetMouseButtonDown(0) && !isAttacking && ((gameManagerScript.questIndex == 0 && gameManagerScript.questObjectiveIndex >= 7) ||
                 gameManagerScript.questIndex > 0))
             {
                 isAttacking = true;
@@ -52,6 +52,7 @@ public class PlayerController : MonoBehaviour
                 // Play player attack animation
                 playerAnimator.SetTrigger("attack");
                 // Start the weapon attack cooldown
+                Debug.Log("starting attack cooldown");
                 StartCoroutine(meleeControllerScript.resetAttack());
 
                 // Update the attack cooldown bar on the HUD if it hasn't started already

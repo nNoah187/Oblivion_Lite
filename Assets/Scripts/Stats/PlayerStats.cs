@@ -15,7 +15,7 @@ public class PlayerStats : CharacterStats
     {
         currentHelmet = GameObject.Find("Helmet").GetComponentInChildren<ArmorStats>().gameObject;
         currentChest = GameObject.Find("Chestplate").GetComponentInChildren<ArmorStats>().gameObject;
-        currentWeapon = GameObject.Find("Weapon").GetComponentInChildren<WeaponStats>().gameObject;
+        //currentWeapon = GameObject.Find("Weapon").GetComponentInChildren<WeaponStats>().gameObject;
 
         currentXP = 0;
     }

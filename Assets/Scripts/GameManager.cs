@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
 
     // General UI
     [HideInInspector] public GameObject reticle;
+    public GameObject infoBarsParent;
 
     // XP UI
     [HideInInspector] public TextMeshProUGUI levelText;
@@ -62,6 +63,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public bool showPreviousXPNotification;
     public GameObject notificationText;
     private Coroutine notificationCoroutine;
+    private bool isNotificationBeingShown = false;
 
     // Tutorial UI
     public GameObject tutorialParent;
@@ -97,7 +99,7 @@ public class GameManager : MonoBehaviour
     private bool debugEnabled = true;
     [HideInInspector] public Difficulty difficulty;
     [HideInInspector] public bool cursorEnabled = false;
-    [HideInInspector] public bool enemyFollowPlayer;
+    public bool enemyFollowPlayer;
 
     [HideInInspector] public TextMeshProUGUI debugPlayerLevelText;
     [HideInInspector] public TextMeshProUGUI debugTotalArmorOutputWithCurrentArmorText;
@@ -207,6 +209,7 @@ public class GameManager : MonoBehaviour
 
         tutorialParent.SetActive(false);
 
+        currentWeapon.gameObject.SetActive(false);
 
         StartCoroutine(ShowTutorialAfterSeconds(1, "-Press WASD keys to move\n-Use your mouse to look around"));
     }
@@ -261,21 +264,21 @@ public class GameManager : MonoBehaviour
         }
 
         // Debug stats
-        debugPlayerLevelText.text = "Player level: " + playerStats.level.GetValue();
-        debugTotalArmorOutputWithCurrentArmorText.text = "Total armor output with current armor: " + GetTotalArmorOutput();
-        debubTotalArmorOutputWithDefaultArmorText.text = "Total armor output with default armor: " + GetTotalDefaultArmorOutput();
-        debugChestplateLevelText.text = "Chestplate level: " + playerStats.currentChest.GetComponent<ArmorStats>().level;
-        debugChestplateProtectionText.text = "Chestplate protection: " + playerStats.currentChest.GetComponent<ArmorStats>().protection.GetValue();
-        debugHelmetLevelText.text = "Helmet level: " + playerStats.currentHelmet.GetComponent<ArmorStats>().level;
-        debugHelmetProtectionText.text = "Helmet protection: " + playerStats.currentHelmet.GetComponent<ArmorStats>().protection.GetValue();
-        debugTotalProtectionText.text = "Total protection: " + GetTotalArmorProtection(playerStats.currentHelmet, playerStats.currentChest);
-        debugTotalDamageOutputWithCurrentWeaponText.text = "Total damage output with current weapon: " + GetTotalDamageOutput(playerStats.currentWeapon);
-        debugTotalDamageOutputWithDefaultWeaponText.text = "Total damage output with default weapon: " + GetTotalDefaultDamageOutput();
-        debugWeaponLevelText.text = "Weapon level: " + playerStats.currentWeapon.GetComponent<WeaponStats>().level;
-        debugWeaponDamageText.text = "Weapon damage: " + playerStats.currentWeapon.GetComponent<WeaponStats>().damage.GetValue();
-        debugWeaponAttackCooldownSecondsText.text = "Weapon attack cooldown: " + GetWeaponAttackCooldown(playerStats.currentWeapon) + "s";
-        debugDifficultyGearValueMultiplier.text = "Difficulty gear value multiplier: " + GetDifficultyPlayerValueMultiplier() + "x";
-        debugXPStatText.text = "XP: " + playerStats.currentXP + "/" + playerStats.GetFullXPToNextLevel();
+        //debugPlayerLevelText.text = "Player level: " + playerStats.level.GetValue();
+        //debugTotalArmorOutputWithCurrentArmorText.text = "Total armor output with current armor: " + GetTotalArmorOutput();
+        //debubTotalArmorOutputWithDefaultArmorText.text = "Total armor output with default armor: " + GetTotalDefaultArmorOutput();
+        //debugChestplateLevelText.text = "Chestplate level: " + playerStats.currentChest.GetComponent<ArmorStats>().level;
+        //debugChestplateProtectionText.text = "Chestplate protection: " + playerStats.currentChest.GetComponent<ArmorStats>().protection.GetValue();
+        //debugHelmetLevelText.text = "Helmet level: " + playerStats.currentHelmet.GetComponent<ArmorStats>().level;
+        //debugHelmetProtectionText.text = "Helmet protection: " + playerStats.currentHelmet.GetComponent<ArmorStats>().protection.GetValue();
+        //debugTotalProtectionText.text = "Total protection: " + GetTotalArmorProtection(playerStats.currentHelmet, playerStats.currentChest);
+        //debugTotalDamageOutputWithCurrentWeaponText.text = "Total damage output with current weapon: " + GetTotalDamageOutput(playerStats.currentWeapon);
+        //debugTotalDamageOutputWithDefaultWeaponText.text = "Total damage output with default weapon: " + GetTotalDefaultDamageOutput();
+        //debugWeaponLevelText.text = "Weapon level: " + playerStats.currentWeapon.GetComponent<WeaponStats>().level;
+        //debugWeaponDamageText.text = "Weapon damage: " + playerStats.currentWeapon.GetComponent<WeaponStats>().damage.GetValue();
+        //debugWeaponAttackCooldownSecondsText.text = "Weapon attack cooldown: " + GetWeaponAttackCooldown(playerStats.currentWeapon) + "s";
+        //debugDifficultyGearValueMultiplier.text = "Difficulty gear value multiplier: " + GetDifficultyPlayerValueMultiplier() + "x";
+        //debugXPStatText.text = "XP: " + playerStats.currentXP + "/" + playerStats.GetFullXPToNextLevel();
     }
 
     // When opening a menu
@@ -289,6 +292,16 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         firstPersonController.crosshair = false;
         reticle.SetActive(false);
+        if (notificationText.activeSelf == true)
+        {
+            isNotificationBeingShown = true;
+        }
+        else
+        {
+            isNotificationBeingShown = false;
+        }
+        notificationText.SetActive(false);
+        infoBarsParent.SetActive(false);
     }
 
     // When exiting a menu
@@ -301,6 +314,11 @@ public class GameManager : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         reticle.SetActive(true);
+        if (isNotificationBeingShown)
+        {
+            notificationText.SetActive(true);
+        }
+        infoBarsParent.SetActive(true);
     }
 
     public void OnDialogueOpen()
@@ -312,6 +330,7 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         firstPersonController.crosshair = false;
         reticle.SetActive(false);
+        infoBarsParent.SetActive(false);
 
         playerAnimator.SetFloat("forwardSpeed", 0);
         playerAnimator.SetFloat("horizontalSpeed", 0);
@@ -320,13 +339,7 @@ public class GameManager : MonoBehaviour
     // When opening a chest
     public void OpenChest(GameObject chest)
     {
-        if (questIndex != 0 && questObjectiveIndex != 5)
-        {
-            currentWeapon.SetActive(true);
-            return;
-        }
-
-            currentChestBeingOpened = chest;
+        currentChestBeingOpened = chest;
         GameObject gearToDisplay;
         ChestController chestController = chest.GetComponent<ChestController>();
         int newGearLevel;
@@ -335,9 +348,10 @@ public class GameManager : MonoBehaviour
         if (chestController.gearContained == null)
         {
             // Get random piece of gear from array of prefabs
-            if (questIndex == 0 && questIndex == 6)
+            if (questIndex == 0 && questObjectiveIndex == 6)
             {
-                gearToDisplay = gearPrefabArray[0];
+                Debug.Log("setting gear to display as default weapon");
+                gearToDisplay = defaultWeapon;
             }
             else
             {
@@ -393,6 +407,12 @@ public class GameManager : MonoBehaviour
             // The UI will display the player's weapon total damage
             valueOldStat = GetTotalDamageOutput(playerStats.currentWeapon);
 
+            if (questIndex == 0 && questObjectiveIndex == 6)
+            {
+                valueOldStat = 0;
+                levelOldStat = 0;
+            }
+
             // Display player's current weapon damage
             valueOldStatText.text = playerStats.currentWeapon.GetComponent<WeaponStats>().damage.GetName() + ": " +
                 valueOldStat + "→";
@@ -401,6 +421,11 @@ public class GameManager : MonoBehaviour
             // Display player's current weapon attack cooldown
             attackCooldownOldStatText.text = "Attack cooldown: " + GetWeaponAttackCooldown(playerStats.currentWeapon) + "s→";
 
+            if (questIndex == 0 && questObjectiveIndex == 6)
+            {
+                attackCooldownOldStatText.text = "Attack cooldown: 0s→";
+            }
+
             // Display the chest's weapon attack cooldown
             attackCooldownNewStatText.text = GetWeaponAttackCooldown(gearToDisplay) + "s"
             + gearToDisplay.GetComponent<GearStats>().GetGearImprovementArrow(GetWeaponAttackCooldown(gearToDisplay),
@@ -408,6 +433,11 @@ public class GameManager : MonoBehaviour
             // Change the color of the attack cooldown stat UI to red, green, or white depenind on if the gear in the chest is an improvement
             attackCooldownNewStatText.color = gearToDisplay.GetComponent<GearStats>().GetGearImprovementColor(GetWeaponAttackCooldown(gearToDisplay),
                 GetWeaponAttackCooldown(playerStats.currentWeapon));
+
+            if (questIndex == 0 && questObjectiveIndex == 6)
+            {
+                attackCooldownNewStatText.color = Color.green;
+            }
         }
         // Displaying armor
         else if (gearToDisplay.CompareTag("Helmet") || gearToDisplay.CompareTag("Chestplate"))
@@ -496,6 +526,17 @@ public class GameManager : MonoBehaviour
         }
         else if (chestToPlayerGear.CompareTag("Weapon"))
         {
+            if (questIndex == 0 && questObjectiveIndex == 6)
+            {
+                currentWeapon.SetActive(true);
+                buttonManager.ExitMenu(gearAcquiredPrompt);
+                playerStats.currentWeapon = currentWeapon;
+                playerControllerScript.meleeControllerScript = currentWeapon.GetComponent<MeleeController>();
+                OnQuestObjectiveCompletion("Fight your way out of the prison!");
+                StartCoroutine(ShowTutorialAfterSeconds(3, "-Left click to swing your weapon\n-Once you swing, the cooldown until you can swing again is shown by the green bar at the bottom\n-Different weapon types have different attack speeds, cooldowns, and damage"));
+                return;
+            }
+
             playerToChestGear = playerStats.currentWeapon;
 
             chestController.gearContained = playerToChestGear;
