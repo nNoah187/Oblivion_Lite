@@ -92,6 +92,10 @@ public class GameManager : MonoBehaviour
     public int questObjectiveIndex;
 
     public GameObject tutorialKey;
+    public GameObject prisonExitDoor;
+    public GameObject prisonInteriorParent;
+    public GameObject prisonEntranceCollider;
+
 
     // Debug components
     [HideInInspector] public GameObject debugMenu;
@@ -264,21 +268,21 @@ public class GameManager : MonoBehaviour
         }
 
         // Debug stats
-        //debugPlayerLevelText.text = "Player level: " + playerStats.level.GetValue();
-        //debugTotalArmorOutputWithCurrentArmorText.text = "Total armor output with current armor: " + GetTotalArmorOutput();
-        //debubTotalArmorOutputWithDefaultArmorText.text = "Total armor output with default armor: " + GetTotalDefaultArmorOutput();
-        //debugChestplateLevelText.text = "Chestplate level: " + playerStats.currentChest.GetComponent<ArmorStats>().level;
-        //debugChestplateProtectionText.text = "Chestplate protection: " + playerStats.currentChest.GetComponent<ArmorStats>().protection.GetValue();
-        //debugHelmetLevelText.text = "Helmet level: " + playerStats.currentHelmet.GetComponent<ArmorStats>().level;
-        //debugHelmetProtectionText.text = "Helmet protection: " + playerStats.currentHelmet.GetComponent<ArmorStats>().protection.GetValue();
-        //debugTotalProtectionText.text = "Total protection: " + GetTotalArmorProtection(playerStats.currentHelmet, playerStats.currentChest);
-        //debugTotalDamageOutputWithCurrentWeaponText.text = "Total damage output with current weapon: " + GetTotalDamageOutput(playerStats.currentWeapon);
-        //debugTotalDamageOutputWithDefaultWeaponText.text = "Total damage output with default weapon: " + GetTotalDefaultDamageOutput();
-        //debugWeaponLevelText.text = "Weapon level: " + playerStats.currentWeapon.GetComponent<WeaponStats>().level;
-        //debugWeaponDamageText.text = "Weapon damage: " + playerStats.currentWeapon.GetComponent<WeaponStats>().damage.GetValue();
-        //debugWeaponAttackCooldownSecondsText.text = "Weapon attack cooldown: " + GetWeaponAttackCooldown(playerStats.currentWeapon) + "s";
-        //debugDifficultyGearValueMultiplier.text = "Difficulty gear value multiplier: " + GetDifficultyPlayerValueMultiplier() + "x";
-        //debugXPStatText.text = "XP: " + playerStats.currentXP + "/" + playerStats.GetFullXPToNextLevel();
+        debugPlayerLevelText.text = "Player level: " + playerStats.level.GetValue();
+        debugTotalArmorOutputWithCurrentArmorText.text = "Total armor output with current armor: " + GetTotalArmorOutput();
+        debubTotalArmorOutputWithDefaultArmorText.text = "Total armor output with default armor: " + GetTotalDefaultArmorOutput();
+        debugChestplateLevelText.text = "Chestplate level: " + playerStats.currentChest.GetComponent<ArmorStats>().level;
+        debugChestplateProtectionText.text = "Chestplate protection: " + playerStats.currentChest.GetComponent<ArmorStats>().protection.GetValue();
+        debugHelmetLevelText.text = "Helmet level: " + playerStats.currentHelmet.GetComponent<ArmorStats>().level;
+        debugHelmetProtectionText.text = "Helmet protection: " + playerStats.currentHelmet.GetComponent<ArmorStats>().protection.GetValue();
+        debugTotalProtectionText.text = "Total protection: " + GetTotalArmorProtection(playerStats.currentHelmet, playerStats.currentChest);
+        debugTotalDamageOutputWithCurrentWeaponText.text = "Total damage output with current weapon: " + GetTotalDamageOutput(playerStats.currentWeapon);
+        debugTotalDamageOutputWithDefaultWeaponText.text = "Total damage output with default weapon: " + GetTotalDefaultDamageOutput();
+        debugWeaponLevelText.text = "Weapon level: " + playerStats.currentWeapon.GetComponent<WeaponStats>().level;
+        debugWeaponDamageText.text = "Weapon damage: " + playerStats.currentWeapon.GetComponent<WeaponStats>().damage.GetValue();
+        debugWeaponAttackCooldownSecondsText.text = "Weapon attack cooldown: " + GetWeaponAttackCooldown(playerStats.currentWeapon) + "s";
+        debugDifficultyGearValueMultiplier.text = "Difficulty gear value multiplier: " + GetDifficultyPlayerValueMultiplier() + "x";
+        debugXPStatText.text = "XP: " + playerStats.currentXP + "/" + playerStats.GetFullXPToNextLevel();
     }
 
     // When opening a menu

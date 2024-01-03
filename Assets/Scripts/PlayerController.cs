@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     public MeleeController meleeControllerScript;
     private PlayerStats playerStats;
     private float maxSprintCooldown = 5f;
+    private RayManager rayManagerScript;
 
     public FirstPersonController firstPersonController;
     public Animator playerAnimator;
@@ -19,6 +20,7 @@ public class PlayerController : MonoBehaviour
         playerAnimator = GameObject.Find("Player").GetComponent<Animator>();
         firstPersonController = GetComponent<FirstPersonController>();
         gameManagerScript = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        rayManagerScript = GameObject.Find("Ray Manager").GetComponent<RayManager>();
         //meleeControllerScript = GameObject.Find("Weapon").GetComponentInChildren<MeleeController>();
         playerStats = GetComponent<PlayerStats>();
 
@@ -92,6 +94,24 @@ public class PlayerController : MonoBehaviour
             {
                 playerAnimator.SetTrigger("die");
             }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.name == "Sprint Trigger")
+        {
+            gameManagerScript.ShowTutorial("-While walking forward, hold left shift to sprint\n-Your sprint stamina is shown by the white bar below\n-If your sprint stamina bar is grayed out, you have to wait for it to recharge before you can sprint again");
+            Destroy(other.gameObject);
+        }
+        else if (other.gameObject.name == "Exit Prison Trigger")
+        {
+            Destroy(other.gameObject);
+            gameManagerScript.OnQuestObjectiveCompletion("Wait for Ravi to meet you right outside the prison");
+            //gameManagerScript.prisonExitDoor.SetActive(true);
+            //rayManagerScript.otherPrisonExitDoor.SetActive(false);
+            gameManagerScript.prisonEntranceCollider.SetActive(true);
+            gameManagerScript.prisonInteriorParent.SetActive(false);
         }
     }
 }

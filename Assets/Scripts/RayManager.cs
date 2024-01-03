@@ -142,9 +142,9 @@ public class RayManager : MonoBehaviour
                     if (Input.GetKeyDown(KeyCode.F))
                     {
                         Camera.main.farClipPlane = 200;
-                        Destroy(hit.collider.gameObject);
+                        hit.collider.gameObject.SetActive(false);
                         otherPrisonExitDoor.gameObject.SetActive(true);
-                        gameManagerScript.OnQuestObjectiveCompletion("Wait for Ravi to meet you outside the prison");
+                        gameManagerScript.OnQuestObjectiveCompletion("Exit the prison");
                     }
                 }
                 else
