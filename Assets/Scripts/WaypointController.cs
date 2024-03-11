@@ -7,7 +7,8 @@ using UnityEngine.UI;
 public class WaypointController : MonoBehaviour
 {
     public Image waypointImage;
-    [HideInInspector] public Transform target;
+    public GameObject[] targets;
+    public int targetIndex;
 
     private GameManager gameManager;
     private float minX;
@@ -22,9 +23,9 @@ public class WaypointController : MonoBehaviour
     {
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
 
-        target = GameObject.Find("Ravi").transform;
-
         distanceText = waypointImage.GetComponentInChildren<TextMeshProUGUI>();
+
+        targetIndex = gameManager.totalQuestObjectiveCount;
     }
 
     // Update is called once per frame
@@ -36,9 +37,10 @@ public class WaypointController : MonoBehaviour
         minY = waypointImage.GetPixelAdjustedRect().height / 2;
         maxY = Screen.width - minY;
 
-        pos = Camera.main.WorldToScreenPoint(target.position);
+        pos = Camera.main.WorldToScreenPoint(new Vector3(targets[targetIndex].transform.position.x + targets[targetIndex].GetComponent<Target>().xOffset,
+            targets[targetIndex].transform.position.y + targets[targetIndex].GetComponent<Target>().yOffset + 2.5f, targets[targetIndex].transform.position.z));
 
-        if (Vector3.Dot(target.position - transform.position, transform.forward) < 0) {
+        if (Vector3.Dot(targets[targetIndex].transform.position - transform.position, transform.forward) < 0) {
             // Target is behind player
             if (pos.x < Screen.width / 2)
             {
@@ -55,6 +57,6 @@ public class WaypointController : MonoBehaviour
 
         waypointImage.transform.position = pos;
 
-        distanceText.text = Vector3.Distance(transform.position, target.transform.position).ToString("0m");
+        distanceText.text = Vector3.Distance(transform.position, targets[targetIndex].transform.position).ToString("0m");
     }
 }

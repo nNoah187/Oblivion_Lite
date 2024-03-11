@@ -90,6 +90,7 @@ public class GameManager : MonoBehaviour
     // Quests
     public int questIndex;
     public int questObjectiveIndex;
+    public int totalQuestObjectiveCount = 0;
 
     public GameObject tutorialKey;
     public GameObject prisonExitDoor;
@@ -306,6 +307,7 @@ public class GameManager : MonoBehaviour
         }
         notificationText.SetActive(false);
         infoBarsParent.SetActive(false);
+        Camera.main.GetComponent<WaypointController>().waypointImage.gameObject.SetActive(false);
     }
 
     // When exiting a menu
@@ -323,6 +325,8 @@ public class GameManager : MonoBehaviour
             notificationText.SetActive(true);
         }
         infoBarsParent.SetActive(true);
+
+        Camera.main.GetComponent<WaypointController>().waypointImage.gameObject.SetActive(true);
     }
 
     public void OnDialogueOpen()
@@ -335,6 +339,8 @@ public class GameManager : MonoBehaviour
         firstPersonController.crosshair = false;
         reticle.SetActive(false);
         infoBarsParent.SetActive(false);
+
+        Camera.main.GetComponent<WaypointController>().waypointImage.gameObject.SetActive(false);
 
         playerAnimator.SetFloat("forwardSpeed", 0);
         playerAnimator.SetFloat("horizontalSpeed", 0);
@@ -831,6 +837,18 @@ public class GameManager : MonoBehaviour
         questInfo.text = newQuestInfo;
 
         questObjectiveIndex++;
+        totalQuestObjectiveCount++;
+
+        Camera.main.GetComponent<WaypointController>().targetIndex++;
+
+        if (Camera.main.GetComponent<WaypointController>().targets[Camera.main.GetComponent<WaypointController>().targetIndex] == null)
+        {
+            Camera.main.GetComponent<WaypointController>().waypointImage.gameObject.SetActive(false);
+        }
+        else
+        {
+            Camera.main.GetComponent<WaypointController>().waypointImage.gameObject.SetActive(true);
+        }
 
         ShowNotification("Quest objective updated");
     }
